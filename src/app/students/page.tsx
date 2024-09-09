@@ -73,15 +73,15 @@ const StudentsPage = () => {
   console.log("studentsData", studentsData);
   return (
     <DefaultLayout>
-      <div className="mt-[110px] flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
+      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
+        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
           <div className="bg-[#36A000] text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
             <FaPlus color="white" size={20} />
             <span>Add New </span>
           </div>
 
-        <div className="flex items-center space-x-5">
-          <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
+        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
+          <div className="flex  items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
             <h2 className="text-white">Print</h2>
             <FiPrinter color="white" />
             </div>
@@ -142,7 +142,7 @@ const StudentsPage = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : studentsData.results && studentsData.results.length > 0 ? (
+              ) : studentsData?.results && studentsData?.results.length > 0 ? (
                 studentsData.results.map((student: Student, index: number) => (
                   <tr key={student.id} className="bg-white border-b">
                     <th className="px-6 py-4 text-gray-900">{index + 1}</th>

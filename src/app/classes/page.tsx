@@ -10,10 +10,12 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-interface Stream {
+interface FormLevel {
   id: number;
-  name: string;
-  stream_count: number;
+  name:string;
+  level:number;
+  streams_count:number;
+  
  
 }
 const ClassesPage = () => {
@@ -46,6 +48,8 @@ const ClassesPage = () => {
   }, [currentPage, refetch]);
 
   const totalPages = Math.ceil((classesData?.count || 0) / pageSize);
+
+ 
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
@@ -85,10 +89,13 @@ const ClassesPage = () => {
                   #
                 </th>
                 <th scope="col" className="px-6 py-3">
-                 Class Level
+                 Class
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Stream
+                 Level
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Streams
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Actions
@@ -103,13 +110,16 @@ const ClassesPage = () => {
                   </td>
                 </tr>
               ) : classesData?.results && classesData?.results.length > 0 ? (
-                classesData?.results.map((cl: Stream, index: number) => (
+                classesData?.results.map((cl: FormLevel, index: number) => (
                   <tr key={cl.id} className="bg-white border-b">
                     <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                       {cl.name}
                     </td>
-                    <td className="px-6 py-4">{cl.stream_count}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                      {cl.level}
+                    </td>
+                    <td className="px-6 py-4">{cl.streams_count}</td>
 
                     <td className="px-6 py-4 flex items-center space-x-5">
                       <FaEdit color="#1F4772" />
