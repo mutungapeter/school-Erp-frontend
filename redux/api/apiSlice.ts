@@ -4,15 +4,18 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_SERVER_URI,
-    // prepareHeaders: (headers) => {
-    //   const accessToken = Cookies.get("accessToken");
-    //   const refreshToken = Cookies.get("refreshToken");
+    prepareHeaders: (headers) => {
+      const accessToken = Cookies.get("accessToken");
+      const refreshToken = Cookies.get("refreshToken");
      
-    //   if (accessToken) {
-    //     headers.set("Authorization", `Bearer ${accessToken}`);
-    //   }
-    //   return headers;
-    // },
+      if (accessToken) {
+        headers.set("Authorization", `Bearer ${accessToken}`);
+      }
+      if (refreshToken) {
+        headers.set("x-refresh-token", refreshToken);
+      }
+      return headers;
+    },
   }),
   endpoints: (builder) => ({
   }),

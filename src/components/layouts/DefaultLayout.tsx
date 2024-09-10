@@ -1,5 +1,7 @@
 import { ReduxProvider } from "@/src/app/Provider"
 import { Header } from "../header/Header"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // #D6DBDC
 // #F1F6F9
 export const DefaultLayout=({children}:{children:React.ReactNode})=>{
@@ -12,6 +14,18 @@ export const DefaultLayout=({children}:{children:React.ReactNode})=>{
       <div className="p-5">
       <ReduxProvider>
       {children}
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light" 
+        />
       </ReduxProvider>
       </div>
     </div>

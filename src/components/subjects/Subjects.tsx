@@ -3,15 +3,23 @@ import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import { GoPlus } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
+import { FiPrinter } from "react-icons/fi";
+import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { useState, useEffect } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { FiPrinter } from "react-icons/fi";
-import { Student } from "@/src/definitions/students";
-
-
-const StudentsPage = () => {
+import { AddSubject } from "./NewSubject";
+interface Subject {
+  id: number;
+  subject_name: string;
+  subject_type: string;
+  category: {
+    id:number;
+    name:string;
+  }
+}
+const Subjects = () => {
   const pageSize = 5;
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -21,13 +29,14 @@ const StudentsPage = () => {
   );
   const router = useRouter();
   const {
-    isLoading: loadingStudents,
-    data: studentsData,
+    isLoading: loadingSubjects,
+    data: subjectsData,
     refetch,
-  } = useGetStudentsQuery(
+  } = useGetSubjectsQuery(
     { page: currentPage || 1, page_size: pageSize },
     { refetchOnMountOrArgChange: true }
   );
+
   useEffect(() => {
     const page = parseInt(pageParam || "1");
     if (page !== currentPage) {
@@ -39,13 +48,13 @@ const StudentsPage = () => {
     refetch();
   }, [currentPage, refetch]);
 
-  const totalPages = Math.ceil((studentsData?.count || 0) / pageSize);
+  const totalPages = Math.ceil((subjectsData?.count || 0) / pageSize);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     const currentParams = new URLSearchParams(searchParams.toString());
     currentParams.set("page", page.toString());
-    router.push(`/students/?${currentParams.toString()}`);
+    router.push(`/subjects/?${currentParams.toString()}`);
   };
 
   const pages = [];
@@ -53,35 +62,23 @@ const StudentsPage = () => {
     pages.push(i);
   }
 
-
-  console.log("studentsData", studentsData);
+  console.log("subjectsData", subjectsData);
   return (
     <DefaultLayout>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
-        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
-          <div className="bg-[#36A000] text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
+      <div className="mt-[110px] flex flex-col gap-5 ">
+        <div className="flex items-center justify-between">
+          {/* <div className="bg-[#36A000] text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
             <FaPlus color="white" size={20} />
-            <span>Add New </span>
-          </div>
-
-        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
-          <div className="flex  items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
-            <h2 className="text-white">Print</h2>
-            <FiPrinter color="white" />
+            <span>Add New</span>
+          </div> */}
+        <AddSubject />
+          {/* <div className="flex items-center space-x-5">
+            <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
+              <h2 className="text-white">Print</h2>
+              <FiPrinter color="white" />
             </div>
-        <select className="w-64  py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
-            <option value="">All students</option>
-            <option value="10A">10A</option>
-            <option value="11B">11B</option>
-            <option value="9C">9C</option>
-          </select>
-
-          <input
-            type="text"
-            placeholder="Find by Adm No"
-            className="w-35  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
-          />
-        </div>
+        
+          </div> */}
         </div>
         <div className=" relative overflow-x-auto rounded-md">
           <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
@@ -94,25 +91,10 @@ const StudentsPage = () => {
                   Name
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Adm No
+                  Type
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Class
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Stream
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Gender
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  DOB
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Adm Date
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Adm Type
+                  Category
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Actions
@@ -120,26 +102,22 @@ const StudentsPage = () => {
               </tr>
             </thead>
             <tbody>
-              {loadingStudents ? (
+              {loadingSubjects ? (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
                     Loading...
                   </td>
                 </tr>
-              ) : studentsData?.results && studentsData?.results.length > 0 ? (
-                studentsData.results.map((student: Student, index: number) => (
-                  <tr key={student.id} className="bg-white border-b">
+              ) : subjectsData.results && subjectsData.results.length > 0 ? (
+                subjectsData.results.map((subject: Subject, index: number) => (
+                  <tr key={subject.id} className="bg-white border-b">
                     <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {student.first_name} {student.last_name}
+                      {subject.subject_name}
                     </td>
-                    <td className="px-6 py-4">{student.admission_number}</td>
-                    <td className="px-6 py-4">{student.class_level.form_level.name}</td>
-                    <td className="px-6 py-4">{student.class_level.stream ? student.class_level.stream.name : "-"}</td>
-                    <td className="px-6 py-4">{student.gender}</td>
-                    <td className="px-6 py-4">{student.birth_date}</td>
-                    <td className="px-6 py-4">{student.admission_date}</td>
-                    <td className="px-6 py-4">{student.admission_type}</td>
+                    <td className="px-6 py-4">{subject.subject_type}</td>
+                    <td className="px-6 py-4">{subject.category.name}</td>
+
                     <td className="px-6 py-4 flex items-center space-x-5">
                       <FaEdit color="#1F4772" />
                       <RiDeleteBinLine color="#1F4772" />
@@ -149,7 +127,7 @@ const StudentsPage = () => {
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    No students found.
+                    No subjects found.
                   </td>
                 </tr>
               )}
@@ -199,4 +177,4 @@ const StudentsPage = () => {
     </DefaultLayout>
   );
 };
-export default StudentsPage;
+export default Subjects;
