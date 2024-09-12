@@ -12,7 +12,7 @@ export const classesApi = apiSlice.injectEndpoints({
         if (page_size) queryParams.page_size = page_size;
 
         return {
-          url: `form-levels/`,
+          url: `class-levels/`,
           method: "GET",
           params: queryParams,
         };

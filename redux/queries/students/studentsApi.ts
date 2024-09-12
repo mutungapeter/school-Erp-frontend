@@ -23,6 +23,13 @@ export const studentsApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    createStudent: builder.mutation({
+      query: (data) => ({
+        url: `students/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getStudentsBySubjectAndClass: builder.query({
       query: (params: { subject_id: any; class_level_id: any; stream_id?: any;  admission_number?: any }) => {
         const queryParams: { subject_id: any; class_level_id: any; stream_id?: any;  admission_number?: any } = {
@@ -52,4 +59,4 @@ export const studentsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useGetStudentsQuery, useGetStudentsBySubjectAndClassQuery } = studentsApi;
+export const {useGetStudentsQuery, useGetStudentsBySubjectAndClassQuery, useCreateStudentMutation } = studentsApi;

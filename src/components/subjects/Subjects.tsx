@@ -10,6 +10,7 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { AddSubject } from "./NewSubject";
+import Spinner from "../layouts/spinner";
 interface Subject {
   id: number;
   subject_name: string;
@@ -49,7 +50,9 @@ const Subjects = () => {
   }, [currentPage, refetch]);
 
   const totalPages = Math.ceil((subjectsData?.count || 0) / pageSize);
-
+  const refetchSubjects = () => {
+    refetch();
+  };
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     const currentParams = new URLSearchParams(searchParams.toString());
@@ -71,7 +74,7 @@ const Subjects = () => {
             <FaPlus color="white" size={20} />
             <span>Add New</span>
           </div> */}
-        <AddSubject />
+        <AddSubject refetchSubjects={refetchSubjects} />
           {/* <div className="flex items-center space-x-5">
             <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
               <h2 className="text-white">Print</h2>
@@ -81,6 +84,7 @@ const Subjects = () => {
           </div> */}
         </div>
         <div className=" relative overflow-x-auto rounded-md">
+        {/* {loadingSubjects && <Spinner />} */}
           <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
             <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
@@ -108,8 +112,8 @@ const Subjects = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : subjectsData.results && subjectsData.results.length > 0 ? (
-                subjectsData.results.map((subject: Subject, index: number) => (
+              ) : subjectsData?.results && subjectsData?.results.length > 0 ? (
+                subjectsData?.results.map((subject: Subject, index: number) => (
                   <tr key={subject.id} className="bg-white border-b">
                     <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">

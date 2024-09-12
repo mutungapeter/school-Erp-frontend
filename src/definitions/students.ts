@@ -3,7 +3,6 @@ export interface Student {
     first_name: string;
     last_name: string;
     admission_number: string;
-    admission_date: string;
     birth_date: string;
     gender: string;
     admission_type: string;
@@ -20,4 +19,5 @@ export interface Student {
         streams_count: number;
       }
     },
+    created_at:string;
   }

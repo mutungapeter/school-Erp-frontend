@@ -19,8 +19,32 @@ export const subjectsApi = apiSlice.injectEndpoints({
       }
 
     }),
+
+    createSubject: builder.mutation({
+      query: (data) => ({
+        url: `subjects/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    getSubjectCategories: builder.query({
+      query: ({ page, page_size }: GetSubjectsQueryArgs = {}) => {
+        const queryParams: Record<string, any> = {};
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+
+        return {
+          url: `subject-categories/`,
+          method: "GET",
+          params: queryParams,
+        };
+      }
+
+    }),
+    
     
   }),
 });
 
-export const {useGetSubjectsQuery } = subjectsApi;
+export const {useGetSubjectsQuery, useGetSubjectCategoriesQuery, useCreateSubjectMutation } = subjectsApi;

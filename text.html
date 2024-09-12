@@ -120,3 +120,40 @@ const StudentsPage = () => {
   );
 };
 export default StudentsPage;
+
+
+
+
+() => {
+  const [startDate, setStartDate] = useState(new Date());
+  return (
+    <DatePicker
+      closeOnScroll={(e) => e.target === document}
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+    />
+  );
+};
+
+() => {
+  const [startDate, setStartDate] = useState(new Date());
+  return (
+    <DatePicker
+      showIcon
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+      icon="fa fa-calendar"
+    />
+  );
+};
+
+() => {
+  const [startDate, setStartDate] = useState(new Date());
+  return (
+    <DatePicker
+      showIcon
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+    />
+  );
+};
