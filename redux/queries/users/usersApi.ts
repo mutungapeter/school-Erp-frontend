@@ -19,6 +19,18 @@ export const usersApi = apiSlice.injectEndpoints({
       }
 
     }),
+    getAvailableTeacherUsers: builder.query({
+      query: () => {
+       
+        return {
+          url: `teacher-users/`,
+          method: "GET",
+      
+        };
+      }
+
+    }),
+
 
     createUser: builder.mutation({
       query: (data) => ({
@@ -33,4 +45,4 @@ export const usersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const {useGetUsersQuery, useCreateUserMutation} = usersApi;
+export const {useGetUsersQuery, useCreateUserMutation, useGetAvailableTeacherUsersQuery} = usersApi;

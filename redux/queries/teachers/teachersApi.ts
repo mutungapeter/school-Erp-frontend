@@ -17,10 +17,16 @@ export const teachersApi = apiSlice.injectEndpoints({
           params: queryParams,
         };
       }
-
+    }),
+    createTeacher: builder.mutation({
+      query: (data) => ({
+        url: `teachers/`,
+        method: "POST",
+        body: data,
+      }),
     }),
     
   }),
 });
 
-export const { useGetTeachersQuery } = teachersApi;
+export const { useGetTeachersQuery, useCreateTeacherMutation } = teachersApi;

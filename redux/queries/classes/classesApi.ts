@@ -18,8 +18,15 @@ export const classesApi = apiSlice.injectEndpoints({
         };
       }
     }),
-    
+    createClass: builder.mutation({
+      query: (data) => ({
+        url: `class-levels/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+  
   }),
 });
 
-export const {useGetClassesQuery } = classesApi;
+export const {useGetClassesQuery, useCreateClassMutation } = classesApi;
