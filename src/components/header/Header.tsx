@@ -12,7 +12,9 @@ import { FaBookOpen } from "react-icons/fa6";
 import { BsHousesFill } from "react-icons/bs";
 import { HiClipboardDocumentList } from "react-icons/hi2";
 import { FiMenu, FiX } from "react-icons/fi"; 
-
+import { FaLaptopHouse } from "react-icons/fa";
+import { FaShop } from "react-icons/fa6";
+import { SiLevelsdotfyi } from "react-icons/si";
 export const Header = () => {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,7 +23,9 @@ export const Header = () => {
     { text: "Dashboard", icon: <MdDashboard />, path: "/dashboard" },
     { text: "Students", icon: <FaBookReader />, path: "/students" },
     { text: "Teachers", icon: <FaUserTie />, path: "/teachers" },
-    { text: "Classes", icon: <BsHousesFill />, path: "/classes" },
+    { text: "Classes", icon: <FaShop />, path: "/classes" },
+    { text: "Form Levels", icon: <SiLevelsdotfyi  />, path: "/form-levels" },
+    { text: "Streams", icon: <BsHousesFill  />, path: "/streams" },
     { text: "Subjects", icon: <FaBookOpen />, path: "/subjects" },
     { text: "Grading", icon: <FaUserGraduate />, path: "/grading" },
     { text: "Reports", icon: <HiClipboardDocumentList />, path: "/reports" },

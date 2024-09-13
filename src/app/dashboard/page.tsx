@@ -10,13 +10,17 @@ import {
 import { BsHousesFill } from "react-icons/bs";
 import { HiClipboardDocumentList } from "react-icons/hi2";
 import { FaBookOpen } from "react-icons/fa6";
+import { FaShop } from "react-icons/fa6";
+import { SiLevelsdotfyi } from "react-icons/si";
 const DashboardPage = () => {
   const cardData = [
-    { text: "Students", icon: <FaBookReader size={48} />, path: "/students" },
-    { text: "Subjects", icon: <FaBookOpen size={48} />, path: "/subjects" },
-    { text: "Classes", icon: <BsHousesFill size={48} />, path: "/classes" },
-    { text: "Reports", icon: <HiClipboardDocumentList size={48} />, path: "/Reports" },
-    { text: "Accounts", icon: <FaUser size={48} />, path: "/accounts" },
+    { text: "Students", icon: <FaBookReader size={40} />, path: "/students" },
+    { text: "Subjects", icon: <FaBookOpen size={40} />, path: "/subjects" },
+    { text: "Classes", icon: <FaShop size={40} />, path: "/classes" },
+    { text: "Form Levels", icon: <SiLevelsdotfyi size={40} />, path: "/form-levels" },
+    { text: "Streams", icon: <BsHousesFill size={40} />, path: "/streams" },
+    { text: "Reports", icon: <HiClipboardDocumentList size={40} />, path: "/Reports" },
+    { text: "Accounts", icon: <FaUser size={40} />, path: "/accounts" },
   ];
   return (
     <DefaultLayout>

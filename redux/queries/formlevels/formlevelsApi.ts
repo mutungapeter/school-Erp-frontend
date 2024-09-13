@@ -1,26 +1,26 @@
 import { apiSlice } from "@/redux/api/apiSlice";
-interface GetStreamsInterface {
+interface GetClassesInterface {
   page?: number;
   page_size?: number;
 }
-export const streamsApi = apiSlice.injectEndpoints({
+export const formLevelsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getStreams: builder.query({
-      query: ({ page, page_size }: GetStreamsInterface = {}) => {
+    getFormLevels: builder.query({
+      query: ({ page, page_size }: GetClassesInterface = {}) => {
         const queryParams: Record<string, any> = {};
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
 
         return {
-          url: `streams/`,
+          url: `form-levels/`,
           method: "GET",
           params: queryParams,
         };
       }
     }),
-    createStream: builder.mutation({
+    createFormLevel: builder.mutation({
         query: (data) => ({
-          url: `streams/`,
+          url: `form-levels/`,
           method: "POST",
           body: data,
         }),
@@ -29,4 +29,4 @@ export const streamsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetStreamsQuery, useCreateStreamMutation } = streamsApi;
+export const {useGetFormLevelsQuery, useCreateFormLevelMutation } = formLevelsApi;

@@ -1,18 +1,18 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-import { FiPrinter } from "react-icons/fi";
-import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
-import { useState, useEffect } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { ClassLevel } from "@/src/definitions/classlevels";
 
-const ClassesPage = () => {
+
+import { useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
+import { Stream } from "@/src/definitions/streams";
+import { CreateStream } from "./NewStream";
+
+
+
+const Streams = () => {
   const pageSize = 5;
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -22,14 +22,13 @@ const ClassesPage = () => {
   );
   const router = useRouter();
   const {
-    isLoading: loadingClasses,
-    data: classesData,
+    isLoading: loadingStreams,
+    data: streamsData,
     refetch,
-  } = useGetClassesQuery(
+  } = useGetStreamsQuery(
     { page: currentPage || 1, page_size: pageSize },
     { refetchOnMountOrArgChange: true }
   );
-
   useEffect(() => {
     const page = parseInt(pageParam || "1");
     if (page !== currentPage) {
@@ -41,87 +40,93 @@ const ClassesPage = () => {
     refetch();
   }, [currentPage, refetch]);
 
-  const totalPages = Math.ceil((classesData?.count || 0) / pageSize);
-
- 
+  const totalPages = Math.ceil((streamsData?.count || 0) / pageSize);
 
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     const currentParams = new URLSearchParams(searchParams.toString());
     currentParams.set("page", page.toString());
-    router.push(`/classes/?${currentParams.toString()}`);
+    router.push(`/streams/?${currentParams.toString()}`);
   };
 
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
+  const refetchStreams = () => {
+    refetch();
+  };
 
-  console.log("classesData", classesData?.results);
+  console.log("streamsData", streamsData);
   return (
-    <DefaultLayout>
-      <div className="mt-[110px] flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
-          <div className="bg-[#36A000] text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
-            <FaPlus color="white" size={20} />
-            <span>Add New</span>
-          </div>
+    <>
+      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
+        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
+        <CreateStream refetchStreams={refetchStreams} />
 
-          {/* <div className="flex items-center space-x-5">
-            <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
-              <h2 className="text-white">Print</h2>
-              <FiPrinter color="white" />
-            </div>
-        
-          </div> */}
+        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
+          
+        <select className="w-64  py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
+            <option value="">Filter</option>
+            <option value="">All</option>
+            <option value="10A">Teacher</option>
+            <option value="11B">Principal</option>          
+          </select>
+
+          <input
+            type="text"
+            placeholder="Find by  username"
+            className="w-35  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
+          />
         </div>
-        <div className=" relative overflow-x-auto rounded-md">
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+        </div>
+        <div className=" relative overflow-x-auto rounded-md bg-white shadow-md">
+          <table className="min-w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
+            <thead className="text-xs text-gray-700 uppercase border-b bg-green-100 rounded-t-md">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                   #
                 </th>
-                <th scope="col" className="px-6 py-3">
-                 Class
+                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                  Name
                 </th>
-                <th scope="col" className="px-6 py-3">
-                 Stream
-                </th>
+               
+               
+                
                 <th scope="col" className="px-6 py-3">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody>
-              {loadingClasses ? (
+              {loadingStreams ? (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
                     Loading...
                   </td>
                 </tr>
-              ) : classesData?.results && classesData?.results.length > 0 ? (
-                classesData?.results.map((cl: ClassLevel, index: number) => (
-                  <tr key={cl.id} className="bg-white border-b">
+              ) : streamsData?.results && streamsData?.results.length > 0 ? (
+                streamsData.results.map((stream: Stream, index: number) => (
+                  <tr key={stream.id} className="bg-white border-b">
                     <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {cl.form_level.name}  {cl.stream?.name}
+                      {stream.name} 
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {cl.stream?.name}
-                    </td>
-                 
-
+                   
                     <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
+                     <div className="p-1 rounded-md bg-green-100">
+                     <FaEdit color="green" size={17} />
+                        </div>
+                        <div className="p-1 rounded-md bg-red-100">
+                            <RiDeleteBinLine color="red" size={17} />
+                        </div>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    No subjects found.
+                    No records found.
                   </td>
                 </tr>
               )}
@@ -168,7 +173,7 @@ const ClassesPage = () => {
           </nav>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
-export default ClassesPage;
+export default Streams;
