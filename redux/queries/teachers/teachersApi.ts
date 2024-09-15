@@ -25,8 +25,21 @@ export const teachersApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    assignTeacherToSubjectsAndClasses: builder.mutation({
+      query: (data) => ({
+        url: `assign-teachers-to-subject/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getTeacher: builder.query({
+      query: (id: any) => ({
+        url: `teachers/${id}/`,
+        method: "GET",
+      }),
+    }),
     
   }),
 });
 
-export const { useGetTeachersQuery, useCreateTeacherMutation } = teachersApi;
+export const { useGetTeachersQuery, useCreateTeacherMutation, useGetTeacherQuery, useAssignTeacherToSubjectsAndClassesMutation } = teachersApi;

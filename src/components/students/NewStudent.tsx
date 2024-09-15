@@ -322,6 +322,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   </button>
                 </div>
               </form>
+              
             </div>
           </div>
         </div>

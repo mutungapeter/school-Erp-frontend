@@ -12,6 +12,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { useGetTeachersQuery } from "@/redux/queries/teachers/teachersApi";
 import { Teacher } from "@/src/definitions/teachers";
 import { CreateTeacher } from "./NewTeacher";
+import TeacherDetail from "./assignSubjectsAndClasses";
 
 const Teachers = () => {
   const pageSize = 5;
@@ -58,6 +59,9 @@ const Teachers = () => {
 const refetchTeachers=()=>{
     refetch();
 }
+const handleViewDetails = (id: number) => {
+  router.push(`/teachers/${id}`);
+};
 //   console.log("teachersData", teachersData);
   return (
   
@@ -115,7 +119,15 @@ const refetchTeachers=()=>{
                     {/* <td className="px-6 py-4">{teacher.user.username}</td> */}
 
                     <td className="px-6 py-4 flex items-center space-x-5">
+           
+                      <TeacherDetail teacher_id={teacher.id} />
+                      <div className="py-1 px-2 rounded-md bg-[#1F4772] text-white text-sm cursor-pointer  text-center"
+                    // onClick={()=>handleViewDetails(teacher.id)}
+                    >
+                        View subjects
+                      </div>
                     <div className="p-1 rounded-md bg-green-100">
+                      
                      <FaEdit color="green" size={17} />
                         </div>
                         <div className="p-1 rounded-md bg-red-100">

@@ -58,11 +58,6 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
 
   const onSubmit = async (data: FieldValues) => {
     const { staff_no,user,gender} = data;
-    // const formData = {
-    //     user: Number(data.user), 
-    //     staff_no: data.staff_no,
-    //     gender: data.gender,
-    //   };
     try {
       await createTeacher(data).unwrap();
       toast.success("Teacher added successfully!");
@@ -79,8 +74,6 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
     }
   };
   const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // const selectedValue = e.target.value;
-    // const userId = selectedValue ? Number(selectedValue) : '';
     setValue('user', e.target.value);
   };
  
