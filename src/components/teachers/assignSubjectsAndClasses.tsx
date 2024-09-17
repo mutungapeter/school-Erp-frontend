@@ -9,7 +9,7 @@ interface Props {
   teacher_id: number;
 }
 
-const TeacherDetail = ({ teacher_id }: Props) => {
+const AssignTeacher = ({ teacher_id }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [subjectClasses, setSubjectClasses] = useState<{
@@ -193,4 +193,4 @@ const TeacherDetail = ({ teacher_id }: Props) => {
   );
 };
 
-export default TeacherDetail;
+export default AssignTeacher;

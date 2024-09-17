@@ -11,7 +11,7 @@ export const DefaultLayout=({children}:{children:React.ReactNode})=>{
       className="bg-[#F1F6F9] flex flex-col"
     >
         <Header />
-      <div className="p-5">
+      <div className="p-1 lg:p-5 md:p-5">
       <ReduxProvider>
       {children}
       <ToastContainer

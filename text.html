@@ -1,159 +1,143 @@
-'use client';
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-interface Student {
-  id: number;
-  first_name:string;
-  last_name:string;
-  admission_number:string;
-  admission_date:string;
-  birth_date:string;
-  gender:string;
-  admission_type:string;
-  class_level: number;
-}
-const StudentsPage = () => {
-  
-  const {
-    isLoading: loadingStudents,
-    data: studentsData,
-    refetch,
-  } = useGetStudentsQuery(
-    {
-      limit: 10,},
-    { refetchOnMountOrArgChange: true }
-  );
-  console.log("studentsData", studentsData)
-  return (
-    <DefaultLayout>
-      <div className="mt-[110px] grid grid-cols-8 gap-4">
-        <div className="col-span-2 bg-white p-3 min-h-screen">
-          <div className="mb-4 flex justify-center w-full">
-            <div className="bg-[#36A000] w-full text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
-              <FaPlus color="white" size={20} />
-              <span>Add New Student</span>
-            </div>
+<div className="flex space-x-4">
+  <div className="bg-white overflow-hidden shadow rounded-lg border mx-4 box">
+      <div className="px-4 py-5 sm:px-6">
+          <div className="flex justify-between items-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  Contact Details
+              </h3>
+              <button className="text-sm font-medium text-gray-500">
+                  Update
+              </button>
           </div>
-          <select className="w-full mb-4 py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
-            <option value="">All students</option>
-            <option value="10A">10A</option>
-            <option value="11B">11B</option>
-            <option value="9C">9C</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Find by Adm No"
-            className="w-full mb-4 py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
-          />
-        </div>
-
-        <div className="col-span-6 relative overflow-x-auto rounded-md">
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  #
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Adm No
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Class
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Gender
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  DOB
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Adm Date
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Adm Type
-                </th>
-                <th scope="col" className="px-6 py-3">
-                Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {loadingStudents ? (
-                <tr>
-                  <td colSpan={5} className="text-center py-4">
-                    Loading...
-                  </td>
-                </tr>
-              ) : studentsData && studentsData.length > 0 ? (
-                studentsData.map((student:Student, index:number) => (
-                  <tr key={student.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {student.first_name} {student.last_name}
-                    </td>
-                    <td className="px-6 py-4">{student.admission_number}</td>
-                    <td className="px-6 py-4">{student.class_level}</td>
-                    <td className="px-6 py-4">{student.gender}</td>
-                    <td className="px-6 py-4">{student.birth_date}</td>
-                    <td className="px-6 py-4">{student.admission_date}</td>
-                    <td className="px-6 py-4">{student.admission_type}</td>
-                    <td className="px-6 py-4">Actions Here</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5} className="text-center py-4">
-                    No students found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              The contact information is provided below.
+          </p>
       </div>
-    </DefaultLayout>
-  );
-};
-export default StudentsPage;
+      <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+          <dl className="sm:divide-y sm:divide-gray-200">
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Full name
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      John Doe
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Email address
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      johndoe@example.com
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Phone number
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      (123) 456-7890
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Contact Type
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      Employee
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Company
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      BoxPower
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Job Title
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      Project Engineer
+                  </dd>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">
+                      Department
+                  </dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      Civil & Electrical
+                  </dd>
+              </div>
+          </dl>
+      </div>
+  </div>
 
-
-
-
-() => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <DatePicker
-      closeOnScroll={(e) => e.target === document}
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-    />
-  );
-};
-
-() => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <DatePicker
-      showIcon
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-      icon="fa fa-calendar"
-    />
-  );
-};
-
-() => {
-  const [startDate, setStartDate] = useState(new Date());
-  return (
-    <DatePicker
-      showIcon
-      selected={startDate}
-      onChange={(date) => setStartDate(date)}
-    />
-  );
-};
+  <div className="bg-white overflow-hidden shadow rounded-lg border box">
+      <div className="px-4 py-5 sm:px-6">
+          <div className="flex justify-between items-center">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                  Assigned Project Sites
+              </h3>
+              <button className="text-sm font-medium text-gray-500 mx-4">
+                  Add
+              </button>
+          </div>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+              You can find the project sites assigned to this contact below.
+          </p>
+      </div>
+      <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
+          <dl className="sm:divide-y sm:divide-gray-200">
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      RG 301 <br>
+                      Wahl Ranch
+                  </dd>
+                  <button className="text-sm font-medium text-gray-500">
+                      Remove
+                  </button>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      RG 301 <br>
+                      Lagrand Valley
+                  </dd>
+                  <button className="text-sm font-medium text-gray-500">
+                      Remove
+                  </button>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      RG 301 <br>
+                      Wahl Ranch
+                  </dd>
+                  <button className="text-sm font-medium text-gray-500">
+                      Remove
+                  </button>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      RG 301 <br>
+                      Lagrand Valley
+                  </dd>
+                  <button className="text-sm font-medium text-gray-500">
+                      Remove
+                  </button>
+              </div>
+              <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      RG 301 <br>
+                      Wahl Ranch
+                  </dd>
+                  <button className="text-sm font-medium text-gray-500">
+                      Remove
+                  </button>
+              </div>
+              
+          </dl>
+      </div>
+  </div>
+</div>
