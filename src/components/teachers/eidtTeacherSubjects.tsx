@@ -1,30 +1,30 @@
 "use client";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
-import { useAssignTeacherToSubjectsAndClassesMutation } from "@/redux/queries/teachers/teachersApi";
+import { useAssignTeacherToSubjectsAndClassesMutation, useGetTeacherSubjectsQuery, useUpdateTeacherSubjectsMutation } from "@/redux/queries/teachers/teachersApi";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
-
 interface Props {
   teacher_id: number;
 }
 
-const AssignTeacher = ({ teacher_id }: Props) => {
-  console.log("id", teacher_id)
+const EditTeacher = ({ teacher_id }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [subjectClasses, setSubjectClasses] = useState<{
     [key: number]: number[];
   }>({});
 
+ 
+  const { data: existingAssignments, isLoading: loadingExisting } = useGetTeacherSubjectsQuery(teacher_id, {skip:!isOpen});
+ console.log("existingAssignments", existingAssignments)
+  const [updateTeacherSubjects, { isLoading: updating }] = useUpdateTeacherSubjectsMutation();
+
   const {
     isLoading: loadingSubjects,
     data: subjectsData,
     refetch: refetchSubjects,
   } = useGetSubjectsQuery({}, { refetchOnMountOrArgChange: true });
-
-  const [assignTeacherToSubjectsAndClasses, { data, error, isSuccess }] =
-    useAssignTeacherToSubjectsAndClassesMutation();
 
   const handleSubjectChange = (subjectId: number) => {
     setSubjectClasses((prev) => {
@@ -43,9 +43,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
       const updated = { ...prev };
       if (updated[subjectId]) {
         if (updated[subjectId].includes(classId)) {
-          updated[subjectId] = updated[subjectId].filter(
-            (id) => id !== classId
-          );
+          updated[subjectId] = updated[subjectId].filter((id) => id !== classId);
         } else {
           updated[subjectId] = [...updated[subjectId], classId];
         }
@@ -54,9 +52,25 @@ const AssignTeacher = ({ teacher_id }: Props) => {
     });
   };
 
-  const handleOpenModal = () => setIsOpen(true);
-  const handleCloseModal = () => setIsOpen(false);
+ 
+  const handleOpenModal = () => {
+    setIsOpen(true);
+    if (existingAssignments) {
+      const initialSubjectClasses = existingAssignments.reduce(
+        (acc: any, assignment: any) => {
+          acc[assignment.subject.id] = assignment.classes.map((cls: any) => cls.id);
+          return acc;
+        },
+        {}
+      );
+      setSubjectClasses(initialSubjectClasses);
+    }
+  };
 
+  const handleCloseModal = () => setIsOpen(false);
+  const isClassChecked = (subjectId: number, classId: number) => {
+    return subjectClasses[subjectId]?.includes(classId) || false;
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const formattedSubjects = Object.keys(subjectClasses).map((subjectId) => ({
@@ -68,30 +82,20 @@ const AssignTeacher = ({ teacher_id }: Props) => {
       teacher: teacher_id,
       subjects: formattedSubjects,
     };
-    console.log("formData", formData)
 
     try {
       setIsLoading(true);
-      const response = await assignTeacherToSubjectsAndClasses(formData).unwrap();
-      const successMessage = response?.message || "Request successful";
+      const response = await updateTeacherSubjects(formData).unwrap();
+      const successMessage = response?.message || "Update successful";
       toast.success(successMessage);
       setIsLoading(false);
       handleCloseModal();
     } catch (error: any) {
       setIsLoading(false);
-      if (error?.data?.error) {
-        console.log("eror", error)
-        toast.error(error.data.error);
-      } else {
-        toast.error("Failed to assign subjects and classes. Please try again.");
-      }
+      toast.error("Failed to update subjects and classes. Please try again.");
     }
 
     setSubjectClasses({});
-  };
-
-  const isClassChecked = (subjectId: number, classId: number) => {
-    return subjectClasses[subjectId]?.includes(classId) || false;
   };
 
   return (
@@ -100,7 +104,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
         onClick={handleOpenModal}
         className="py-1 px-2 rounded-md bg-[#1F4772] text-white text-sm cursor-pointer text-center"
       >
-        Assign subjects
+        Update
       </div>
       {isOpen && (
         <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
@@ -110,18 +114,15 @@ const AssignTeacher = ({ teacher_id }: Props) => {
           ></div>
 
           <div className="modal-container bg-white w-10/12 md:max-w-5xl mx-auto rounded shadow-lg z-50 mt-10 transform transition-all">
-            {isLoading && <Spinner />}
+            {updating && <Spinner />}
             <div className="modal-content py-6 text-left px-6">
               <div className="flex justify-between items-center pb-3">
                 <p className="text-2xl font-bold text-[#1F4772]">
-                  Assign Teacher to Subjects and Classes
+                  Update Teacher&apos;s Subjects and Classes
                 </p>
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                className="w-full h-full space-y-5 mt-4"
-              >
+              <form onSubmit={handleSubmit} className="w-full h-full space-y-5 mt-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                   {subjectsData?.map((subject: any) => (
                     <div key={subject.id} className="mb-6">
@@ -132,10 +133,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
                           checked={!!subjectClasses[subject.id]}
                           onChange={() => handleSubjectChange(subject.id)}
                         />
-                        <label
-                          htmlFor={`subject-${subject.id}`}
-                          className="ml-2 font-semibold"
-                        >
+                        <label htmlFor={`subject-${subject.id}`} className="ml-2 font-semibold">
                           {subject.subject_name}
                         </label>
                       </div>
@@ -148,20 +146,11 @@ const AssignTeacher = ({ teacher_id }: Props) => {
                               <input
                                 type="checkbox"
                                 id={`class-${subject.id}-${classData.id}`}
-                                checked={isClassChecked(
-                                  subject.id,
-                                  classData.id
-                                )}
-                                onChange={() =>
-                                  handleClassChange(subject.id, classData.id)
-                                }
+                                checked={isClassChecked(subject.id, classData.id)}
+                                onChange={() => handleClassChange(subject.id, classData.id)}
                               />
-                              <label
-                                htmlFor={`class-${subject.id}-${classData.id}`}
-                                className="ml-2"
-                              >
-                                {classData.form_level.name}{" "}
-                                {classData?.stream?.name}
+                              <label htmlFor={`class-${subject.id}-${classData.id}`} className="ml-2">
+                                {classData.form_level.name} {classData?.stream?.name}
                               </label>
                             </div>
                           ))}
@@ -184,7 +173,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
                     disabled={isLoading}
                     className="bg-[#36A000] text-white rounded-md px-6 py-3 hover:bg-[#36A000] focus:outline-none"
                   >
-                    {isLoading ? "Submitting..." : "Submit"}
+                    {isLoading ? "Updating..." : "Update"}
                   </button>
                 </div>
               </form>
@@ -196,4 +185,4 @@ const AssignTeacher = ({ teacher_id }: Props) => {
   );
 };
 
-export default AssignTeacher;
+export default EditTeacher;

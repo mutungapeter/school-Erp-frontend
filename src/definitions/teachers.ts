@@ -9,7 +9,12 @@ export interface User {
   }
   
 export  interface Subject {
-    teacher: number;
+    teacher:{
+      gender:string;
+      id:number;
+      staff_no:number;
+      user:number
+    };
     subject: string;
     class_level: string;
   }

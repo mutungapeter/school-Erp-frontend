@@ -13,6 +13,7 @@ import { useGetTeachersQuery } from "@/redux/queries/teachers/teachersApi";
 import { Teacher } from "@/src/definitions/teachers";
 import { CreateTeacher } from "./NewTeacher";
 import AssignTeacher from "./assignSubjectsAndClasses";
+import EditTeacher from "./eidtTeacherSubjects";
 
 const Teachers = () => {
   const pageSize = 5;
@@ -118,11 +119,8 @@ const handleViewDetails = (id: number) => {
                     <td className="px-6 py-4 flex items-center space-x-5">
            
                       <AssignTeacher teacher_id={teacher.id} />
-                      <div className="py-1 px-2 rounded-md bg-[#1F4772] text-white text-sm cursor-pointer  text-center"
-                    onClick={()=>handleViewDetails(teacher.id)}
-                    >
-                        View subjects
-                      </div>
+                    
+                      <EditTeacher  teacher_id={teacher.id}/>
                     <div className="p-1 rounded-md bg-green-100">
                       
                      <FaEdit color="green" size={17} />
