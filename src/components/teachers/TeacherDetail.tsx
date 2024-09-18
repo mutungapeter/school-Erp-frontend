@@ -4,13 +4,16 @@ interface Props {
 import { MdAccountCircle } from "react-icons/md";
 import Image from "next/image";
 import { groupBy } from "lodash";
-const TeacherDetails = ({ data }: Props) => {
+import EditTeacher from "./eidtTeacherSubjects";
+import Spinner from "../layouts/spinner";
+const TeacherDetails = ({ data}: Props) => {
   console.log("data", data);
-  const groupedSubjects = groupBy(data?.subjects, "subject");
-
+  const groupedSubjects = groupBy(data?.subjects, (s) => s.subject.subject_name);
+  console.log("groupedsubjects", groupedSubjects)
   return (
     <div className="lg:mt-[110px] sm:mt-[110px] mt-[53px] ">
       <div className=" bg-white rounded-md w-full py-2 lg:py-5 md:py-5 shadow-sm">
+   
         <div className="w-full border-b flex p-4 justify-between">
           <h2 className="font-semibold text-primary text-xs md:text-lg lg:text-lg">
             {data?.user?.first_name} {data?.user?.last_name} - {data?.staff_no}
@@ -74,9 +77,7 @@ const TeacherDetails = ({ data }: Props) => {
               <h2 className="text-primary font-semibold text-xs md:text-sm lg:text-sm">
                 Assigned subjects and classes
               </h2>
-              <div className="py-2 px-3 rounded-md bg-primary text-white text-xs lg:text-sm md:text-sm text-center justify-center">
-                Update
-              </div>
+              <EditTeacher  teacher_id={data?.id}/>
             </div>
             <table className="w-full    bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
               <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
@@ -96,8 +97,8 @@ const TeacherDetails = ({ data }: Props) => {
                       {subject}
                     </td>
                     <td className="px-6 py-2 font-medium text-gray-500 whitespace-nowrap">
-                      {groupedSubjects[subject]
-                        .map((s) => s.class_level)
+                    {groupedSubjects[subject]
+                        .map((s) => `${s.class_level.form_level.name}${s.class_level.stream ? ` ${s.class_level.stream.name}` : ''}`)
                         .join(", ")}
                     </td>
                   </tr>

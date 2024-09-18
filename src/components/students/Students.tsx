@@ -100,9 +100,9 @@ const Students = () => {
                 <th scope="col" className="px-6 py-3">
                   Class
                 </th>
-                <th scope="col" className="px-6 py-3">
+                {/* <th scope="col" className="px-6 py-3">
                   Stream
-                </th>
+                </th> */}
                 <th scope="col" className="px-6 py-3">
                   Gender
                 </th>
@@ -135,8 +135,8 @@ const Students = () => {
                       {student.first_name} {student.last_name}
                     </td>
                     <td className="px-6 py-4">{student.admission_number}</td>
-                    <td className="px-6 py-4">{student.class_level.form_level.name}</td>
-                    <td className="px-6 py-4">{student.class_level.stream ? student.class_level.stream.name : "-"}</td>
+                    <td className="px-6 py-4">{student.class_level.form_level.name}{student.class_level.stream ? student.class_level.stream.name : ""}</td>
+                    {/* <td className="px-6 py-4">{student.class_level.stream ? student.class_level.stream.name : "-"}</td> */}
                     <td className="px-6 py-4">{student.gender}</td>
                     <td className="px-6 py-4">{formattedDate(new Date(student.birth_date))}</td>
                     <td className="px-6 py-4">{formattedDate(new Date(student.created_at))}</td>

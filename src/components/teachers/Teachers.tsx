@@ -121,6 +121,13 @@ const handleViewDetails = (id: number) => {
                       <AssignTeacher teacher_id={teacher.id} />
                     
                       <EditTeacher  teacher_id={teacher.id}/>
+                      <div
+       
+        className="py-1 px-2 rounded-md bg-[#1F4772] text-white lg:text-sm md:text-sm text-xs cursor-pointer text-center"
+        onClick={()=>handleViewDetails(teacher.id)}
+      >
+        View details
+      </div>
                     <div className="p-1 rounded-md bg-green-100">
                       
                      <FaEdit color="green" size={17} />

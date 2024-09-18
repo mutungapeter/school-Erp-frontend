@@ -22,7 +22,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
     data: subjectsData,
     refetch: refetchSubjects,
   } = useGetSubjectsQuery({}, { refetchOnMountOrArgChange: true });
-
+console.log("subjectsData", subjectsData)
   const [assignTeacherToSubjectsAndClasses, { data, error, isSuccess }] =
     useAssignTeacherToSubjectsAndClassesMutation();
 
@@ -80,7 +80,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
     } catch (error: any) {
       setIsLoading(false);
       if (error?.data?.error) {
-        console.log("eror", error)
+        console.log("error", error)
         toast.error(error.data.error);
       } else {
         toast.error("Failed to assign subjects and classes. Please try again.");
@@ -160,7 +160,7 @@ const AssignTeacher = ({ teacher_id }: Props) => {
                                 htmlFor={`class-${subject.id}-${classData.id}`}
                                 className="ml-2"
                               >
-                                {classData.form_level.name}{" "}
+                                {classData?.form_level?.name}{" "}
                                 {classData?.stream?.name}
                               </label>
                             </div>
