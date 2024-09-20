@@ -4,6 +4,7 @@ import "./globals.css";
 import { ReduxProvider } from "./Provider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import SessionChecker from "../components/Sessions/SessionChecker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
       <ReduxProvider>
+        <SessionChecker />
         {children}
         <ToastContainer
           position="top-right"

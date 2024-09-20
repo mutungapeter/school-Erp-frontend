@@ -1,6 +1,6 @@
 
 import { apiSlice } from "@/redux/api/apiSlice";
-import { userLoggedIn, userLoggedOut, userRegistration } from "./authSlice";
+import { userLoading, userLoggedIn, userLoggedOut } from "./authSlice";
 import Cookies from "js-cookie";
 import React from "react";
 
@@ -19,6 +19,7 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
+          dispatch(userLoading());
           const result = await queryFulfilled;
           Cookies.set("accessToken", result.data.accessToken);
           Cookies.set("refreshToken", result.data.refreshToken);
