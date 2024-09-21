@@ -10,7 +10,7 @@ const SessionChecker: React.FC = () => {
   const [showSessionExpiredModal, setShowSessionExpiredModal] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-console.log(accessToken)
+// console.log(accessToken)
   useEffect(() => {
     const checkSession = () => {
       try {
