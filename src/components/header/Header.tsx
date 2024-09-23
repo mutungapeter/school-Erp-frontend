@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FaBookReader,
   FaUser,
@@ -36,6 +36,13 @@ export const Header = () => {
   const { user, loading, error } = useAppSelector(
     (state: RootState) => state.auth
   );
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
   const cardData = [
     { text: "Dashboard", icon: <MdDashboard />, path: "/dashboard" },
     { text: "Students", icon: <FaBookReader />, path: "/students" },
@@ -52,11 +59,13 @@ export const Header = () => {
     dispatch(userLoggedOut());
     router.push('/'); 
   };
-
+if(loading){
+  return <div>Loading</div>;
+}
   return (
     <>
       {/* First nav */}
-      <div className="w-full fixed top-0 left-0 z-50 transition flex items-center justify-between bg-primary md:bg-[#F1F6F9] lg:bg-[#F1F6F9] h-[60px] px-5">
+      <div className="w-full fixed top-0 left-0 z-50 transition flex items-center justify-between bg-primary  h-[60px] px-5">
         <div className="w-full flex items-center justify-between">
         <button
             className="block sm:hidden text-white"
@@ -65,15 +74,15 @@ export const Header = () => {
             {isMenuOpen ? <FiX size={25} /> : <FiMenu size={25} />}  
           
           </button>
-          <h2 className="lg:text-blue-500 md:text-blue-500 text-white">SCHOOL MANAGER</h2>
+          <h2 className=" text-white">SCHOOL MANAGER</h2>
 
       
          
-        <div className="relative flex">
-          <Link
+        <div className="relative flex cursor-pointer">
+          <div
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center space-x-5 lg:p-3 md:p-3 p-1 rounded-md bg-light"
-        href="#"
+        className="flex items-center  cursor-pointer space-x-5 lg:p-3 md:p-3 p-1 rounded-md bg-light"
+        
       >
         <div className="flex items-center space-x-3">
 
@@ -90,13 +99,18 @@ export const Header = () => {
             className="overflow-hidden rounded-full"
           />
         </span>
-<span className="hidden lg:block text-primary">{user?.first_name} {user?.last_name}</span>
+{loading && <span>Loading...</span>}
+                {error && <span>Error loading user data</span>}
+                {isMounted && !loading && !error && user && (
+                  <span className="hidden lg:block text-primary">{user.first_name} {user.last_name}</span>
+                )}
+          
         </div>
         <span className="flex items-center gap-2 font-medium text-dark dark:text-dark-6 ">
           
           <MdOutlineArrowDropDown   size={30}     className={` duration-200 text-blue-500 ease-in ${dropdownOpen && "rotate-180"}`} />
         </span>
-      </Link>
+      </div>
 
 
       {dropdownOpen && (
@@ -116,10 +130,10 @@ export const Header = () => {
                 alt="User"
                 className="overflow-hidden rounded-full"
               />
-
-              <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-green dark:border-gray-dark"></span>
-            </span>
-
+ </span>
+  {loading && <div>Loading...</div>}
+                {error && <div>Error loading user data</div>}
+                {isMounted && !loading && !error && user && (
             <div className="block">
               <span className="block font-medium text-dark dark:text-white">
                {user?.first_name} {user?.last_name}
@@ -128,6 +142,7 @@ export const Header = () => {
                 {user?.email}
               </span>
             </div>
+            )}
           </div>
           <ul className="flex flex-col gap-1 border-y-[0.5px] border-stroke p-2.5 dark:border-dark-3">
             <li>
