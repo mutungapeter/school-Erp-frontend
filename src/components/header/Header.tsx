@@ -27,6 +27,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { userLoggedOut } from "@/redux/queries/auth/authSlice";
 import { RootState } from "@/redux/store";
+import { MdOutlineLibraryBooks } from "react-icons/md";
 export const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -51,6 +52,7 @@ export const Header = () => {
     { text: "Form Levels", icon: <SiLevelsdotfyi  />, path: "/form-levels" },
     { text: "Streams", icon: <BsHousesFill  />, path: "/streams" },
     { text: "Subjects", icon: <FaBookOpen />, path: "/subjects" },
+    { text: "marks", icon: <MdOutlineLibraryBooks />, path: "/marks" },
     { text: "Grading", icon: <FaUserGraduate />, path: "/grading" },
     { text: "Reports", icon: <HiClipboardDocumentList />, path: "/reports" },
     { text: "Accounts", icon: <FaUser />, path: "/accounts" },
@@ -81,7 +83,7 @@ if(loading){
         <div className="relative flex cursor-pointer">
           <div
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center  cursor-pointer space-x-5 lg:p-3 md:p-3 p-1 rounded-md bg-light"
+        className="flex items-center  cursor-pointer space-x-5 lg:p-2 md:p-2 p-1 rounded-md bg-light"
         
       >
         <div className="flex items-center space-x-3">

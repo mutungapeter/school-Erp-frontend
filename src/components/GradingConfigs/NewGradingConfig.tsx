@@ -87,9 +87,9 @@ export const CreateNewGradingConfig = ({
     <>
       <div
         onClick={handleOpenModal}
-        className="bg-[#36A000] cursor-pointer text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]"
+        className=" cursor-pointer text-center justify-center text-[#36A000]   flex items-center space-x-2 "
       >
-        <FaPlus color="white" size={20} />
+        <FaPlus size={20} className="text-white p-1 rounded-full  bg-[#36A000] " />
         <span>Add New</span>
       </div>
 

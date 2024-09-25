@@ -63,14 +63,17 @@ const GradingConfigs = () => {
   console.log("gradingConfigsData", gradingConfigsData);
   return (
     <DefaultLayout>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
-        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
-        <CreateNewGradingConfig refetchConfigs={refetchConfigs }  />
-
-        
+      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col  bg-white ">
+        <div className="px-3 p-5 border-b flex justify-between">
+          <h2 className="font-bold text-lg  text-primary">Grading Scales</h2>
+          <CreateNewGradingConfig refetchConfigs={refetchConfigs }  />
         </div>
-        <div className=" relative overflow-x-auto rounded-md">
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
+        <div className="p-3 flex justify-between">
+          <h2 className="font-semibold text-primary"> Default Grading Scales which will be applied to the recorded marks</h2>
+       </div>
+     
+        <div className=" relative overflow-x-auto p ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
                 <th scope="col" className="px-6 py-3">
