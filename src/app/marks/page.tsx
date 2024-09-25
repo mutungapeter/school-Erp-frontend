@@ -4,62 +4,48 @@ import { useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
 import { useGetStudentsBySubjectAndClassQuery } from "@/redux/queries/students/studentsApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { Student } from "@/src/definitions/students";
+import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { LuBookOpenCheck } from "react-icons/lu";
 import { TbDatabaseOff } from "react-icons/tb";
-interface Subject {
-  id: number;
-  subject_name: string;
-  subject_type: string;
-}
-interface ClassLevel {
-  id: number;
-  name: string;
-  stream_count: number;
-}
-interface Stream {
-  id: number;
-  name: string;
-  class_level: number;
-}
-interface StudentInterface {
-  id: number;
-  student: {
-    id: number;
-    first_name: string;
-    last_name: string;
-    class_level: {
-      id: number;
-      name: string;
-      stream_count: number;
-    };
-  };
 
-  subject: string;
-}
+
 const GradingPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const subjectId = searchParams.get("subject_id");
   const classLevelId = searchParams.get("class_level_id");
-  const streamId = searchParams.get("stream_id");
+
   const admissionNumber = searchParams.get("admission_number");
   const [view, setView] = useState<"individual" | "group">("group");
-
+  const queryParams = useMemo(() => {
+    const params: any = {};
+    
+    if (admissionNumber) {
+      params.admission_number = admissionNumber;
+    }
+    
+    if (subjectId) {
+      params.subject_id = subjectId;
+    }
+    
+    if (classLevelId) {
+      params.class_level_id = classLevelId;
+    }
+    
+    return params;
+  }, [subjectId, classLevelId, admissionNumber]);
   const {
     isLoading: loading,
     data,
     error,
     refetch,
   } = useGetStudentsBySubjectAndClassQuery(
-    {
-      subject_id: subjectId,
-      class_level_id: classLevelId,
-      stream_id: streamId,
-      admission_number: admissionNumber,
-    },
+    queryParams,
     { skip: false }
   );
   console.log("error", error);
@@ -68,11 +54,7 @@ const GradingPage = () => {
     data: classesData,
     refetch: refetchClasses,
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
-  const {
-    isLoading: loadingStreams,
-    data: streamsData,
-    refetch: refetchStreams,
-  } = useGetStreamsQuery({}, { refetchOnMountOrArgChange: true });
+
   const {
     isLoading: loadingSubjects,
     data: subjectsData,
@@ -83,25 +65,22 @@ const GradingPage = () => {
     if (!loading && refetch) {
       if (admissionNumber) {
         refetch();
-      } else if (subjectId && classLevelId && streamId) {
+      } else if (subjectId && classLevelId ) {
         refetch();
       } else if (subjectId && classLevelId) {
         refetch();
       }
     }
-    if (classLevelId && refetchStreams && !loadingStreams) {
-      refetchStreams();
-    }
+   
   }, [
     subjectId,
     classLevelId,
-    streamId,
     admissionNumber,
     loading,
-    loadingStreams,
+    
     loadingClasses,
     loadingSubjects,
-    refetchStreams,
+    
 
     refetch,
   ]);
@@ -119,17 +98,17 @@ const GradingPage = () => {
       const selectedClass = classesData.find(
         (classLevel: ClassLevel) => classLevel.id === Number(value)
       );
-      if (selectedClass && selectedClass.stream_count === 0) {
-        params.delete("stream_id");
-      }
+     
     }
+    if (value) {
+        params.set(name, value);
+      } else {
+        params.delete(name); 
+      }
+    
     router.push(`?${params.toString()}`);
   };
-  const filteredStreams = useMemo(() => {
-    return streamsData?.filter(
-      (stream: Stream) => stream.class_level === Number(classLevelId)
-    );
-  }, [streamsData, classLevelId]);
+
 
   const handleViewChange = (newView: "individual" | "group") => {
     const params = new URLSearchParams(searchParams.toString());
@@ -137,7 +116,7 @@ const GradingPage = () => {
     if (newView === "individual") {
       params.delete("class_level_id");
       params.delete("subject_id");
-      params.delete("stream_id");
+
     } else if (newView === "group") {
       params.delete("admission_number");
     }
@@ -145,7 +124,7 @@ const GradingPage = () => {
     setView(newView);
     router.push(`?${params.toString()}`);
   };
-
+console.log(studentsData)
   return (
     <DefaultLayout>
       <div className="mt-[50px] sm:mt-[110px] lg:mt-[110px] flex flex-col gap-5">
@@ -231,20 +210,20 @@ const GradingPage = () => {
                         <div className="flex items-center justify-center space-x-6 text-#1F4772">
                           <TbDatabaseOff size={25} />
                           <span>
-                            {(error as any).data.error || "No data to show"}
+                            {(error as any)?.data?.error || "No data to show"}
                           </span>
                         </div>
                       </td>
                     </tr>
                   ) : data && data.length > 0 ? (
-                    data.map((std: StudentInterface, index: number) => (
+                    data.map((std: any, index: number) => (
                       <tr key={std.id} className="bg-white border-b">
                         <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                           {std.student.first_name} {std.student.last_name}
                         </td>
                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                          {std.student.class_level?.name}
+                          {std.student.class_level.form_level.name} {std.student.class_level?.stream?.name}
                         </td>
                         <td className="px-6 py-4 flex items-center space-x-5">
                           <h2 className="p-2 rounded-md text-white bg-[#1F4772]">
@@ -289,28 +268,11 @@ const GradingPage = () => {
                 <option value="">Select Class Level</option>
                 {classesData?.map((classLevel: ClassLevel) => (
                   <option key={classLevel.id} value={classLevel.id}>
-                    {classLevel.name}
+                    {classLevel.form_level.name} {classLevel?.stream?.name}
                   </option>
                 ))}
               </select>
-              <select
-                name="stream_id"
-                value={streamId || ""}
-                onChange={handleSelectChange}
-                className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
-                disabled={!classLevelId || !filteredStreams?.length}
-              >
-                <option value="">
-                  {filteredStreams && filteredStreams.length > 0
-                    ? "Select Stream"
-                    : "No Streams"}
-                </option>
-                {filteredStreams?.map((stream: Stream) => (
-                  <option key={stream.id} value={stream.id}>
-                    {stream.name}
-                  </option>
-                ))}
-              </select>
+             
             </div>
             <div className=" relative overflow-x-auto rounded-md">
               <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
@@ -322,9 +284,9 @@ const GradingPage = () => {
                     <th scope="col" className="px-6 py-3">
                       Name
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    {/* <th scope="col" className="px-6 py-3">
                       Subject
-                    </th>
+                    </th> */}
 
                     <th scope="col" className="px-6 py-3">
                       Actions
@@ -344,24 +306,24 @@ const GradingPage = () => {
                         <div className="flex items-center justify-center space-x-6 text-#1F4772">
                           <TbDatabaseOff size={25} />
                           <span>
-                            {(error as any).data.error || "No data to show"}
+                            {(error as any)?.data?.error || "No data to show"}
                           </span>
                         </div>
                       </td>
                     </tr>
                   ) : studentsData && data.length > 0 ? (
                     studentsData?.map(
-                      (std: StudentInterface, index: number) => (
+                      (std: Student, index: number) => (
                         <tr key={std.id} className="bg-white border-b">
                           <th className="px-6 py-4 text-gray-900">
                             {index + 1}
                           </th>
                           <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {std.student.first_name} {std.student.last_name}
+                            {std.first_name} {std.last_name}
                           </td>
-                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                          {/* <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {std.subject}
-                          </td>
+                          </td> */}
 
                           <td className="px-6 py-4 flex items-center space-x-5">
                             <h2 className="p-2 rounded-md text-white bg-[#1F4772]">

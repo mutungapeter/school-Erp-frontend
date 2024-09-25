@@ -2,7 +2,7 @@ import { apiSlice } from "@/redux/api/apiSlice";
 interface GetStudentsBySubjectAndClassParams {
   subject_id: any;
   class_level_id: any;
-  stream_id?: any;  
+    
 }
 interface GetSubjectsQueryArgs {
   page?: number;
@@ -31,23 +31,20 @@ export const studentsApi = apiSlice.injectEndpoints({
       }),
     }),
     getStudentsBySubjectAndClass: builder.query({
-      query: (params: { subject_id: any; class_level_id: any; stream_id?: any;  admission_number?: any }) => {
-        const queryParams: { subject_id: any; class_level_id: any; stream_id?: any;  admission_number?: any } = {
+      query: (params: { subject_id: any; class_level_id: any;   admission_number?: any }) => {
+        const queryParams: { subject_id: any; class_level_id: any;   admission_number?: any } = {
           subject_id: params.subject_id,
           class_level_id: params.class_level_id,
         };
     
-        if (params.stream_id) {
-          queryParams.stream_id = params.stream_id;
-        }
-
+      
         if (params.admission_number) {
           queryParams.admission_number = params.admission_number;
         }
     
        
         return {
-          url: `grade-students/`,
+          url: `students/`,
           method: "GET",
           params: queryParams,
         };
