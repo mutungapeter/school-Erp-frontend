@@ -44,7 +44,7 @@ export const studentsApi = apiSlice.injectEndpoints({
     
        
         return {
-          url: `students/`,
+          url: `filter-students/`,
           method: "GET",
           params: queryParams,
         };

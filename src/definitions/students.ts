@@ -21,3 +21,21 @@ export interface Student {
     },
     created_at:string;
   }
+
+export interface StudentData {
+  student: {
+    first_name: string;
+    last_name: string;
+    birth_date: string;
+    gender: string;
+    admission_number: string;
+    class_level: number;
+    admission_type: string;
+  };
+  subject: {
+    id: number;
+    subject_name: string;
+    subject_type: string;
+    category: string;
+  };
+}

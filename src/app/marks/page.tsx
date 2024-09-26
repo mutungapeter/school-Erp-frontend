@@ -5,7 +5,7 @@ import { useGetStudentsBySubjectAndClassQuery } from "@/redux/queries/students/s
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import { ClassLevel } from "@/src/definitions/classlevels";
-import { Student } from "@/src/definitions/students";
+import { Student, StudentData } from "@/src/definitions/students";
 import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
@@ -106,7 +106,7 @@ const GradingPage = () => {
         params.delete(name); 
       }
     
-    router.push(`?${params.toString()}`);
+    router.push(`marks/?${params.toString()}`);
   };
 
 
@@ -124,7 +124,8 @@ const GradingPage = () => {
     setView(newView);
     router.push(`?${params.toString()}`);
   };
-console.log(studentsData)
+console.log('data', data)
+console.log("studentsData", studentsData)
   return (
     <DefaultLayout>
       <div className="mt-[50px] sm:mt-[110px] lg:mt-[110px] flex flex-col gap-5">
@@ -190,7 +191,7 @@ console.log(studentsData)
                       Name
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Class
+                      Subject
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Actions
@@ -210,20 +211,20 @@ console.log(studentsData)
                         <div className="flex items-center justify-center space-x-6 text-#1F4772">
                           <TbDatabaseOff size={25} />
                           <span>
-                            {(error as any)?.data?.error || "No data to show"}
+                            {(error as any).data.error || "No data to show"}
                           </span>
                         </div>
                       </td>
                     </tr>
                   ) : data && data.length > 0 ? (
-                    data.map((std: any, index: number) => (
-                      <tr key={std.id} className="bg-white border-b">
+                    data.map((std: StudentData, index: number) => (
+                      <tr key={index} className="bg-white border-b">
                         <th className="px-6 py-4 text-gray-900">{index + 1}</th>
                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                           {std.student.first_name} {std.student.last_name}
                         </td>
                         <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                          {std.student.class_level.form_level.name} {std.student.class_level?.stream?.name}
+                          {std?.subject?.subject_name}
                         </td>
                         <td className="px-6 py-4 flex items-center space-x-5">
                           <h2 className="p-2 rounded-md text-white bg-[#1F4772]">
@@ -284,9 +285,9 @@ console.log(studentsData)
                     <th scope="col" className="px-6 py-3">
                       Name
                     </th>
-                    {/* <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3">
                       Subject
-                    </th> */}
+                    </th>
 
                     <th scope="col" className="px-6 py-3">
                       Actions
@@ -306,24 +307,24 @@ console.log(studentsData)
                         <div className="flex items-center justify-center space-x-6 text-#1F4772">
                           <TbDatabaseOff size={25} />
                           <span>
-                            {(error as any)?.data?.error || "No data to show"}
+                            {(error as any).data.error || "No data to show"}
                           </span>
                         </div>
                       </td>
                     </tr>
-                  ) : studentsData && data.length > 0 ? (
-                    studentsData?.map(
-                      (std: Student, index: number) => (
-                        <tr key={std.id} className="bg-white border-b">
+                  ) : data && data.length > 0 ? (
+                    data?.map(
+                      (std: StudentData, index: number) => (
+                        <tr key={index} className="bg-white border-b">
                           <th className="px-6 py-4 text-gray-900">
                             {index + 1}
                           </th>
                           <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {std.first_name} {std.last_name}
+                            {std.student.first_name} {std.student.last_name}
                           </td>
-                          {/* <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {std.subject}
-                          </td> */}
+                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                          {std?.subject?.subject_name}
+                          </td>
 
                           <td className="px-6 py-4 flex items-center space-x-5">
                             <h2 className="p-2 rounded-md text-white bg-[#1F4772]">
