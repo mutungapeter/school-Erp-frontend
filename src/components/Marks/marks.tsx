@@ -1,9 +1,9 @@
 "use client";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
+
 import { useGetStudentsBySubjectAndClassQuery } from "@/redux/queries/students/studentsApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { Student, StudentSubject } from "@/src/definitions/students";
 import { Subject } from "@/src/definitions/subjects";
