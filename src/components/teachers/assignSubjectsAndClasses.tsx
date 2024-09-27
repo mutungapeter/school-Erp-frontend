@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AssignTeacher = ({ teacher_id }: Props) => {
-  console.log("id", teacher_id)
+  // console.log("id", teacher_id)
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [subjectClasses, setSubjectClasses] = useState<{
