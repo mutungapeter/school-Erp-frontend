@@ -22,8 +22,10 @@ export interface Student {
     created_at:string;
   }
 
-export interface StudentData {
+export interface StudentSubject{
+  id:number;
   student: {
+    id:number;
     first_name: string;
     last_name: string;
     birth_date: string;
