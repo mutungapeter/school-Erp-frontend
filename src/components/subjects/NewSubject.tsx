@@ -150,7 +150,7 @@ export const AddSubject = ({refetchSubjects}:AddSubject) => {
 
                   <IoMdArrowDropdown
                     size={30}
-                    className="absolute top-[56%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                    className="absolute top-[66%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                 </div>
                 {errors.subject_type &&  <p className="text-red-500 text-sm ">{String(errors.subject_type.message)}</p>}
@@ -183,7 +183,7 @@ export const AddSubject = ({refetchSubjects}:AddSubject) => {
 
                   <IoMdArrowDropdown
                     size={30}
-                    className="absolute top-[56%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                    className="absolute top-[66%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                     {errors.category &&  <p className="text-red-500">{String(errors.category.message)}</p>}
                 </div>

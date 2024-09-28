@@ -4,6 +4,7 @@ import { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React from "react";
 
+import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 interface ProtectedRouteProps {
   requiredRoles: string[];
   children: React.ReactNode;
@@ -14,9 +15,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRoles, children
   const router = useRouter();
 
 
-  if (loading) {
-    return <div>Loading...</div>; 
-  }
+  // if (loading) {
+  //   return (
+  //     <DefaultLayout>
+  //       <PageLoadingSpinner />
+  //     </DefaultLayout>
+  //   );
+  // }
 
  
   if (!user || !requiredRoles.includes(user.role)) {

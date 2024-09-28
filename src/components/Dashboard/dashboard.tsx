@@ -15,12 +15,10 @@ import { FaShop } from "react-icons/fa6";
 import { SiLevelsdotfyi } from "react-icons/si";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import dynamic from 'next/dynamic';
-
-const ProtectedRoute = dynamic(() => import("../authorization/authentication"), {
-  ssr: false,
-});
-const DashboardPage = () => {
+// import ProtectedRoute from "../authorization/authentication";
+import { MdOutlineLibraryBooks } from "react-icons/md";
+import ProtectedRoute from "@/src/app/authorization/authentication";
+const Dashboard = () => {
   const { user, loading, error } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -36,35 +34,42 @@ const DashboardPage = () => {
     },
     { text: "Streams", icon: <BsHousesFill size={40} />, path: "/streams" },
     {
+      text: "Marks",
+      icon: <MdOutlineLibraryBooks size={40} />,
+      path: "/marks",
+    },
+    {
+      text: "Teachers",
+      icon: <FaUserTie size={40} />,
+      path: "/teachers",
+    },
+    {
       text: "Reports",
       icon: <HiClipboardDocumentList size={40} />,
-      path: "/reports",
+      path: "/Reports",
     },
     { text: "Accounts", icon: <FaUser size={40} />, path: "/accounts" },
   ];
   return (
     <DefaultLayout>
-     
       <ProtectedRoute requiredRoles={["Admin", "Teacher"]}>
-        <div className="mt-[50px] sm:mt-[110px] lg:mt-[110px] grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-4 sm:gap-5 gap-3 lg:gap-5">
-          {cardData.map((card, index) => {
+        <div className="mt-[75px] sm:mt-[110px] lg:mt-[110px] grid grid-cols-1 lg:grid-cols-5 xl:grid-cols-6 sm:grid-cols-4 sm:gap-5 gap-3 lg:gap-5">
+          {cardData.map((card, idx) => {
             if (card.text === "Accounts" && user?.role !== "Admin") {
               return null;
             }
             return (
-              <Link href={card.path} key={index}>
-                <div className="max-w-sm rounded overflow-hidden flex flex-col gap-5 text-[#1F4772] hover:text-[#36A000] font-semibold cursor-pointer items-center  bg-white  p-6 border">
+            <Link href={card.path} key={idx}>
+                <div className="max-w-sm rounded overflow-hidden flex flex-col gap-5 text-[#1F4772] hover:text-[#36A000] font-semibold cursor-pointer items-center bg-white p-6 border">
                   {card.icon}
-
-                  <h2 className="">{card.text}</h2>
+                  <h2>{card.text}</h2>
                 </div>
               </Link>
             );
           })}
         </div>
       </ProtectedRoute>
-     
     </DefaultLayout>
   );
 };
-export default DashboardPage;
+export default Dashboard;

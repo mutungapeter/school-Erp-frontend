@@ -13,7 +13,7 @@ import { LuBookOpenCheck } from "react-icons/lu";
 import { TbDatabaseOff } from "react-icons/tb";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { AddMark } from "./recordMarks";
-
+import Link from "next/link"
 const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -146,7 +146,7 @@ console.log("studentsData", studentsData)
               </p>
             </div>
           </div>
-          <div className="flex justify-between lg:justify-none lg:space-x-5 mb-4">
+          <div className="flex justify-between lg:justify-none lg:space-x-5 ">
             <button
               onClick={() => handleViewChange("group")}
               className={`lg:py-2 lg:px-4 p-2 rounded-md border text-[13px] lg:text-lg ${
@@ -168,17 +168,25 @@ console.log("studentsData", studentsData)
               Record For Individual
             </button>
           </div>
+          <div className="flex w-full lg:w-auto">
+            <Link href="/marks/list" className="cursor-pointer">
+    <div className="inline-flex items-center cursor-pointer text-center lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg border border-primary bg-primary rounded-md w-max">
+      <h2 className="text-white text-center">View Marks</h2>
+    </div>
+    </Link>
+  </div>
         </div>
+        
         {view === "individual" ? (
           <div className="flex flex-col gap-3">
-            <div className="flex items-center justify-end">
+            <div className="flex w-full items-center justify-end">
               <input
                 type="text"
                 name="admission_number"
                 value={admissionNumber || ""}
                 onChange={handleSelectChange}
                 placeholder="Find by Admission Number"
-                className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
+                className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
               />
             </div>
             <div className="relative overflow-x-auto rounded-md">
@@ -247,7 +255,7 @@ console.log("studentsData", studentsData)
         ) : (
           <>
             <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5  ">
-            <div className="relative">
+            <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
                   <label
                     htmlFor="subject"
                     className="block text-gray-700 text-sm  font-semibold mb-2"
@@ -258,7 +266,7 @@ console.log("studentsData", studentsData)
                 name="subject_id"
                 value={subjectId || ""}
                 onChange={handleSelectChange}
-                className="w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+                className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
                 // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
               >
                 <option value="">Select Subject</option>
@@ -273,7 +281,7 @@ console.log("studentsData", studentsData)
                     className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                 </div>
-                <div className="relative">
+                <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
                   <label
                     htmlFor="class"
                     className="block text-gray-700 text-sm  font-semibold mb-2"
@@ -284,7 +292,7 @@ console.log("studentsData", studentsData)
                 name="class_level_id"
                 value={classLevelId || ""}
                 onChange={handleSelectChange}
-                className="w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+                className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
                 // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
               >
                 <option value="">Select Class</option>
