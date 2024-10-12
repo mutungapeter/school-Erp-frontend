@@ -21,6 +21,7 @@ import styles from "../custom.module.css";
 import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
 import { useRecorMarkMutation } from "@/redux/queries/marks/marksApi";
 import { StudentSubject } from "@/src/definitions/students";
+import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 
 interface CreateStudentProps {
   refetchStudents: () => void;
@@ -30,15 +31,22 @@ interface Addmarkprops{
 }
   
 export const AddMark = ({studentSubject}:Addmarkprops ) => {
+
     console.log("studentSubject",studentSubject)
   const [isOpen, setIsOpen] = useState(false);
  const [recorMark, { data, error, isSuccess }] =
  useRecorMarkMutation();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const {
+    isLoading: loadingTerms,
+    data: termsData,
+    refetch: refetchTerms,
+  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
 
   const schema = z.object({
     cat_mark: z.number().min(0, "Cat mark must be a positive number").max(30, "Cat mark must be less than or equal to 30"),
     exam_mark: z.number().min(0, "Exam mark must be a positive number").max(70, "Exam mark must be less than or equal to 70"),
+    term: z.number().min(1, "Term is required")
   });
   
 
@@ -54,10 +62,12 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
   const catMark = watch("cat_mark", 0);
   const examMark = watch("exam_mark", 0);
 
-  
+  const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("term", e.target.value);
+  };
   const totalMark = Number(catMark) + Number(examMark);
   const onSubmit = async (data: FieldValues) => {
-    const { cat_mark, exam_mark } = data;
+    const { cat_mark, exam_mark, term } = data;
     const studentId = studentSubject.student.id;
     const subjectId = studentSubject.id;
 
@@ -67,6 +77,7 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
             student_subject:subjectId,
             cat_mark: parseFloat(cat_mark), 
             exam_mark: parseFloat(exam_mark),
+            term
           };
           console.log(payload)
           await recorMark(payload).unwrap();
@@ -156,7 +167,43 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
                     )}
                   </div>
                 </div>
-
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                <div className="relative">
+                    <label
+                      htmlFor="term"
+                      className="block text-gray-700 text-sm  font-semibold mb-2"
+                    >
+                     Term
+                    </label>
+                    <select
+                      id="term"
+                      {...register("term",{ valueAsNumber: true })}
+                      onChange={handleTermChange}
+                      className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-blue-500 focus:outline-none"
+                    >
+                      {loadingTerms ? (
+                        <option value="">Loading...</option>
+                      ) : (
+                        <>
+                          <option value="">Select Term</option>
+                          {termsData?.map((term: any) => (
+                            <option key={term.id} value={term.id}>
+                              {term.term} 
+                            </option>
+                          ))}
+                        </>
+                      )}
+                    </select>
+                    <IoMdArrowDropdown
+                      size={30}
+                      className="absolute top-[60%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                    />
+                    {errors.term && (
+                      <p className="text-red-500 text-sm">
+                        {String(errors.term.message)}
+                      </p>
+                    )}
+                  </div>
                 <div>
                   <label htmlFor="total" className="block text-gray-700 font-semibold mb-2">
                     Total Marks
@@ -169,7 +216,7 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
                     className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
                   />
                 </div>
-
+</div>
                 <div className="flex justify-between mt-6">
                   <button
                     type="button"

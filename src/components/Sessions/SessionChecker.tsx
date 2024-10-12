@@ -14,9 +14,6 @@ const SessionChecker: React.FC = () => {
   useEffect(() => {
     const checkSession = () => {
       try {
-
-
-        
         if (tokenExpiry && tokenExpiry < Date.now()) {
           dispatch(userLoggedOut());
           setShowSessionExpiredModal(true);
@@ -31,7 +28,11 @@ const SessionChecker: React.FC = () => {
 
     return () => clearInterval(intervalId);
   }, [tokenExpiry, dispatch]);
-
+  useEffect(() => {
+    if (!accessToken) {
+      router.push('/'); 
+    }
+  }, [accessToken, router]);
   const handleLoginRedirect = () => {
     setShowSessionExpiredModal(false);
     router.push("/");

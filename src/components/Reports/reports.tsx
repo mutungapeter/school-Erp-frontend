@@ -1,13 +1,18 @@
+'use client';
 import { MdEmail, MdFolder, MdCloudUpload } from 'react-icons/md';  
+import { useRouter } from "next/navigation";
+
+
 type ReportSection = {
   heading: string;
   items: { label: string; link: string; icon?: JSX.Element }[];  
 };
+
 const reportSections:ReportSection[]  = [
   {
     heading: "Student Reports",
     items: [
-      { label: "Report Card", icon: <MdEmail />, link: "#" },
+      { label: "Report Card", icon: <MdEmail />, link: "/reports/report-card" },
       // { label: "Transcript", icon: <MdEmail />, link: "#"S },
       { label: "Student Summary", icon: <MdEmail />, link: "#" },
     ]
@@ -19,9 +24,6 @@ const reportSections:ReportSection[]  = [
       { label: "Student Totals", link: "#" },
       
       { label: "Class Detail", link: "#" },
-      { label: "Weekly Attendance", link: "#" },
-      { label: "Classes Not Finalized", link: "#" },
-      { label: "Average Daily Attendance", link: "#" }
     ]
   },
   {
@@ -44,6 +46,11 @@ const reportSections:ReportSection[]  = [
 ];
 
 const Reports = () => {
+  const router = useRouter();
+  const handleNavigate = (link: string): void => {
+    router.push(link);
+  };
+
   return (
     <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col bg-white">
       <div className="px-3 p-5 border-b flex justify-between">
@@ -61,12 +68,13 @@ const Reports = () => {
               {section.items.map((item, i) => (
                 <li 
                   key={i} 
-                  className="p-2 flex items-center space-x-2 border-b decoration-dotted  last:border-b-0  hover:text-blue-500 transition"
+                  onClick={() => handleNavigate(item.link)}
+                  className="p-2 flex items-center space-x-2 border-b cursor-pointer decoration-dotted  last:border-b-0  hover:text-blue-500 transition"
                 >
                  
-                  <a href={item.link} className="text-primary hover:text-secondary text-sm ">
+                  <div   className="text-primary hover:text-secondary text-sm ">
                     {item.label}
-                  </a>
+                  </div>
                   {item.icon && <span className="mr-2 text-primary">{item.icon}</span>}
                 </li>
               ))}

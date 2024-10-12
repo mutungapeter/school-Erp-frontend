@@ -43,9 +43,9 @@ const DashboardPage = () => {
     { text: "Accounts", icon: <FaUser size={40} />, path: "/accounts" },
   ];
   return (
+      <ProtectedRoute requiredRoles={["Admin", "Teacher"]}>
     <DefaultLayout>
      
-      <ProtectedRoute requiredRoles={["Admin", "Teacher"]}>
         <div className="mt-[50px] sm:mt-[110px] lg:mt-[110px] grid grid-cols-1 lg:grid-cols-5 sm:grid-cols-4 sm:gap-5 gap-3 lg:gap-5">
           {cardData.map((card, index) => {
             if (card.text === "Accounts" && user?.role !== "Admin") {
@@ -62,9 +62,9 @@ const DashboardPage = () => {
             );
           })}
         </div>
+    </DefaultLayout>
       </ProtectedRoute>
      
-    </DefaultLayout>
   );
 };
 export default DashboardPage;

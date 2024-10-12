@@ -15,19 +15,11 @@ const LoginPage = () => {
 
 useEffect(() => {
     if (isSuccess) {
-      const message = data?.message || "Login  successful";
-      toast.success(message);
+      
       router.push("/dashboard");
     }
-    if (error) {
-        console.log(error)
-      if ("data" in error) {
-        const errorData = error as any;
-        console.log("errorData", errorData)
-        toast.error(errorData.data.error);
-      }
-    }
-  }, [isSuccess, error]);
+  }, [isSuccess, router]);
+
   const loginSchema = z.object({
     username: z.string().nonempty("User name is required"),
     password: z.string().min(4, "Password must be atleast 6 characters"),
@@ -42,8 +34,20 @@ useEffect(() => {
   });
   const onSubmit = async (data: FieldValues) => {
     const { username, password } = data;
-    await login(data);
+    try{
+      
+     const response = await login(data).unwrap();
+      const successMessage = response?.message || "Login successful"
+      toast.success(successMessage)
+     
+    }catch(error:any){
+      if(error?.data?.error){
+        console.log("error", error)
+        toast.error(error.data.error)
+      }
+    }
   };
+  
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   return (
     <>
