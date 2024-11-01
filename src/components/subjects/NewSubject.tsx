@@ -1,5 +1,4 @@
-import { FaChevronDown, FaPlus } from "react-icons/fa6";
-import { IoMdArrowDropdown } from "react-icons/io";
+"use client";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FieldValues, useForm } from "react-hook-form";
@@ -16,6 +15,7 @@ interface AddSubject {
   refetchSubjects: () => void;
 }
 import { FaPlusCircle } from "react-icons/fa";
+import { BsChevronDown } from "react-icons/bs";
 export const AddSubject = ({ refetchSubjects }: AddSubject) => {
   const [isOpen, setIsOpen] = useState(false);
   const {
@@ -77,42 +77,32 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
       </div>
 
       {isOpen && (
-      <div className="modal fixed z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
-      <div
-        className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
-        onClick={handleCloseModal}
-      ></div>
-
-      <div className="modal-container bg-white  w-10/12 md:max-w-3xl mx-auto rounded shadow-lg z-50 mt-10 transform transition-all">
-        {isSubmitting && <Spinner />}
+       <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+ 
+       <div 
+       onClick={handleCloseModal}
+       className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
+     
+       <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+         <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+          
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+            {isSubmitting && <Spinner />}
             {isCreating && <Spinner />}
-            <div className="modal-content py-6 text-left px-6">
+           
               <div className="flex justify-between items-center pb-3">
-                <p className="lg:text-2xl md:text-2xl text-xl font-bold text-[#1F4772]">
+                <p className="lg:text-2xl md:text-2xl text-xl font-bold text-black">
                   Add New Subject
                 </p>
-                <div
-                  className="modal-close cursor-pointer z-50"
-                  onClick={handleCloseModal}
-                >
-                  <svg
-                    className="fill-current text-black"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                  >
-                    <path d="M1.39 1.393l15.318 15.314m-15.318 0L16.706 1.393" />
-                  </svg>
-                </div>
+               
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2  lg:grid-cols-2 gap-2 lg:gap-3">
                 <div>
                   <label
                     htmlFor="subjectName"
-                    className="block text-gray-700 font-semibold text-sm mb-2"
+                     className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                   >
                     Subject Name
                   </label>
@@ -121,7 +111,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                     id="subjectName"
                     placeholder="Enter subject name"
                     {...register("subject_name")}
-                    className="w-full py-2 px-4 rounded-md border border-blue-500 focus:outline-none focus:border-blue-500 focus:bg-white"
+                    className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                   />
                 {errors.subject_name && (
                   <p className="text-red-500 text-sm">
@@ -132,23 +122,24 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                 <div className="relative">
                   <label
                     htmlFor="subjectType"
-                    className="block text-gray-700 text-sm font-semibold mb-2"
+                     className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                   >
                     Subject Type
                   </label>
                   <select
                     id="subjectType"
                     {...register("subject_type")}
-                    className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-blue-500 focus:outline-none focus:border-blue-500 focus:bg-white"
+                    className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                   >
                     <option value="">Select subject type</option>
                     <option value="Core">Core</option>
                     <option value="Elective">Elective</option>
                   </select>
 
-                  <IoMdArrowDropdown
-                    size={30}
-                    className="absolute top-[66%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  <BsChevronDown 
+                      color="gray" 
+                      size={25}
+                    className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                 {errors.subject_type && (
                   <p className="text-red-500 text-sm ">
@@ -160,7 +151,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                 <div className="relative">
                   <label
                     htmlFor="subjectType"
-                    className="block text-gray-700  text-sm font-semibold mb-2"
+                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                   >
                     Subject Category
                   </label>
@@ -168,7 +159,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                     id="subject Category"
                     {...register("category", {valueAsNumber:true})}
                     onChange={handleCategoryChange}
-                    className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-blue-500 focus:outline-none focus:border-blue-500 focus:bg-white"
+                    className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                   >
                     {loadingSubjectCategories ? (
                       <option value="">Loading...</option>
@@ -184,9 +175,10 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                     )}
                   </select>
 
-                  <IoMdArrowDropdown
-                    size={30}
-                    className="absolute top-[66%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  <BsChevronDown 
+                      color="gray" 
+                      size={25}
+                    className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                   {errors.category && (
                     <p className="text-red-500">
@@ -194,30 +186,26 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                     </p>
                   )}
                 </div>
-                <div className="mt-1 flex items-end justify-between">
+                <div className="flex justify-between mt-6">
                   <button
-                    className="modal-close px-4 bg-white py-2 rounded-md text-black border border-gray-400 "
+                    type="button"
                     onClick={handleCloseModal}
+                    className="bg-gray-400 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 bg-[#1F4772] py-2 rounded-md text-white hover:bg-[#1F4772]"
+                    disabled={isSubmitting}
+                    className="bg-[#36A000] text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
                   >
-                    <span className="text-sm text-center font-light ">
-                      {" "}
-                      {isCreating ? (
-                        // <Spinner />
-                        <span>submitting</span>
-                      ) : (
-                        "submit"
-                      )}
-                    </span>
+                    {isSubmitting ? "Submitting..." : "Submit"}
                   </button>
                 </div>
               </form>
-            </div>
+            
+          </div>
+        </div>
           </div>
         </div>
       )}

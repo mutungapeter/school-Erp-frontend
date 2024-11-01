@@ -5,17 +5,16 @@ import { useGetStudentsBySubjectAndClassQuery } from "@/redux/queries/students/s
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 
 import { ClassLevel } from "@/src/definitions/classlevels";
-import { Student, StudentSubject } from "@/src/definitions/students";
+import { StudentSubject } from "@/src/definitions/students";
 import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { LuBookOpenCheck } from "react-icons/lu";
 import { TbDatabaseOff } from "react-icons/tb";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { AddMark } from "./recordMarks";
-import Link from "next/link";
+
 import DataSpinner from "../layouts/dataSpinner";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import { AddMark } from "./recordMarks";
+import { BsChevronDown } from "react-icons/bs";
 const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -168,7 +167,7 @@ const Marks = () => {
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
             <label
               htmlFor="subject"
-              className="block text-gray-700 text-sm  font-semibold mb-2"
+              className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
             >
               Subject
             </label>
@@ -176,7 +175,7 @@ const Marks = () => {
               name="subject_id"
               value={filters.subject_id || ""}
               onChange={handleSelectChange}
-              className="w-full lg:w-64 md:w-64 xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+              className="w-full lg:w-64 md:w-64 xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
             >
               <option value="">Select Subject</option>
@@ -186,15 +185,16 @@ const Marks = () => {
                 </option>
               ))}
             </select>
-            <IoMdArrowDropdown
-              size={30}
-              className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            <BsChevronDown 
+                      color="gray" 
+                      size={20}
+              className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
             <label
               htmlFor="class"
-              className="block text-gray-700 text-sm  font-semibold mb-2"
+             className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
             >
               Class
             </label>
@@ -202,7 +202,7 @@ const Marks = () => {
               name="class_level_id"
               value={filters.class_level_id || ""}
               onChange={handleSelectChange}
-              className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+              className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
             >
               <option value="">Select Class</option>
@@ -212,15 +212,16 @@ const Marks = () => {
                 </option>
               ))}
             </select>
-            <IoMdArrowDropdown
-              size={30}
-              className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            <BsChevronDown 
+                      color="gray" 
+                      size={20}
+              className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
             <label
               htmlFor="class"
-              className="block text-gray-700 text-sm  font-semibold mb-2"
+              className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
             >
               Admission No
             </label>
@@ -230,7 +231,7 @@ const Marks = () => {
               value={filters.admission_number || ""}
               onChange={handleSelectChange}
               placeholder="Find by Admission Number"
-              className="w-full lg:w-64 md:w-64 xl:w-64  py-2 px-4 rounded-md border border-primary focus:outline-none focus:bg-white"
+              className="w-full lg:w-64 md:w-64 xl:w-64  py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
             />
           </div>
         </div>

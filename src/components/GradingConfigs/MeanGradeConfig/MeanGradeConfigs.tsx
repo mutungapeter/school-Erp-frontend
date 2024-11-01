@@ -77,27 +77,27 @@ const MeanGradeConfigs = () => {
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   #
                 </th>
                
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                 Min Marks
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Max Marks
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Points
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Grade
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Remarks
                 </th>
              
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Actions
                 </th>
               </tr>
@@ -112,13 +112,13 @@ const MeanGradeConfigs = () => {
               ) : meanGradeData?.results && meanGradeData?.results.length > 0 ? (
                 meanGradeData.results.map((config: any, index: number) => (
                   <tr key={config.id} className="bg-white border-b">
-                    <th className="px-4 py-2 text-gray-900">{index + 1}</th>
+                    <th className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{index + 1}</th>
                    
-                    <td className="px-4 py-2">{config.min_mean_marks}</td>
-                 <td className="px-4 py-2">{config.max_mean_marks}</td>
-                    <td className="px-4 py-2">{config.grade}</td>
-                    <td className="px-4 py-2">{config.points}</td>
-                    <td className="px-4 py-2">{config.remarks}</td>
+                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.min_mean_marks}</td>
+                 <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.max_mean_marks}</td>
+                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.grade}</td>
+                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.points}</td>
+                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.remarks}</td>
                     <td className="px-4 py-2 flex items-center space-x-5">
                       <EditMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
                       <DeleteMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
@@ -136,11 +136,11 @@ const MeanGradeConfigs = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
           <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 border lg:text-sm md:text-sm text-xs rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -153,9 +153,9 @@ const MeanGradeConfigs = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
-                    ? "bg-[#1F4772] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -164,10 +164,10 @@ const MeanGradeConfigs = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                  : "bg-primary text-white border-gray-300 hover:bg-gray-100"
               }`}
               disabled={currentPage === totalPages}
             >

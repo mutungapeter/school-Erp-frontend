@@ -173,7 +173,7 @@ const Subjects = () => {
                 onClick={() => handlePageChange(page)}
                 className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
-                    ? "bg-[#1F4772] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -185,7 +185,7 @@ const Subjects = () => {
               className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 "
+                  : "bg-primary text-white border-gray-300 "
               }`}
               disabled={currentPage === totalPages}
             >

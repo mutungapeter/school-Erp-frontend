@@ -7,13 +7,14 @@ import { MarksInterface } from "@/src/definitions/marks";
 import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { IoMdArrowDropdown } from "react-icons/io";
+
 import { TbDatabaseOff } from "react-icons/tb";
 import { DefaultLayout } from "../layouts/DefaultLayout";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import DeleteMarkRecord from "./deleteMarks";
 import EditMarks from "./editMarks";
 import DataSpinner from "../layouts/dataSpinner";
+import { BsChevronDown } from "react-icons/bs";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -140,7 +141,7 @@ if (loading) {
           </p>
         </div>
       </div>
-      <div className="flex justify-between lg:justify-end px-3 lg:space-x-5 py-3 ">
+      <div className="flex justify-between lg:justify-end px-3 lg:space-x-5 py-1 ">
           <button
             onClick={handleApplyFilters}
             className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-primary text-white"
@@ -154,11 +155,11 @@ if (loading) {
             Reset Filters
           </button>
         </div>
-      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5 p-2 ">
+      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5 px-2  py-1">
         <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
           <label
             htmlFor="subject"
-            className="block text-gray-700 text-sm  font-semibold mb-2"
+            className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
           >
             Subject
           </label>
@@ -166,7 +167,7 @@ if (loading) {
             name="subject"
             value={filters.subject || ""}
             onChange={handleSelectChange}
-            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
             // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
           >
             <option value="">Select Subject</option>
@@ -176,15 +177,16 @@ if (loading) {
               </option>
             ))}
           </select>
-          <IoMdArrowDropdown
-            size={30}
-            className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+          <BsChevronDown 
+                      color="gray" 
+                      size={20}
+            className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
         <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
           <label
             htmlFor="class"
-            className="block text-gray-700 text-sm  font-semibold mb-2"
+             className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
           >
             Class
           </label>
@@ -192,7 +194,7 @@ if (loading) {
             name="class_level"
             value={filters.class_level || ""}
             onChange={handleSelectChange}
-            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
           >
             <option value="">Select Class</option>
             {classesData?.map((classLevel: ClassLevel) => (
@@ -201,15 +203,16 @@ if (loading) {
               </option>
             ))}
           </select>
-          <IoMdArrowDropdown
-            size={30}
-            className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+          <BsChevronDown 
+                      color="gray" 
+                      size={20}
+            className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
         <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
           <label
             htmlFor="class"
-            className="block text-gray-700 text-sm  font-semibold mb-2"
+            className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
           >
             Admission No
           </label>
@@ -219,7 +222,7 @@ if (loading) {
             value={filters.admission_number || ""}
             onChange={handleSelectChange}
             placeholder="Find by Admission Number"
-            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-primary focus:outline-none focus:bg-white"
+            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
           />
         </div>
       
@@ -228,31 +231,31 @@ if (loading) {
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 #
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Subject
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Cat
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Exam
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Total
-              </th>
-              <th scope="col" className="px-6 py-3">
+              </th> 
+              <th scope="col" className="px-6 py-3 text-xs">
                 Grade
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Points
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3 text-xs">
                 Actions
               </th>
             </tr>
@@ -279,25 +282,25 @@ if (loading) {
               data.map((marksData: MarksInterface, index: number) => (
                 <tr key={marksData.id} className="bg-white border-b">
                   <th className="px-3 py-2 text-sm lg:text-lg md:text-lg text-gray-900">{index + 1}</th>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
                     {marksData.student.first_name} {marksData.student.last_name}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
                     {marksData.student_subject?.subject.subject_name}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
                     {marksData.cat_mark}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
                     {marksData.exam_mark}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
                     {marksData.total_score}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-sm">
                     {marksData.grade}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
                     {marksData.points}
                   </td>
                   <td className="px-3 py-2 flex items-center space-x-5">

@@ -40,20 +40,23 @@ const DeleteSubject = ({ subjectId, refetchSubjects }: Props) => {
         <RiDeleteBinLine className="text-red-800" size={17} />
       </div>
       {isOpen && (
-        <div className="modal fixed insert-o z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
-          <div
-            className="modal-overlay  w-full h-full absolute w-full h-full bg-gray-900 opacity-50"
-            onClick={handleCloseModal}
-          ></div>
-
-          <div className="modal-container bg-white  w-10/12 md:max-w-3xl mx-auto rounded shadow-lg z-50 mt-10 transform transition-all">
-            {deleting && <Spinner />}
-            <div className="modal-content py-6 text-left px-6 ">
+       <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+ 
+       <div 
+       onClick={handleCloseModal}
+       className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
+     
+       <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+         <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+          
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              {deleting && <Spinner />}
+            
               <div className="flex items-center space-x-6">
                 <div className="p-2 rounded-full bg-red-100">
-                  <PiWarningOctagonFill className="text-red-500" size={35} />
+                  <PiWarningOctagonFill className="text-red-500" size={20} />
                 </div>
-                <p className="text-lg">
+                <p className="lg:text-lg md:text-lg text-sm">
                   Are you sure you want to permanently delete this Subject ?
                   This action cannot be undone.
                 </p>
@@ -62,19 +65,21 @@ const DeleteSubject = ({ subjectId, refetchSubjects }: Props) => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="bg-white border shadow-md  rounded-md px-6 py-3 focus:outline-none"
+                  className="bg-white border shadow-md  rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm focus:outline-none"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="bg-red-500 text-white rounded-md px-6 py-3 shadow-md focus:outline-none"
+                  className="bg-red-500 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm shadow-md focus:outline-none"
                 >
                   {deleting ? "Deleting..." : "Delete"}
                 </button>
               </div>
-            </div>
+           
+          </div>
+        </div>
           </div>
         </div>
       )}

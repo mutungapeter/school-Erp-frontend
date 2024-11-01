@@ -87,32 +87,32 @@ const Accounts = () => {
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="px-4 py-3 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   #
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                 Email
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                  Phone
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   username
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Role
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Created At
                 </th>
                 {/* <th scope="col" className="px-6 py-4 text-xs">
                   Last Login 
                 </th> */}
                 
-                <th scope="col" className="px-6 py-4 text-xs">
+                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
                   Actions
                 </th>
               </tr>
@@ -147,7 +147,7 @@ const Accounts = () => {
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    No students found.
+                    No records found.
                   </td>
                 </tr>
               )}
@@ -155,10 +155,10 @@ const Accounts = () => {
           </table>
         </div>
         <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
-        <nav className="flex items-center space-x-2">
+          <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
+              className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 border lg:text-sm md:text-sm text-xs rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -171,9 +171,9 @@ const Accounts = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
+                className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
-                    ? "bg-[#1F4772] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -182,10 +182,10 @@ const Accounts = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border lg:text-sm md:text-sm text-xs rounded ${
+              className={`lg:px-4 lg:py-2 md:px-4 md:py-2 py-1 px-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                  : "bg-primary text-white border-gray-300 hover:bg-gray-100"
               }`}
               disabled={currentPage === totalPages}
             >

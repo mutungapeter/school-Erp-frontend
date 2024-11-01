@@ -62,14 +62,14 @@ const DeleteFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="bg-white border shadow-md  rounded-md px-6 py-3 focus:outline-none"
+                  className="bg-white border shadow-md  rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm focus:outline-none"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="bg-red-500 text-white rounded-md px-6 py-3 shadow-md focus:outline-none"
+                  className="bg-red-500 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm shadow-md focus:outline-none"
                 >
                   {deleting ? "Deleting..." : "Delete"}
                 </button>
