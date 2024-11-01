@@ -2,13 +2,15 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
 
 
 import { useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
 import { Stream } from "@/src/definitions/streams";
 import { CreateStream } from "./NewStream";
+import DeleteStream from "./deleteStream";
+import EditStream from "./editStream";
+import { DefaultLayout } from "../layouts/DefaultLayout";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 
 
 
@@ -56,44 +58,38 @@ const Streams = () => {
   const refetchStreams = () => {
     refetch();
   };
+  if (loadingStreams) {
+    return (
+<div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
 
+<PageLoadingSpinner />
+</div>
+    );
+  }
   console.log("streamsData", streamsData);
   return (
     <>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
-        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
-        <CreateStream refetchStreams={refetchStreams} />
+       <div className=" space-y-5 shadow-md border py-2 bg-white  ">
+       
+        <div className="p-3 flex justify-between">
+          <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
+            Streams
+          </h2>
+          <CreateStream refetchStreams={refetchStreams} />
 
-        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
-          
-        <select className="w-64  py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
-            <option value="">Filter</option>
-            <option value="">All</option>
-            <option value="10A">Teacher</option>
-            <option value="11B">Principal</option>          
-          </select>
-
-          <input
-            type="text"
-            placeholder="Find by  username"
-            className="w-35  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
-          />
         </div>
-        </div>
-        <div className=" relative overflow-x-auto rounded-md bg-white shadow-md">
-          <table className="min-w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-green-100 rounded-t-md">
+        <div className=" relative overflow-x-auto p-2  ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th scope="col" className="text-sm lg:text-lg md:text-lg font-medium text-gray-900 px-6 py-4 text-left">
                   #
                 </th>
-                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th scope="col" className="px-6 py-4 text-sm lg:text-lg md:text-lg">
                   Name
                 </th>
                
-               
-                
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-3 text-sm lg:text-lg md:text-lg">
                   Actions
                 </th>
               </tr>
@@ -108,18 +104,14 @@ const Streams = () => {
               ) : streamsData?.results && streamsData?.results.length > 0 ? (
                 streamsData.results.map((stream: Stream, index: number) => (
                   <tr key={stream.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <th className="px-3 py-2 text-gray-900">{index + 1}</th>
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-medium text-gray-900 whitespace-nowrap">
                       {stream.name} 
                     </td>
                    
-                    <td className="px-6 py-4 flex items-center space-x-5">
-                     <div className="p-1 rounded-md bg-green-100">
-                     <FaEdit color="green" size={17} />
-                        </div>
-                        <div className="p-1 rounded-md bg-red-100">
-                            <RiDeleteBinLine color="red" size={17} />
-                        </div>
+                    <td className="px-3 py-2 flex items-center space-x-5">
+                     <EditStream  streamId={stream.id} refetchStreams={refetchStreams} />
+                       <DeleteStream streamId={stream.id} refetchStreams={refetchStreams} />
                     </td>
                   </tr>
                 ))
@@ -133,11 +125,11 @@ const Streams = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
-          <nav className="flex items-center space-x-2">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
+        <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -150,7 +142,7 @@ const Streams = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
                     ? "bg-[#1F4772] text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -161,7 +153,7 @@ const Streams = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
                   : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"

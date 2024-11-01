@@ -10,8 +10,8 @@ export const DefaultLayout = ({ children }: { children: React.ReactNode }) => {
     <>
           <SessionChecker />
     <div
-      style={{ minHeight: "100vh", display: "flex" }}
-      className="bg-[#F1F6F9] flex flex-col"
+      style={{ minHeight: "100vh",  }}
+      className="bg-[#F1F6F9] "
     >
       <Header />
       <div className="p-1 lg:p-5 md:p-5">

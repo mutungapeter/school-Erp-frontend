@@ -7,7 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Spinner from "../layouts/spinner";
-import { FaCalendarAlt } from "react-icons/fa";
+import { FaCalendarAlt, FaPlusCircle } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
@@ -41,7 +41,7 @@ export const CreateNewGradingConfig = ({
   const today = new Date();
   const schema = z.object({
     subject_category: z.number().min(1, "Category is required"),
-    min_marks: z.number().min(1, "Minimum marks is required"),
+    min_marks: z.number().min(0, "Minimum marks is required"),
     max_marks: z.number().min(1, "Maximum marks is required"),
     grade: z.string().min(1, "Grade is required"),
     points: z.number().min(1, "Points required"),
@@ -85,16 +85,16 @@ export const CreateNewGradingConfig = ({
 
   return (
     <>
-      <div
+     <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center text-[#36A000]   flex items-center space-x-2 "
+        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-sm  flex items-center space-x-2 "
       >
-        <FaPlus size={20} className="text-white p-1 rounded-full  bg-[#36A000] " />
-        <span>Add New</span>
+        <FaPlusCircle size={17} className="text-white   " />
+        <span className="font-bold text-white text-xs md:text-sm lg:text-sm ">Add New</span>
       </div>
 
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
+        <div className="modal fixed z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
           <div
             className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
             onClick={handleCloseModal}

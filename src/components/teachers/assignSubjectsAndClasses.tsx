@@ -4,7 +4,7 @@ import { useAssignTeacherToSubjectsAndClassesMutation } from "@/redux/queries/te
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
-
+import { MdOutlineClose } from "react-icons/md";
 interface Props {
   teacher_id: number;
 }
@@ -93,35 +93,48 @@ console.log("subjectsData", subjectsData)
   const isClassChecked = (subjectId: number, classId: number) => {
     return subjectClasses[subjectId]?.includes(classId) || false;
   };
-
+// [#1F4772]
   return (
     <>
       <div
         onClick={handleOpenModal}
-        className="py-1 px-2 rounded-md bg-[#1F4772] text-white text-sm cursor-pointer text-center"
+        className="py-1 px-2 rounded-md bg-primary text-white text-sm cursor-pointer text-center"
       >
         Assign subjects
       </div>
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
-          <div
-            className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
-            onClick={handleCloseModal}
-          ></div>
-
-          <div className="modal-container bg-white w-10/12 md:max-w-5xl mx-auto rounded shadow-lg z-50 mt-10 transform transition-all">
-            {isLoading && <Spinner />}
-            <div className="modal-content py-6 text-left px-6">
+         <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+ 
+         <div 
+         onClick={handleCloseModal}
+         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
+       
+         <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+           <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+            
+             <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl  sm:my-8  w-full sm:max-w-2xl  md:max-w-2xl">
+               {isLoading && <Spinner />}
+            
+           
+              <div className="sticky top-0 bg-white z-10  text-left p-2  md:p-4 lg:p-4 shadow-sm border">
               <div className="flex justify-between items-center pb-3">
-                <p className="text-2xl font-bold text-[#1F4772]">
-                  Assign Teacher to Subjects and Classes
+                <p className="lg:text-2xl md:text-2xl text-sm font-semibold text-black">
+                Assign Teacher to Subjects and Classes
                 </p>
+                <MdOutlineClose
+                  onClick={handleCloseModal}
+                  size={30}
+                  stroke="5"
+                  className="cursor-pointer font-bold text-primary"
+                />
               </div>
-
+            </div>
               <form
                 onSubmit={handleSubmit}
                 className="w-full h-full space-y-5 mt-4"
               >
+                <div className=" py-2 text-left px-6 z-9999 overflow-y-auto max-h-[70vh]">
+
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                   {subjectsData?.map((subject: any) => (
                     <div key={subject.id} className="mb-6">
@@ -170,8 +183,9 @@ console.log("subjectsData", subjectsData)
                     </div>
                   ))}
                 </div>
-
-                <div className="flex justify-between mt-6">
+                </div>
+                <div className="sticky bottom-0 p-2  md:p-4 lg:p-4  bg-white z-10 border">
+                <div className="flex justify-between mt-2">
                   <button
                     type="button"
                     onClick={handleCloseModal}
@@ -187,9 +201,12 @@ console.log("subjectsData", subjectsData)
                     {isLoading ? "Submitting..." : "Submit"}
                   </button>
                 </div>
+                </div>
               </form>
-            </div>
+            
           </div>
+        </div>
+        </div>
         </div>
       )}
     </>

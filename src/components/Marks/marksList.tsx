@@ -1,18 +1,19 @@
 "use client";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
-import { BsReceipt } from "react-icons/bs";
 import { ClassLevel } from "@/src/definitions/classlevels";
-import { Student, StudentSubject } from "@/src/definitions/students";
+import { MarksInterface } from "@/src/definitions/marks";
 import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { LuBookOpenCheck } from "react-icons/lu";
-import { TbDatabaseOff } from "react-icons/tb";
 import { IoMdArrowDropdown } from "react-icons/io";
-import Link from "next/link";
-import { useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
-import { MarksInterface } from "@/src/definitions/marks";
+import { TbDatabaseOff } from "react-icons/tb";
+import { DefaultLayout } from "../layouts/DefaultLayout";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import DeleteMarkRecord from "./deleteMarks";
+import EditMarks from "./editMarks";
+import DataSpinner from "../layouts/dataSpinner";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -115,28 +116,31 @@ const MarksList = () => {
     });
     router.push("?");
   };
-
+const refetchMarks=()=>{
+  refetch();
+}
+if (loading) {
   return (
-    <div className="mt-[60px] sm:mt-[110px] lg:mt-[110px] flex flex-col gap-5">
-      <div className="flex flex-col lg:gap-0 gap-3 lg:flex lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-4  p-1 border border-[#1F4772] rounded-md  lg:w-1/3 w-full">
-          <div className="bg-[#C8D9EB] p-3 rounded-full flex items-center justify-center">
-            <BsReceipt color="#1F4772" size={30} />
-          </div>
-          <div className=" flex flex-col gap-2 ">
-            <h2 className="text-[#1F4772] font-bold text-lg underline underline-offset-4 decoration-[#1F4772] decoration-3">
-              View Marks for a student
-            </h2>
-
-            <p className="text-[13px]">
-              To view marks for a student,you select the subject and class , and
-              admission number. Note: For teachers in order to use admission
-              number you have to select subject and class first then enter
-              admission number.
-            </p>
-          </div>
+    <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+      <PageLoadingSpinner />
+    </div>
+  );
+}
+  return (
+    <div className="space-y-5 shadow-md border py-2  bg-white">
+      <div className=" p-3  space-y-3">
+        <h2 className="font-semibold text-black text-xl">Marks Records</h2>
+        <div>
+          
+          <p className="text-[13px] lg:text-md md:text-md">
+            To view marks for a student, you select the subject and class, and
+            admission number. Note: For teachers in order to use admission
+            number you have to select subject and class first then enter
+            admission number.
+          </p>
         </div>
-        <div className="flex justify-between lg:justify-none lg:space-x-5 ">
+      </div>
+      <div className="flex justify-between lg:justify-end px-3 lg:space-x-5 py-3 ">
           <button
             onClick={handleApplyFilters}
             className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-primary text-white"
@@ -150,9 +154,7 @@ const MarksList = () => {
             Reset Filters
           </button>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5  ">
+      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5 p-2 ">
         <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
           <label
             htmlFor="subject"
@@ -217,13 +219,14 @@ const MarksList = () => {
             value={filters.admission_number || ""}
             onChange={handleSelectChange}
             placeholder="Find by Admission Number"
-            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
+            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-primary focus:outline-none focus:bg-white"
           />
         </div>
+      
       </div>
-      <div className=" relative overflow-x-auto rounded-md">
-        <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-          <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+      <div className=" relative overflow-x-auto p-2  ">
+        <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+          <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
               <th scope="col" className="px-6 py-3">
                 #
@@ -249,18 +252,21 @@ const MarksList = () => {
               <th scope="col" className="px-6 py-3">
                 Points
               </th>
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr>
-                <td colSpan={5} className="text-center py-4">
-                  Loading...
-                </td>
-              </tr>
+             <tr>
+             <td colSpan={8} className="text-center py-4">
+                    <DataSpinner />
+                  </td>
+           </tr>
             ) : error ? (
               <tr>
-                <td colSpan={4} className=" py-4">
+                <td colSpan={8} className=" py-4">
                   <div className="flex items-center justify-center space-x-6 text-#1F4772">
                     <TbDatabaseOff size={25} />
                     <span>
@@ -272,28 +278,32 @@ const MarksList = () => {
             ) : data && data.length > 0 ? (
               data.map((marksData: MarksInterface, index: number) => (
                 <tr key={marksData.id} className="bg-white border-b">
-                  <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <th className="px-3 py-2 text-sm lg:text-lg md:text-lg text-gray-900">{index + 1}</th>
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-medium text-gray-900 whitespace-nowrap">
                     {marksData.student.first_name} {marksData.student.last_name}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.student_subject?.subject.subject_name}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.cat_mark}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.exam_mark}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.total_score}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.grade}
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                     {marksData.points}
                   </td>
+                  <td className="px-3 py-2 flex items-center space-x-5">
+                     <EditMarks marksId={marksData.id} refetchMarks={refetchMarks} />
+                     <DeleteMarkRecord marksId={marksData.id} refetchMarks={refetchMarks} />
+                    </td>
                 </tr>
               ))
             ) : (

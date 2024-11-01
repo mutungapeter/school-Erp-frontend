@@ -22,13 +22,17 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ requiredRoles, children
   }, [loading, user, requiredRoles, router]);
 
   if (loading) {
-    // console.log("Loading spinner should show");
-    return <PageLoadingSpinner />;
+    console.log("Loading spinner should show");
+    return (
+      <div className="bg-white min-h-screen mx-auto flex items-center justify-center">
+        <PageLoadingSpinner />
+      </div>
+    );
   }
+
   
-  // console.log("User:", user);
-  // console.log("Required roles:", requiredRoles);
-  
+
+
 
  
   if (!user || !requiredRoles.includes(user.role)) {

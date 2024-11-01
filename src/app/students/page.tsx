@@ -1,10 +1,17 @@
+"use client";
+import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
+// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import Students from "@/src/components/students/Students";
+import { Suspense } from "react";
 
-'use client';
-import Students from "@/src/components/students/Students"
-
-const StudentsPage=()=>{
+const StudentsPage = () => {
   return (
-    <Students />
-  )
-}
-export default StudentsPage
+    <DefaultLayout>
+      <Suspense fallback={<PageLoadingSpinner />}>
+        <Students />
+      </Suspense>
+    </DefaultLayout>
+  );
+};
+export default StudentsPage;

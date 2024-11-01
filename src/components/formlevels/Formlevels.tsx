@@ -1,23 +1,13 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-import { useState, useEffect } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { FaEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { FiPrinter } from "react-icons/fi";
-import { Student } from "@/src/definitions/students";
-// import { CreateStudent } from "./NewStudent";
-import { formattedDate } from "@/src/utils/dates";
-import { useGetUsersQuery } from "@/redux/queries/users/usersApi";
-import { User } from "@/src/definitions/users";
-import { FormLevel } from "@/src/definitions/formlevels";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useGetFormLevelsQuery } from "@/redux/queries/formlevels/formlevelsApi";
+import { FormLevel } from "@/src/definitions/formlevels";
 import { CreateFormLevel } from "./NewFormLevel";
-// import { CreateAccount } from "./NewAccount";
-
+import DeleteFormLevel from "./deleteFormLevels";
+import EditFormLevel from "./editFormLevels";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import { DefaultLayout } from "../layouts/DefaultLayout";
 
 const FormLevels = () => {
   const pageSize = 5;
@@ -63,46 +53,39 @@ const FormLevels = () => {
   const refetchFormLevels = () => {
     refetch();
   };
+  if (loadingFormLevels) {
+    return (
+      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
 
+      <PageLoadingSpinner />
+    </div>
+    );
+  }
   console.log("formLevelsData", formLevelsData);
   return (
     <>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
-        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
-        <CreateFormLevel refetchFormLevels={refetchFormLevels} />
-
-        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
-          
-        <select className="w-64  py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
-            <option value="">Filter</option>
-            <option value="">All</option>
-            <option value="10A">Teacher</option>
-            <option value="11B">Principal</option>          
-          </select>
-
-          <input
-            type="text"
-            placeholder="Find by  username"
-            className="w-35  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
-          />
+      <div className="space-y-5 shadow-md border py-2 bg-white ">
+        <div className="p-3 flex justify-between">
+        <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
+            Form Levels
+          </h2>
+          <CreateFormLevel refetchFormLevels={refetchFormLevels} />
         </div>
-        </div>
-        <div className=" relative overflow-x-auto rounded-md bg-white shadow-md">
-          <table className="min-w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-green-100 rounded-t-md">
+        <div className=" relative overflow-x-auto p-2  ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th scope="col" className="px-6 py-4">
                   #
                 </th>
-                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                <th scope="col" className="px-6 py-4">
                   Name
                 </th>
-                <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                Level
+                <th scope="col" className="px-6 py-4">
+                  Level
                 </th>
-               
-                
-                <th scope="col" className="px-6 py-3">
+
+                <th scope="col" className="px-6 py-4">
                   Actions
                 </th>
               </tr>
@@ -114,24 +97,32 @@ const FormLevels = () => {
                     Loading...
                   </td>
                 </tr>
-              ) : formLevelsData?.results && formLevelsData?.results.length > 0 ? (
-                formLevelsData.results.map((form_level: FormLevel, index: number) => (
-                  <tr key={form_level.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                      {form_level.name} 
-                    </td>
-                    <td className="px-6 py-4">{form_level.level}</td>
-                    
+              ) : formLevelsData?.results &&
+                formLevelsData?.results.length > 0 ? (
+                formLevelsData.results.map(
+                  (form_level: FormLevel, index: number) => (
+                    <tr key={form_level.id} className="bg-white border-b">
+                      <th className="px-3 py-2 text-gray-900">{index + 1}</th>
+                      <td className="px-3 py-2 font-medium text-gray-900 whitespace-nowrap">
+                        {form_level.name}
+                      </td>
+                      <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                        {form_level.level}
+                      </td>
 
-                  {/* <td className="px-6 py-4">{formattedDate(new Date(user.date_joined))}</td>
-                  <td className="px-6 py-4">{formattedDate(new Date(user.last_login))}</td> */}
-                    <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
-                    </td>
-                  </tr>
-                ))
+                      <td className="px-3 py-2 flex items-center space-x-5">
+                        <EditFormLevel
+                          formLevelId={form_level.id}
+                          refetchFormLevels={refetchFormLevels}
+                        />
+                        <DeleteFormLevel
+                          formLevelId={form_level.id}
+                          refetchFormLevels={refetchFormLevels}
+                        />
+                      </td>
+                    </tr>
+                  )
+                )
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
@@ -142,11 +133,11 @@ const FormLevels = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
           <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -159,9 +150,9 @@ const FormLevels = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
-                    ? "bg-[#1F4772] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -170,10 +161,10 @@ const FormLevels = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                  : "bg-primary text-white border-gray-300 hover:bg-gray-100"
               }`}
               disabled={currentPage === totalPages}
             >

@@ -30,12 +30,33 @@ export const marksApi = apiSlice.injectEndpoints({
       }
     }),
     
-    
+    updateMarksData: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `marks/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),  
+    getMarkData: builder.query({
+      query: (id) => ({
+        url: `marks/${id}/`,
+        method: "GET",
+      }),
+    }),  
+    deleteMarksData: builder.mutation({
+      query: (id) => ({
+        url: `marks/${id}/`,
+        method: "DELETE",
+      }),
+    }), 
     
   }),
 });
 
 export const {
    useRecorMarkMutation,
-   useGetMarksDataQuery
+   useGetMarksDataQuery,
+   useGetMarkDataQuery,
+   useUpdateMarksDataMutation,
+   useDeleteMarksDataMutation,
     } = marksApi;

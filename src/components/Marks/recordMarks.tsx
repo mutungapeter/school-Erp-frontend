@@ -22,7 +22,7 @@ import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
 import { useRecorMarkMutation } from "@/redux/queries/marks/marksApi";
 import { StudentSubject } from "@/src/definitions/students";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
-
+import { FiPlus } from "react-icons/fi";
 interface CreateStudentProps {
   refetchStudents: () => void;
 }
@@ -100,15 +100,16 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
 
   return (
     <>
-      <div
+     <div
         onClick={handleOpenModal}
-       className="p-2 rounded-md text-white bg-[#1F4772] cursor-pointer"
+        className=" cursor-pointer text-center md:py-2 md:px-4 py-1 px-2  lg:py-2 lg:px-4  bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-1 lg:space-x-2 "
       >
-        Record Marks
+        <FiPlus size={20} className="text-white   " />
+        <span className=" lg:text-lg md:text-lg text-xs text-white">Add Marks</span>
       </div>
 
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
+        <div className="modal fixed z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
           <div
             className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
             onClick={handleCloseModal}
@@ -118,8 +119,8 @@ export const AddMark = ({studentSubject}:Addmarkprops ) => {
             {isSubmitting && <Spinner />}
             <div className="modal-content py-6 text-left px-6 ">
               <div className="flex justify-between items-center pb-3">
-                <p className="text-2xl font-bold text-[#1F4772]">
-                  Record Mark for 
+                <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
+                  Recording Mark for {studentSubject.subject.subject_name} belonging to {studentSubject.student.first_name } {studentSubject.student.last_name}
                 </p>
  
               </div>

@@ -11,6 +11,11 @@ import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { AddSubject } from "./NewSubject";
 import Spinner from "../layouts/spinner";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import { SerializedError } from "@reduxjs/toolkit";
+import EditSubject from "./editSubject";
+import DeleteSubject from "./deleteSubject";
+
 interface Subject {
   id: number;
   subject_name: string;
@@ -19,6 +24,12 @@ interface Subject {
     id:number;
     name:string;
   }
+}
+interface ApiError {
+  status: number;
+  data: {
+    error: string;
+  };
 }
 const Subjects = () => {
   const pageSize = 5;
@@ -32,6 +43,7 @@ const Subjects = () => {
   const {
     isLoading: loadingSubjects,
     data: subjectsData,
+    error,
     refetch,
   } = useGetSubjectsQuery(
     { page: currentPage || 1, page_size: pageSize },
@@ -64,43 +76,47 @@ const Subjects = () => {
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
+  if (loadingSubjects) {
+    return (
+      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
 
-  console.log("subjectsData", subjectsData);
+      <PageLoadingSpinner />
+    </div>
+    );
+  }
+
+  if (error) {
+    const apiError = error as ApiError | SerializedError;
+    const errorMessage = "data" in apiError && apiError.data?.error  ? apiError.data.error : "Error loading Subjects. Please try again later.";
+  }
+
+  // console.log("subjectsData", subjectsData);
   return (
-    <DefaultLayout>
-      <div className="mt-[110px] flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
-          {/* <div className="bg-[#36A000] text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]">
-            <FaPlus color="white" size={20} />
-            <span>Add New</span>
-          </div> */}
-        <AddSubject refetchSubjects={refetchSubjects} />
-          {/* <div className="flex items-center space-x-5">
-            <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
-              <h2 className="text-white">Print</h2>
-              <FiPrinter color="white" />
-            </div>
-        
-          </div> */}
-        </div>
-        <div className=" relative overflow-x-auto rounded-md">
-        {/* {loadingSubjects && <Spinner />} */}
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
-              <tr>
-                <th scope="col" className="px-6 py-3">
+    <>
+        <div className=" space-y-5 shadow-md border py-5 bg-white ">
+      
+        <div className=" p-3  flex justify-between">
+          <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Subjects</h2>
+          <AddSubject refetchSubjects={refetchSubjects} />
+           </div>
+        {loadingSubjects && <Spinner />}
+        <div className=" relative overflow-x-auto p-2  ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+            <tr>
+                <th scope="col" className="px-6 py-4">
                   #
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                   Type
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                   Category
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                   Actions
                 </th>
               </tr>
@@ -114,17 +130,17 @@ const Subjects = () => {
                 </tr>
               ) : subjectsData?.results && subjectsData?.results.length > 0 ? (
                 subjectsData?.results.map((subject: Subject, index: number) => (
-                  <tr key={subject.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <tr key={subject.id} className="bg-white border-b ">
+                    <th className="px-3 py-2 text-gray-900">{index + 1}</th>
+                    <td className="px-3 py-2 font-medium text-sm lg:text-lg md:text-lg text-gray-900 whitespace-nowrap">
                       {subject.subject_name}
                     </td>
-                    <td className="px-6 py-4">{subject.subject_type}</td>
-                    <td className="px-6 py-4">{subject.category.name}</td>
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">{subject.subject_type}</td>
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">{subject.category.name}</td>
 
-                    <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
+                    <td className="px-3 py-2 flex items-center space-x-5">
+                      <EditSubject subjectId={subject.id} refetchSubjects={refetchSubjects} />
+                      <DeleteSubject subjectId={subject.id} refetchSubjects={refetchSubjects} />
                     </td>
                   </tr>
                 ))
@@ -138,11 +154,11 @@ const Subjects = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6">
           <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2  lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -155,7 +171,7 @@ const Subjects = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
                     ? "bg-[#1F4772] text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -166,10 +182,10 @@ const Subjects = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                  : "bg-[#1F4772] text-white border-gray-300 "
               }`}
               disabled={currentPage === totalPages}
             >
@@ -178,7 +194,7 @@ const Subjects = () => {
           </nav>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 export default Subjects;

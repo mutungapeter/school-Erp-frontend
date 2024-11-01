@@ -38,3 +38,8 @@ export const formattedDate = (date: Date): string => {
     if (!date) return "";
     return dayjs(date).format("DD-MM-YYYY");
   };
+
+  export const formatYear = (date: Date): string => {
+    if (!date) return "";
+    return dayjs(date).format("YYYY");
+  };

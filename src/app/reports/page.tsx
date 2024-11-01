@@ -1,5 +1,5 @@
 import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import Reports from "@/src/components/Reports/reports";
+import Reports from "@/src/components/ReportsForms/reports";
 
 const ReportsPage=()=>{
     return (

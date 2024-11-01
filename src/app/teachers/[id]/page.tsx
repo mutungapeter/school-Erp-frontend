@@ -1,6 +1,7 @@
 "use client";
 import { useGetTeacherQuery } from "@/redux/queries/teachers/teachersApi";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
+// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 import Spinner from "@/src/components/layouts/spinner";
 import TeacherDetails from "@/src/components/teachers/TeacherDetail";

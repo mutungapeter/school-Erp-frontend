@@ -10,9 +10,9 @@ const UserDisplay: React.FC = () => {
   if (error) return <span className="text-primary">Error</span>;
 
   return user ? (
-    <span className="text-primary">{user.first_name} {user.last_name}</span>
+    <span className="block text-sm font-medium text-black dark:text-white uppercase">{user.first_name} {user.last_name}</span>
   ) : (
-    <span className="text-primary">Guest</span>
+    <span className="block text-sm font-medium text-black dark:text-white uppercase">Guest</span>
   );
 };
 

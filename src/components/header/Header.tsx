@@ -29,6 +29,7 @@ import { userLoggedOut } from "@/redux/queries/auth/authSlice";
 import { RootState } from "@/redux/store";
 import { MdOutlineLibraryBooks } from "react-icons/md";
 import dynamic from "next/dynamic";
+import { FaGear } from "react-icons/fa6";
 export const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -51,7 +52,7 @@ export const Header = () => {
     { text: "Streams", icon: <BsHousesFill />, path: "/streams" },
     { text: "Subjects", icon: <FaBookOpen />, path: "/subjects" },
     { text: "marks", icon: <MdOutlineLibraryBooks />, path: "/marks" },
-    { text: "Grading", icon: <FaUserGraduate />, path: "/grading" },
+    { text: "Settings", icon: <FaGear />, path: "/settings" },
     { text: "Reports", icon: <HiClipboardDocumentList />, path: "/reports" },
     { text: "Accounts", icon: <FaUser />, path: "/accounts" },
   ];
@@ -69,7 +70,7 @@ export const Header = () => {
   return (
     <>
       {/* First nav */}
-      <div className="w-full fixed top-0 left-0 z-50 transition flex items-center justify-between bg-primary  h-[60px] px-5">
+      <div className="w-full fixed top-0 left-0 z-50 transition flex items-center justify-between bg-primary rounded-non  h-[60px] px-5">
         <div className="w-full flex items-center justify-between">
           <button
             className="block sm:hidden text-white"
@@ -79,33 +80,30 @@ export const Header = () => {
           </button>
           <h2 className=" text-white">SCHOOL MANAGER</h2>
 
-          <div 
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="relative flex  items-center  cursor-pointer">
-            
-                <div  className="lg:h-7 lg:w-7 w-6 h-6 rounded-full">
-                  <Image
-                    width={70}
-                    height={70}
-                    src="/user.png"
-                    style={{
-                      width: "auto",
-                      height: "auto",
-                    }}
-                    alt="User"
-                    className="overflow-hidden rounded-full"
-                  />
-                </div>
-               
+          <div
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="relative flex  items-center  cursor-pointer"
+          >
+            <div className="lg:h-10 lg:w-10 w-10 h-10 rounded-full">
+              <Image
+                width={70}
+                height={70}
+                src="/user.png"
+                style={{
+                  width: "auto",
+                  height: "auto",
+                }}
+                alt="User"
+                className="overflow-hidden rounded-full"
+              />
+            </div>
 
-                <MdOutlineArrowDropDown
-                  size={38}
-                  className={` duration-200 text-white ease-in ${
-                    dropdownOpen && "rotate-180"
-                  }`}
-                />
-         
-            
+            <MdOutlineArrowDropDown
+              size={38}
+              className={` duration-200 text-white ease-in ${
+                dropdownOpen && "rotate-180"
+              }`}
+            />
 
             {dropdownOpen && (
               <div className="absolute right-0 mt-[260px] z-50 flex w-[280px] flex-col rounded-lg border-[0.5px] border-stroke bg-white shadow-default dark:border-dark-3 dark:bg-gray-dark">
@@ -159,6 +157,7 @@ export const Header = () => {
       </div>
 
       <div className="w-full fixed top-[60px] left-0 z-30 transition hidden sm:flex sm:px-5 lg:flex items-center space-x-5  h-[60px]">
+      
         {/* <div className="flex items-center space-x-5"> */}
         {cardData.map((card, idx) => (
           <div key={idx}>
@@ -181,7 +180,7 @@ export const Header = () => {
           isMenuOpen ? "max-h-[300px] opacity-100" : "max-h-0 opacity-0"
         } sm:max-h-full sm:opacity-100 sm:block`}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-5 p-4 sm:p-0">
+        <div className="flex flex-col sm:flex-row sm:items-center max-h-[30vh] space-y-4 sm:space-y-0 sm:space-x-5 p-4 sm:p-0">
           {cardData.map((card, idx) => (
             <div key={idx}>
               <div

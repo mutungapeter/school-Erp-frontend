@@ -1,27 +1,13 @@
-import { FaChevronDown, FaPlus } from "react-icons/fa6";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useCreateSubjectMutation,
-  useGetSubjectCategoriesQuery,
-} from "@/redux/queries/subjects/subjectsApi";
-import Spinner from "../layouts/spinner";
-import { FaCalendarAlt } from "react-icons/fa";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { format } from "date-fns";
-import { formatDate } from "@/src/utils/dates";
-import "../style.css";
-import styles from "../custom.module.css";
-import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
-import { useCreateUserMutation } from "@/redux/queries/users/usersApi";
 import { useCreateFormLevelMutation } from "@/redux/queries/formlevels/formlevelsApi";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { FieldValues, useForm } from "react-hook-form";
+import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import Spinner from "../layouts/spinner";
+import "../style.css";
 interface CreateFormLevelsProps {
   refetchFormLevels: () => void;
 }
@@ -70,26 +56,29 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
 
   return (
     <>
-      <div
+       <div
         onClick={handleOpenModal}
-        className="bg-[#36A000] cursor-pointer text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]"
+        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-sm  flex items-center space-x-2 "
       >
-        <FaPlus color="white" size={20} />
-        <span>Add New</span>
+        <FaPlusCircle size={20} className="text-white   " />
+        <span className=" lg:text-sm md:text-sm text-xs  text-white">Add Form Level</span>
       </div>
 
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
-          <div
-            className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
-            onClick={handleCloseModal}
-          ></div>
-
-          <div className="modal-container bg-white  w-10/12 md:max-w-3xl mx-auto rounded shadow-lg z-50 mt-10 transform transition-all">
+       <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+ 
+       <div 
+       onClick={handleCloseModal}
+       className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
+     
+       <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+         <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+          
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
             {isSubmitting && <Spinner />}
-            <div className="modal-content py-6 text-left px-6 ">
+            
               <div className="flex justify-between items-center pb-3">
-                <p className="text-2xl font-bold text-[#1F4772]">
+              <p className="text-sm md:text-lg lg:text-lg font-semibold text-black">
                  Add New Form Level
                 </p>
  
@@ -100,7 +89,7 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                   <div>
                     <label
                       htmlFor="Name"
-                      className="block text-gray-700 font-semibold text-sm mb-2"
+                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
                       Name
                     </label>
@@ -109,7 +98,7 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                       id="Name"
                       placeholder="name e.g Form One , Form Two"
                       {...register("name")}
-                      className="w-full py-2 px-4 rounded-md border border-blue-500 focus:outline-none"
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.name && (
                       <p className="text-red-500 text-sm">
@@ -120,7 +109,7 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                   <div>
                     <label
                       htmlFor="Level"
-                      className="block text-gray-700 font-semibold mb-2"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
                      Level
                     </label>
@@ -129,7 +118,7 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                       id="Level"
                       placeholder="Enter level e.g 1 for Form One "
                       {...register("level")}
-                      className="w-full py-2 px-4 rounded-md border border-blue-500 focus:outline-none"
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.level && (
                       <p className="text-red-500 text-sm">
@@ -156,7 +145,9 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                   </button>
                 </div>
               </form>
-            </div>
+            
+          </div>
+        </div>
           </div>
         </div>
       )}

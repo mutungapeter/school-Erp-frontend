@@ -6,16 +6,18 @@ import Image from "next/image";
 import { groupBy } from "lodash";
 import EditTeacher from "./eidtTeacherSubjects";
 import Spinner from "../layouts/spinner";
+import EditTeacherSubjects from "./eidtTeacherSubjects";
 const TeacherDetails = ({ data}: Props) => {
   console.log("data", data);
   const groupedSubjects = groupBy(data?.subjects, (s) => s.subject.subject_name);
   console.log("groupedsubjects", groupedSubjects)
   return (
-    <div className="lg:mt-[110px] sm:mt-[110px] mt-[53px] ">
+    
       <div className=" bg-white rounded-md w-full py-2 lg:py-5 md:py-5 shadow-sm">
    
         <div className="w-full border-b flex p-4 justify-between">
-          <h2 className="font-semibold text-primary text-xs md:text-lg lg:text-lg">
+    
+          <h2 className="font-semibold text-black text-xs md:text-lg lg:text-lg">
             {data?.user?.first_name} {data?.user?.last_name} - {data?.staff_no}
           </h2>
         </div>
@@ -72,12 +74,12 @@ const TeacherDetails = ({ data}: Props) => {
             </div>
           </div>
 
-          <div className=" w-full col-span-3 relative p-3 rounded-md border overflow-x-auto  ">
-            <div className="flex items-center justify-between py-2">
-              <h2 className="text-primary font-semibold text-xs md:text-sm lg:text-sm">
+          <div className=" w-full col-span-3 relative p-3 rounded-sm border overflow-x-auto  ">
+            <div className="flex items-center justify-between p-2 bg-light mb-5">
+              <h2 className="text-black font-semibold text-xs md:text-sm lg:text-sm uppercase">
                 Assigned subjects and classes
               </h2>
-              <EditTeacher  teacher_id={data?.id}/>
+              <EditTeacherSubjects  teacher_id={data?.id}/>
             </div>
             <table className="w-full    bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
               <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
@@ -108,7 +110,7 @@ const TeacherDetails = ({ data}: Props) => {
           </div>
         </div>
       </div>
-    </div>
+   
   );
 };
 

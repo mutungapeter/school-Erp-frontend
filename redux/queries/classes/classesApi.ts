@@ -25,8 +25,31 @@ export const classesApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-  
+    getCLassLevel: builder.query({
+      query: (id) => ({
+        url: `class-levels/${id}/`,
+        method: "GET",
+      }),
+    }), 
+    updateClassLevel: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `class-levels/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }), 
+    deleteCLassLevel: builder.mutation({
+      query: (id) => ({
+        url: `class-levels/${id}/`,
+        method: "DELETE",
+      }),
+    }),  
   }),
 });
 
-export const {useGetClassesQuery, useCreateClassMutation } = classesApi;
+export const {
+  useGetClassesQuery, 
+  useGetCLassLevelQuery,
+  useUpdateClassLevelMutation,
+  useDeleteCLassLevelMutation,
+  useCreateClassMutation } = classesApi;

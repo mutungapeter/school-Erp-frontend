@@ -25,8 +25,27 @@ export const streamsApi = apiSlice.injectEndpoints({
           body: data,
         }),
       }),
-    
+      getStream: builder.query({
+        query: (id) => ({
+          url: `streams/${id}/`,
+          method: "GET",
+        }),
+      }), 
+      updateStream: builder.mutation({
+        query: ({ id, ...data }) => ({
+          url: `streams/${id}/`,
+          method: "PUT",
+          body: data,
+        }),
+      }), 
+      deleteStream: builder.mutation({
+        query: (id) => ({
+          url: `streams/${id}/`,
+          method: "DELETE",
+        }),
+      }),  
+      
   }),
 });
 
-export const { useGetStreamsQuery, useCreateStreamMutation } = streamsApi;
+export const { useGetStreamsQuery,useGetStreamQuery,useDeleteStreamMutation, useCreateStreamMutation, useUpdateStreamMutation } = streamsApi;

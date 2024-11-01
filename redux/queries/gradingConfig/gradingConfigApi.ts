@@ -19,6 +19,13 @@ export const gradingConfigApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    getGradinConfig: builder.query({
+      query: (id) => ({
+        url: `grading-configs/${id}/`,
+        method: "GET",
+      }),
+    }), 
+  
     createGradingConfig: builder.mutation({
         query: (data) => ({
           url: `grading-configs/`,
@@ -26,8 +33,27 @@ export const gradingConfigApi = apiSlice.injectEndpoints({
           body: data,
         }),
       }),
+      updateConfig: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `grading-configs/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }), 
+      deleteConfig: builder.mutation({
+        query: (id) => ({
+          url: `grading-configs/${id}/`,
+          method: "DELETE",
+        }),
+      }),  
     
   }),
 });
 
-export const {  useGetGradingConfigsQuery, useCreateGradingConfigMutation} = gradingConfigApi;
+export const {  
+  useGetGradingConfigsQuery, 
+  useGetGradinConfigQuery, 
+  useUpdateConfigMutation,
+  useCreateGradingConfigMutation,
+  useDeleteConfigMutation,
+} = gradingConfigApi;

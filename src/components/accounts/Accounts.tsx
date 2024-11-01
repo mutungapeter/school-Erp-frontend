@@ -1,5 +1,5 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import { GoPlus } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
@@ -9,11 +9,14 @@ import { FaEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { FiPrinter } from "react-icons/fi";
 import { Student } from "@/src/definitions/students";
-// import { CreateStudent } from "./NewStudent";
 import { formattedDate } from "@/src/utils/dates";
 import { useGetUsersQuery } from "@/redux/queries/users/usersApi";
 import { User } from "@/src/definitions/users";
 import { CreateAccount } from "./NewAccount";
+import EditAccount from "./editAccount";
+import DeleteAccount from "./deleteAccount";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import DefaultLayout from "../adminDashboard/Layouts/DefaultLayout";
 
 
 const Accounts = () => {
@@ -50,7 +53,7 @@ const Accounts = () => {
     if (page < 1 || page > totalPages) return;
     const currentParams = new URLSearchParams(searchParams.toString());
     currentParams.set("page", page.toString());
-    router.push(`/students/?${currentParams.toString()}`);
+    router.push(`?${currentParams.toString()}`);
   };
 
   const pages = [];
@@ -60,60 +63,56 @@ const Accounts = () => {
   const refetchUsers = () => {
     refetch();
   };
-
+  
+  if (loadingUsers) {
+    return (
+      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+        <PageLoadingSpinner />
+      </div>
+    );
+  }
   console.log("usersData", usersData);
   return (
-    <DefaultLayout>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col gap-5 ">
-        <div className="flex flex-col gap-3 lg:gap-0 sm:gap-0 lg:flex-row sm:flex-row  sm:items-center sm:justify-between lg:items-center lg:justify-between">
-        <CreateAccount refetchUsers={refetchUsers} />
+    <>
+       <div className="space-y-5 shadow-md border py-2  bg-white ">
+        
+        <div className="p-3   flex justify-between">
+          <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
+            Accounts
+          </h2>
+          <CreateAccount refetchUsers={refetchUsers} />
 
-        <div className="flex flex-col gap-3 lg:flex-row sm:flex-row sm:items-center sm:space-x-5 lg:items-center lg:space-x-5">
-          
-        <select className="w-64  py-2 px-4 rounded border border-[#1F4772] focus:outline-none focus:bg-white">
-            <option value="">Filter</option>
-            <option value="">All</option>
-            <option value="10A">Teacher</option>
-            <option value="11B">Principal</option>          
-          </select>
-
-          <input
-            type="text"
-            placeholder="Find by  username"
-            className="w-35  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white  "
-          />
         </div>
-        </div>
-        <div className=" relative overflow-x-auto rounded-md bg-white shadow-md">
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-green-50 rounded-t-md">
+        <div className=" relative overflow-x-auto p-2  ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-4 py-3 text-xs">
                   #
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                 Email
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                  Phone
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                   username
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                   Role
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                   Created At
                 </th>
-                <th scope="col" className="px-6 py-3">
+                {/* <th scope="col" className="px-6 py-4 text-xs">
                   Last Login 
-                </th>
+                </th> */}
                 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4 text-xs">
                   Actions
                 </th>
               </tr>
@@ -127,21 +126,21 @@ const Accounts = () => {
                 </tr>
               ) : usersData?.results && usersData?.results.length > 0 ? (
                 usersData.results.map((user: User, index: number) => (
-                  <tr key={user.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                  <tr key={user.id} className="bg-white border-b text-sm">
+                    <th className="px-3 py-2 text-sm lg:text-sm md:text-sm text-gray-900">{index + 1}</th>
+                    <td className="px-3 py-2 text-sm lg:text-sm md:text-sm  font-medium text-gray-900 whitespace-nowrap">
                       {user.first_name} {user.last_name}
                     </td>
-                    <td className="px-6 py-4">{user.email}</td>
-                    <td className="px-6 py-4">{user.phone_number}</td>
-                    <td className="px-6 py-4">{user.username}</td>
-                    <td className="px-6 py-4">{user.role}</td>
+                    <td className="px-3 py-2 text-xs lg:text-sm md:text-sm ">{user.email}</td>
+                    <td className="px-3 py-2 text-xs lg:text-sm md:text-sm ">{user.phone_number}</td>
+                    <td className="px-3 py-2 text-xs lg:text-sm md:text-sm ">{user.username}</td>
+                    <td className="px-3 py-2 text-xs lg:text-sm md:text-sm ">{user.role}</td>
 
-                  <td className="px-6 py-4">{formattedDate(new Date(user.date_joined))}</td>
-                  <td className="px-6 py-4">{formattedDate(new Date(user.last_login))}</td>
-                    <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
+                  <td className="px-3 py-2 text-xs lg:text-sm md:text-sm">{formattedDate(new Date(user.date_joined))}</td>
+                  {/* <td className="px-3 py-2 text-xs lg:text-sm md:text-sm">{formattedDate(new Date(user.last_login))}</td> */}
+                    <td className="px-3 py-2  flex items-center space-x-5">
+                     <EditAccount accountId={user.id} refetchUsers={refetchUsers} />
+                     <DeleteAccount accountId={user.id}  refetchUsers={refetchUsers} />
                     </td>
                   </tr>
                 ))
@@ -155,11 +154,11 @@ const Accounts = () => {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
-          <nav className="flex items-center space-x-2">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
+        <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -172,7 +171,7 @@ const Accounts = () => {
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                   page === currentPage
                     ? "bg-[#1F4772] text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -183,7 +182,7 @@ const Accounts = () => {
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 border lg:text-sm md:text-sm text-xs rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
                   : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
@@ -195,7 +194,7 @@ const Accounts = () => {
           </nav>
         </div>
       </div>
-    </DefaultLayout>
+    </>
   );
 };
 export default Accounts;

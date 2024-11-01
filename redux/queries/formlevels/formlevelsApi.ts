@@ -25,8 +25,27 @@ export const formLevelsApi = apiSlice.injectEndpoints({
           body: data,
         }),
       }),
+      updateFormLevel: builder.mutation({
+        query: ({ id, ...data }) => ({
+          url: `form-levels/${id}/`,
+          method: "PUT",
+          body: data,
+        }),
+      }), 
+      deleteFormLevel: builder.mutation({
+        query: (id) => ({
+          url: `form-levels/${id}/`,
+          method: "DELETE",
+        }),
+      }), 
+      getFormLevel: builder.query({
+        query: (id) => ({
+          url: `form-levels/${id}/`,
+          method: "GET",
+        }),
+      }),  
     
   }),
 });
 
-export const {useGetFormLevelsQuery, useCreateFormLevelMutation } = formLevelsApi;
+export const {useGetFormLevelsQuery,useGetFormLevelQuery, useUpdateFormLevelMutation, useDeleteFormLevelMutation, useCreateFormLevelMutation } = formLevelsApi;

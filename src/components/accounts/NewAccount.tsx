@@ -20,6 +20,7 @@ import "../style.css";
 import styles from "../custom.module.css";
 import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
 import { useCreateUserMutation } from "@/redux/queries/users/usersApi";
+import { FaPlusCircle } from "react-icons/fa";
 
 interface CreateAccountProps {
   refetchUsers: () => void;
@@ -45,7 +46,7 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
     email: z.string().email("Invalid email address"),  
   username: z.string().min(1, "Username is required"),
   password: z.string().min(4, "Password should be at least 4 characters long"),
-    role: z.enum(["Admin", "Teacher", "Principal"], {
+    role: z.enum(["Admin","Principal"], {
       errorMap: () => ({ message: "Select role" }),
     }),
    
@@ -92,14 +93,14 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
     <>
       <div
         onClick={handleOpenModal}
-        className="bg-[#36A000] cursor-pointer text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]"
+        className=" cursor-pointer text-center md:py-2 md:px-4 py-1 px-2  lg:py-2 lg:px-4  bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-1 lg:space-x-2 "
       >
-        <FaPlus color="white" size={20} />
-        <span>Add New</span>
+        <FaPlusCircle size={20} className="text-white   " />
+        <span className=" lg:text-lg md:text-lg text-xs text-white">Add Admin Account</span>
       </div>
 
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
+        <div className="modal fixed z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
           <div
             className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
             onClick={handleCloseModal}
@@ -109,8 +110,8 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
             {isSubmitting && <Spinner />}
             <div className="modal-content py-6 text-left px-6 ">
               <div className="flex justify-between items-center pb-3">
-                <p className="text-2xl font-bold text-[#1F4772]">
-                  Create User Account
+                <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
+                  Create Admin/Principal Account
                 </p>
  
               </div>
@@ -234,9 +235,8 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
                     className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-blue-500 focus:outline-none"
                   >
                     <option value="">Select Role</option>
-                    <option value="Teacher">Teacher </option>
-                    <option value="Principal">Principal</option>
                     <option value="Admin">Admin</option>
+                    <option value="Principal">Principal</option>
                   </select>
                   <IoMdArrowDropdown
                     size={30}

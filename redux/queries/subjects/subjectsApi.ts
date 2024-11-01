@@ -42,9 +42,31 @@ export const subjectsApi = apiSlice.injectEndpoints({
       }
 
     }),
-    
-    
+    updateSubject: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `subjects/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),  
+    getSubject: builder.query({
+      query: (id) => ({
+        url: `subjects/${id}/`,
+        method: "GET",
+      }),
+    }),  
+    deleteSubject: builder.mutation({
+      query: (id) => ({
+        url: `subjects/${id}/`,
+        method: "DELETE",
+      }),
+    }),  
   }),
 });
 
-export const {useGetSubjectsQuery, useGetSubjectCategoriesQuery, useCreateSubjectMutation } = subjectsApi;
+export const {useGetSubjectsQuery,
+   useGetSubjectCategoriesQuery, 
+   useUpdateSubjectMutation,
+   useGetSubjectQuery,
+   useDeleteSubjectMutation,
+   useCreateSubjectMutation } = subjectsApi;

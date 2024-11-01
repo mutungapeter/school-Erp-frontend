@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+// import { Inter } from "next/font/google";
+// import "./globals.css";
+import "./../css/style.css";
+import "./../css/satoshi.css";
 import { ReduxProvider } from "./Provider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import SessionChecker from "../components/Sessions/SessionChecker";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "School Manager",
@@ -22,7 +24,8 @@ export default function RootLayout({
     <html lang="en"
     suppressHydrationWarning={true}
     >
-      <body className={inter.className}>
+      {/* <body className={inter.className}> */}
+      <body suppressHydrationWarning={true}>
       <ReduxProvider>
         <SessionChecker />
         {children}

@@ -96,7 +96,10 @@ export interface Marks{
     exam_mark: number;
     total_score: number;
   }
-
+export interface TermData{
+  term:string;
+  mean_marks:string;
+}
 export interface Report {
   student: {
     id: number;
@@ -131,6 +134,8 @@ export interface Report {
     total_points:number;
     total_marks:number;
     position:number;
+    kcpe_average:number;
   };
   marks: Marks[];
+  term_data:TermData[];
 }

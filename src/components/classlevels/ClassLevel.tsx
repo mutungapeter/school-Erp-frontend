@@ -1,18 +1,13 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-import { FiPrinter } from "react-icons/fi";
-import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
-import { useState, useEffect } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { FaEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { ClassLevel } from "@/src/definitions/classlevels";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { CreateClassLevel } from "./NewClasslevel";
-
+import DeleteClassLevel from "./deleteClassLevel";
+import EditClassLevel from "./editClassLevels";
+import { DefaultLayout } from "../layouts/DefaultLayout";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 const Classes = () => {
   const pageSize = 5;
   const searchParams = useSearchParams();
@@ -60,35 +55,37 @@ const Classes = () => {
 const refetchClasses=()=>{
     refetch();
 }
+if (loadingClasses) {
+  return (
+    <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+
+    <PageLoadingSpinner />
+  </div>
+  );
+}
   console.log("classesData", classesData?.results);
   return (
  
-      <div className="mt-[110px] flex flex-col gap-5 ">
-        <div className="flex items-center justify-between">
-          <CreateClassLevel  refetchClasses={refetchClasses} />
-
-          {/* <div className="flex items-center space-x-5">
-            <div className="flex items-center space-x-2 py-2 px-4 rounded-md border border-[#36A000] bg-[#36A000]">
-              <h2 className="text-white">Print</h2>
-              <FiPrinter color="white" />
-            </div>
-        
-          </div> */}
-        </div>
-        <div className=" relative overflow-x-auto rounded-md">
-          <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
-              <tr>
-                <th scope="col" className="px-6 py-3">
+    <div className=" space-y-5 shadow-md border py-2 bg-white overflow-x-auto ">
+       
+        <div className="p-3 flex justify-between">
+        <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Classes</h2>
+        <CreateClassLevel  refetchClasses={refetchClasses} />
+      </div>
+      <div className=" relative overflow-x-auto p-2  ">
+        <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+          <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+            <tr>
+                <th scope="col" className="px-6 py-4">
                   #
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                  Class
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                  Stream
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-6 py-4">
                   Actions
                 </th>
               </tr>
@@ -103,18 +100,18 @@ const refetchClasses=()=>{
               ) : classesData?.results && classesData?.results.length > 0 ? (
                 classesData?.results.map((cl: ClassLevel, index: number) => (
                   <tr key={cl.id} className="bg-white border-b">
-                    <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <th className="px-3 py-2 text-gray-900">{index + 1}</th>
+                    <td className="px-3 py-2 font-medium text-sm lg:text-lg md:text-lg text-gray-900 whitespace-nowrap">
                       {cl.form_level.name}  {cl.stream?.name}
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
                       {cl?.stream ? cl.stream?.name : "No stream"}
                     </td>
                  
 
-                    <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
+                    <td className="px-3 py-2 flex items-center space-x-5">
+                      <EditClassLevel classLevelId={cl.id} refetchClassLevels={refetchClasses} />
+                      <DeleteClassLevel classLevelId={cl.id} refetchClassLevels={refetchClasses} />
                     </td>
                   </tr>
                 ))
@@ -128,11 +125,11 @@ const refetchClasses=()=>{
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center mt-4">
-          <nav className="flex items-center space-x-2">
+        <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
+        <nav className="flex items-center space-x-2">
             <button
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs  border rounded ${
                 currentPage === 1
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
@@ -145,9 +142,9 @@ const refetchClasses=()=>{
               <button
                 key={page}
                 onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 border rounded ${
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs  border rounded ${
                   page === currentPage
-                    ? "bg-[#1F4772] text-white"
+                    ? "bg-primary text-white"
                     : "bg-white text-black border-gray-300 hover:bg-gray-100"
                 }`}
               >
@@ -156,10 +153,10 @@ const refetchClasses=()=>{
             ))}
             <button
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 border rounded ${
+              className={`px-4 py-2 border lg:text-sm md:text-sm text-xs  rounded ${
                 currentPage === totalPages
                   ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                  : "bg-primary text-white border-gray-300 hover:bg-gray-100"
               }`}
               disabled={currentPage === totalPages}
             >

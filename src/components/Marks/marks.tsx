@@ -14,6 +14,8 @@ import { TbDatabaseOff } from "react-icons/tb";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { AddMark } from "./recordMarks";
 import Link from "next/link";
+import DataSpinner from "../layouts/dataSpinner";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -121,208 +123,185 @@ const Marks = () => {
     router.push("?");
   };
 
-  const handleViewChange = (newView: "individual" | "group") => {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (newView === "individual") {
-      params.delete("class_level_id");
-      params.delete("subject_id");
-    } else if (newView === "group") {
-      params.delete("admission_number");
-    }
-
-    setView(newView);
-    router.push(`?${params.toString()}`);
-  };
-  console.log("data", data);
-  console.log("studentsData", studentsData);
+  if (loading) {
+    return (
+      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+        <PageLoadingSpinner />
+      </div>
+    );
+  }
+  // console.log("data", data);
+  // console.log("studentsData", studentsData);
   return (
     <>
-      <div className="mt-[60px] sm:mt-[110px] lg:mt-[110px] flex flex-col gap-5">
-        <div className="flex flex-col lg:gap-0 gap-3 lg:flex lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex items-center gap-4  p-1 border border-[#1F4772] rounded-md  lg:w-1/3 w-full">
-            <div className="bg-[#C8D9EB] p-3 rounded-full flex items-center justify-center">
-              <LuBookOpenCheck color="#1F4772" size={30} />
-            </div>
-            <div className=" flex flex-col gap-2 ">
-              <h2 className="text-[#1F4772] font-bold text-lg underline underline-offset-4 decoration-[#1F4772] decoration-3">
-                Recording Marks for a student
-              </h2>
-
-              <p className="text-[13px]">
+      <div className="space-y-5 shadow-md border py-2  bg-white  ">
+        <div className=" p-3  flex lg:flex-row md:flex-row lg:justify-between flex-col space-y-2 lg:space-y-0 md:space-y-0">
+          <div className="space-y-2     w-full">
+            <h2 className="font-semibold text-black text-xl">
+              Recording Marks for a student
+            </h2>
+            <div>
+              <p className="text-[13px] lg:text-md md:text-md ">
                 To record marks for a student, you can choose to record for and
                 individual or for given class/group . Select the filters as
                 needed.
               </p>
             </div>
           </div>
-          <div className="flex justify-between lg:justify-none lg:space-x-5 ">
-          <button
-            onClick={handleApplyFilters}
-            className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-primary text-white"
-          >
-            Apply Filters
-          </button>
-          <button
-            onClick={handleResetFilters}
-            className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-white text-primary"
-          >
-            Reset Filters
-          </button>
+          
         </div>
-          <div className="flex w-full lg:w-auto">
-            <Link href="/marks/list" className="cursor-pointer">
-              <div className="inline-flex items-center cursor-pointer text-center lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg border border-primary bg-primary rounded-md w-max">
-                <h2 className="text-white text-center">View Marks</h2>
-              </div>
-            </Link>
+        <div className="flex justify-between lg:justify-end px-3 lg:space-x-5 mt-6 ">
+            <button
+              onClick={handleApplyFilters}
+              className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-primary text-white"
+            >
+              Apply Filters
+            </button>
+            <button
+              onClick={handleResetFilters}
+              className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg shadow-md rounded-md border bg-white text-primary"
+            >
+              Reset Filters
+            </button>
+          </div>
+        <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
+            <label
+              htmlFor="subject"
+              className="block text-gray-700 text-sm  font-semibold mb-2"
+            >
+              Subject
+            </label>
+            <select
+              name="subject_id"
+              value={filters.subject_id || ""}
+              onChange={handleSelectChange}
+              className="w-full lg:w-64 md:w-64 xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+              // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
+            >
+              <option value="">Select Subject</option>
+              {subjectsData?.map((subject: Subject) => (
+                <option key={subject.id} value={subject.id}>
+                  {subject.subject_name}
+                </option>
+              ))}
+            </select>
+            <IoMdArrowDropdown
+              size={30}
+              className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            />
+          </div>
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
+            <label
+              htmlFor="class"
+              className="block text-gray-700 text-sm  font-semibold mb-2"
+            >
+              Class
+            </label>
+            <select
+              name="class_level_id"
+              value={filters.class_level_id || ""}
+              onChange={handleSelectChange}
+              className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
+              // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
+            >
+              <option value="">Select Class</option>
+              {classesData?.map((classLevel: ClassLevel) => (
+                <option key={classLevel.id} value={classLevel.id}>
+                  {classLevel.form_level.name} {classLevel?.stream?.name}
+                </option>
+              ))}
+            </select>
+            <IoMdArrowDropdown
+              size={30}
+              className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            />
+          </div>
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
+            <label
+              htmlFor="class"
+              className="block text-gray-700 text-sm  font-semibold mb-2"
+            >
+              Admission No
+            </label>
+            <input
+              type="text"
+              name="admission_number"
+              value={filters.admission_number || ""}
+              onChange={handleSelectChange}
+              placeholder="Find by Admission Number"
+              className="w-full lg:w-64 md:w-64 xl:w-64  py-2 px-4 rounded-md border border-primary focus:outline-none focus:bg-white"
+            />
           </div>
         </div>
-
-       
-       
-            <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5  ">
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="subject"
-                  className="block text-gray-700 text-sm  font-semibold mb-2"
-                >
+        <div className=" relative overflow-x-auto p-2  ">
+          <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
+            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+              <tr>
+                <th scope="col" className="px-6 py-4">
+                  #
+                </th>
+                <th scope="col" className="px-6 py-4">
+                  Name
+                </th>
+                <th scope="col" className="px-6 py-4">
                   Subject
-                </label>
-                <select
-                  name="subject_id"
-                  value={filters.subject_id || ""}
-                  onChange={handleSelectChange}
-                  className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
-                  // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
-                >
-                  <option value="">Select Subject</option>
-                  {subjectsData?.map((subject: Subject) => (
-                    <option key={subject.id} value={subject.id}>
-                      {subject.subject_name}
-                    </option>
-                  ))}
-                </select>
-                <IoMdArrowDropdown
-                  size={30}
-                  className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                />
-              </div>
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="class"
-                  className="block text-gray-700 text-sm  font-semibold mb-2"
-                >
-                  Class
-                </label>
-                <select
-                  name="class_level_id"
-                  value={filters.class_level_id || ""}
-                  onChange={handleSelectChange}
-                  className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-primary focus:outline-none"
-                  // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
-                >
-                  <option value="">Select Class</option>
-                  {classesData?.map((classLevel: ClassLevel) => (
-                    <option key={classLevel.id} value={classLevel.id}>
-                      {classLevel.form_level.name} {classLevel?.stream?.name}
-                    </option>
-                  ))}
-                </select>
-                <IoMdArrowDropdown
-                  size={30}
-                  className="absolute top-[65%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                />
-              </div>
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-          <label
-            htmlFor="class"
-            className="block text-gray-700 text-sm  font-semibold mb-2"
-          >
-            Admission No
-          </label>
-          <input
-            type="text"
-            name="admission_number"
-            value={filters.admission_number || ""}
-            onChange={handleSelectChange}
-            placeholder="Find by Admission Number"
-            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
-          />
-        </div>
-            </div>
-            <div className=" relative overflow-x-auto rounded-md">
-              <table className="w-full bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
-                <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      #
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Name
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Subject
-                    </th>
+                </th>
 
-                    <th scope="col" className="px-6 py-3">
-                      Actions
+                <th scope="col" className="px-6 py-4">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-4">
+                    <DataSpinner />
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td colSpan={4} className=" py-4">
+                    <div className="flex items-center justify-center space-x-6 text-#1F4772">
+                      <TbDatabaseOff size={25} />
+                      <span>
+                        {(error as any).data.error || "No data to show"}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              ) : data && data.length > 0 ? (
+                data?.map((studentSubject: StudentSubject, index: number) => (
+                  <tr key={index} className="bg-white border-b">
+                    <th className="px-3 py-2 text-sm lg:text-lg md:text-lg text-gray-900">
+                      {index + 1}
                     </th>
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-medium text-gray-900 whitespace-nowrap">
+                      {studentSubject.student.first_name}{" "}
+                      {studentSubject.student.last_name}
+                    </td>
+                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-medium text-gray-900 whitespace-nowrap">
+                      {studentSubject?.subject?.subject_name}
+                    </td>
+
+                    <td className="lg:px-3 md:px-3 px-1 py-2 flex items-center ">
+                      <AddMark studentSubject={studentSubject} />
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {loading ? (
-                    <tr>
-                      <td colSpan={5} className="text-center py-4">
-                        Loading...
-                      </td>
-                    </tr>
-                  ) : error ? (
-                    <tr>
-                      <td colSpan={4} className=" py-4">
-                        <div className="flex items-center justify-center space-x-6 text-#1F4772">
-                          <TbDatabaseOff size={25} />
-                          <span>
-                            {(error as any).data.error || "No data to show"}
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                  ) : data && data.length > 0 ? (
-                    data?.map(
-                      (studentSubject: StudentSubject, index: number) => (
-                        <tr key={index} className="bg-white border-b">
-                          <th className="px-6 py-4 text-gray-900">
-                            {index + 1}
-                          </th>
-                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {studentSubject.student.first_name}{" "}
-                            {studentSubject.student.last_name}
-                          </td>
-                          <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                            {studentSubject?.subject?.subject_name}
-                          </td>
-
-                          <td className="px-6 py-4 flex items-center space-x-5">
-                            <AddMark studentSubject={studentSubject} />
-                          </td>
-                        </tr>
-                      )
-                    )
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="text-center py-4">
-                        {studentsData?.length === 0 || !studentsData
-                          ? "No students found."
-                          : "No subjects found."}
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-        
-     
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center py-4">
+                    {studentsData?.length === 0 || !studentsData
+                      ? "No students found."
+                      : "No subjects found."}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

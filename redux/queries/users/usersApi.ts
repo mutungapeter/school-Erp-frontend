@@ -39,10 +39,29 @@ export const usersApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    getAdmin: builder.query({
+      query: (id: any) => ({
+        url: `users/${id}/`,
+        method: "GET",
+      }),
+    }),
+    updateAdmin: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `users/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteAdmin: builder.mutation({
+      query: (id) => ({
+        url: `users/${id}/`,
+        method: "DELETE",
+      }),
+    }),  
 
         
     
   }),
 });
 
-export const {useGetUsersQuery, useCreateUserMutation, useGetAvailableTeacherUsersQuery} = usersApi;
+export const {useGetUsersQuery, useDeleteAdminMutation, useCreateUserMutation, useGetAdminQuery, useUpdateAdminMutation, useGetAvailableTeacherUsersQuery} = usersApi;

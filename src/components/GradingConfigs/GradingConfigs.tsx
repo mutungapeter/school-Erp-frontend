@@ -1,18 +1,14 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-import { useState, useEffect } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { FaEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { FiPrinter } from "react-icons/fi";
-import { Student } from "@/src/definitions/students";
-// import { CreateStudent } from "./NewStudent";
-import { formattedDate } from "@/src/utils/dates";
+// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 import { useGetGradingConfigsQuery } from "@/redux/queries/gradingConfig/gradingConfigApi";
 import { CreateNewGradingConfig } from "./NewGradingConfig";
+import DeleteConfig from "./deleteGradingConfig";
+import { EditGradingConfig } from "./editGradingConfig";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import DefaultLayout from "../adminDashboard/Layouts/DefaultLayout";
 
 
 const GradingConfigs = () => {
@@ -59,20 +55,24 @@ const GradingConfigs = () => {
   const refetchConfigs  = () => {
     refetch();
   };
-
+ 
+  if (loadingGradingConfigs) {
+    return (
+      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+        <PageLoadingSpinner />
+      </div>
+    );
+  }
   console.log("gradingConfigsData", gradingConfigsData);
   return (
     <DefaultLayout>
-      <div className="lg:mt-[110px] sm:mt-[110px] mt-[50px] flex flex-col  bg-white ">
-        <div className="px-3 p-5 border-b flex justify-between">
-          <h2 className="font-bold text-lg  text-primary">Grading Scales</h2>
+      <div className="space-y-5 shadow-md border py-2  bg-white ">
+        <div className="p-3  flex justify-between">
+          <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">Grading Scales</h2>
           <CreateNewGradingConfig refetchConfigs={refetchConfigs }  />
         </div>
-        <div className="p-3 flex justify-between">
-          <h2 className="font-semibold text-primary"> Default Grading Scales which will be applied to the recorded marks</h2>
-       </div>
-     
-        <div className=" relative overflow-x-auto p ">
+        
+        <div className=" relative overflow-x-auto  ">
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
@@ -123,8 +123,8 @@ const GradingConfigs = () => {
                     <td className="px-6 py-4">{config.points}</td>
                     <td className="px-6 py-4">{config.remarks}</td>
                     <td className="px-6 py-4 flex items-center space-x-5">
-                      <FaEdit color="#1F4772" />
-                      <RiDeleteBinLine color="#1F4772" />
+                      <EditGradingConfig configId={config.id} refetchConfigs={refetchConfigs} />
+                      <DeleteConfig configId={config.id} refetchConfigs={refetchConfigs} />
                     </td>
                   </tr>
                 ))

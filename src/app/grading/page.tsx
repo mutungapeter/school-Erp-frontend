@@ -1,13 +1,18 @@
 "use client";
+import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 import GradingConfigs from "@/src/components/GradingConfigs/GradingConfigs";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-const GradingPage = () => {
+// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
+import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import { Suspense } from "react";
+const SubjectGradingScaleConfigurations = () => {
 
 
   return (
-    <DefaultLayout>
+    // <DefaultLayout>
+      <Suspense fallback={<PageLoadingSpinner />}>
      <GradingConfigs />
-    </DefaultLayout>
+      </Suspense>
+    // </DefaultLayout>
   );
 };
-export default GradingPage;
+export default SubjectGradingScaleConfigurations;

@@ -3,7 +3,7 @@ export interface Student {
     first_name: string;
     last_name: string;
     admission_number: string;
-    birth_date: string;
+    kcpe_marks:number;
     gender: string;
     admission_type: string;
     class_level: {
@@ -40,4 +40,47 @@ export interface StudentSubject{
     subject_type: string;
     category: string;
   };
+}
+
+export interface StudentData {
+  id: number;
+  first_name: string;
+  last_name: string;
+  kcpe_marks: number;
+  gender: string;
+  admission_number: string;
+  admission_type: string;
+  created_at: string;
+  class_level: {
+    id: number;
+    stream: string | null;
+    form_level: {
+      id: number;
+      created_at: string;
+      updated_at: string;
+      name: string;
+      level: number;
+    };
+  };
+  subjects: {
+    id: number;
+    student: {
+      id: number;
+      created_at: string;
+      updated_at: string;
+      first_name: string;
+      last_name: string;
+      admission_number: string;
+      kcpe_marks: number;
+      gender: string;
+      admission_type: string;
+      class_level: number;
+    };
+    subject: {
+      id: number;
+      subject_name: string;
+      subject_type: string;
+      category: string;
+    };
+  }[];
 }

@@ -45,6 +45,19 @@ export const teachersApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateTeacher: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `teachers/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    deleteTeacher: builder.mutation({
+      query: (id) => ({
+        url: `teachers/${id}/`,
+        method: "DELETE",
+      }),
+    }),    
     getTeacherSubjects: builder.query({
       query: (teacher_id: number) => ({
         url: `teacher-subjects/?teacher_id=${teacher_id}`,
@@ -55,4 +68,13 @@ export const teachersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTeachersQuery, useCreateTeacherMutation, useGetTeacherQuery, useGetTeacherSubjectsQuery, useAssignTeacherToSubjectsAndClassesMutation, useUpdateTeacherSubjectsMutation } = teachersApi;
+export const { 
+  useGetTeachersQuery, 
+  useCreateTeacherMutation, 
+  useUpdateTeacherMutation, 
+  useGetTeacherQuery,
+   useGetTeacherSubjectsQuery, 
+   useAssignTeacherToSubjectsAndClassesMutation, 
+   useUpdateTeacherSubjectsMutation,
+   useDeleteTeacherMutation,
+  } = teachersApi;

@@ -1,28 +1,13 @@
-import { FaChevronDown, FaPlus } from "react-icons/fa6";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useCreateSubjectMutation,
-  useGetSubjectCategoriesQuery,
-} from "@/redux/queries/subjects/subjectsApi";
-import Spinner from "../layouts/spinner";
-import { FaCalendarAlt } from "react-icons/fa";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { format } from "date-fns";
-import { formatDate } from "@/src/utils/dates";
-import "../style.css";
-import styles from "../custom.module.css";
-import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
-import { useCreateUserMutation } from "@/redux/queries/users/usersApi";
-import { useCreateFormLevelMutation } from "@/redux/queries/formlevels/formlevelsApi";
 import { useCreateStreamMutation } from "@/redux/queries/streams/streamsApi";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { FieldValues, useForm } from "react-hook-form";
+import { FaPlusCircle } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import Spinner from "../layouts/spinner";
+import "../style.css";
 interface CreateStreamProps {
     refetchStreams: () => void;
 }
@@ -71,16 +56,16 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
 
   return (
     <>
-      <div
+     <div
         onClick={handleOpenModal}
-        className="bg-[#36A000] cursor-pointer text-center justify-center text-white py-2 px-4 flex items-center space-x-3 rounded-md hover:bg-[#36A000]"
+        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-sm  flex items-center space-x-2 "
       >
-        <FaPlus color="white" size={20} />
-        <span>Add New</span>
+        <FaPlusCircle size={20} className="text-white   " />
+        <span className=" lg:text-sm md:text-sm text-xs text-white">Add Stream</span>
       </div>
 
       {isOpen && (
-        <div className="modal fixed z-50 w-full h-full top-0 left-0 flex items-start justify-center">
+        <div className="modal fixed z-9999 w-full h-full top-0 left-0 flex items-start justify-center">
           <div
             className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"
             onClick={handleCloseModal}
