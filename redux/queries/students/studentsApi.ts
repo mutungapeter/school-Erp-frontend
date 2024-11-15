@@ -2,31 +2,45 @@ import { apiSlice } from "@/redux/api/apiSlice";
 interface GetStudentsBySubjectAndClassParams {
   subject_id: any;
   class_level_id: any;
-    
 }
-interface GetSubjectsQueryArgs {
+interface GetStudentsQueryArgs {
   page?: number;
   page_size?: number;
-  subject_id: any;
-  class_level_id: any;
+  class_level_id?: any;
   admission_number?: any;
+}
+interface GetAlumins {
+  page?: number;
+  page_size?: number;
+  graduation_year: any;
+}
+interface GetPromotionRecords {
+  page?: number;
+  page_size?: number;
+  year: any;
+  source_form_level: any;
+}
+interface GetStudentPerformance {
+  id: number;
+  term_id?:any;
+  
 }
 export const studentsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStudents: builder.query({
       query: ({
-        page,           
-        page_size,     
+        page,
+        page_size,
         class_level_id,
         admission_number,
-      }: GetSubjectsQueryArgs) => {
-        const queryParams: Record<string, any> = {}; 
+      }: GetStudentsQueryArgs = {}) => {
+        const queryParams: Record<string, any> = {};
 
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
         if (class_level_id) queryParams.class_level_id = class_level_id;
         if (admission_number) queryParams.admission_number = admission_number;
-
+        
         return {
           url: `students/`,
           method: "GET",
@@ -34,7 +48,20 @@ export const studentsApi = apiSlice.injectEndpoints({
         };
       },
     }),
- 
+    getStudentPerformance: builder.query({
+      query: ({
+        id,
+        term_id
+      }: GetStudentPerformance) => {
+       
+        return {
+          url: `students/${id}/performance/`,
+          method: "GET",
+          params: term_id ? { term_id } : {},
+        };
+      },
+    }),
+
     createStudent: builder.mutation({
       query: (data) => ({
         url: `students/`,
@@ -49,29 +76,74 @@ export const studentsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-   
+    promoteStudentsToAlumni: builder.mutation({
+      query: (data) => ({
+        url: `promote-students-to-alumni/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAlumniRecords: builder.query({
+      query: ({ page, page_size, graduation_year }: GetAlumins) => {
+        const queryParams: Record<string, any> = {};
+
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+        if (graduation_year) queryParams.graduation_year = graduation_year;
+
+        return {
+          url: `promote-students-to-alumni/`,
+          method: "GET",
+          params: queryParams,
+        };
+      },
+    }),
+    getPromotionRecords: builder.query({
+      query: ({ page, page_size, year, source_form_level }: GetPromotionRecords) => {
+        const queryParams: Record<string, any> = {};
+
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+        if (source_form_level) queryParams.source_form_level = source_form_level;
+        if (year) queryParams.year = year;
+
+        return {
+          url: `promote-students/`,
+          method: "GET",
+          params: queryParams,
+        };
+      },
+    }),
     deleteStudent: builder.mutation({
       query: (id) => ({
         url: `students/${id}/`,
         method: "DELETE",
       }),
-    }),  
+    }),
     updateStudent: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `students/${id}/`,
         method: "PUT",
         body: data,
       }),
-    }),  
+    }),
     getStudent: builder.query({
       query: (id) => ({
         url: `students/${id}/`,
         method: "GET",
       }),
-    }),  
+    }),
     getStudentsBySubjectAndClass: builder.query({
-      query: (params: { subject_id: any; class_level_id: any;   admission_number?: any }) => {
-        const queryParams: { subject_id: any; class_level_id: any;   admission_number?: any } = {
+      query: (params: {
+        subject_id: any;
+        class_level_id: any;
+        admission_number?: any;
+      }) => {
+        const queryParams: {
+          subject_id: any;
+          class_level_id: any;
+          admission_number?: any;
+        } = {
           subject_id: params.subject_id,
           class_level_id: params.class_level_id,
         };
@@ -83,7 +155,7 @@ export const studentsApi = apiSlice.injectEndpoints({
           method: "GET",
           params: queryParams,
         };
-      }
+      },
     }),
 
     assignElectiveSubjects: builder.mutation({
@@ -99,9 +171,22 @@ export const studentsApi = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
-    }),  
-    
+    }),
   }),
 });
 
-export const {useGetStudentsQuery,usePromoteStudentsMutation, useAssignElectiveSubjectsMutation, useUpdateAssignedElectiveSubjectsMutation, useUpdateStudentMutation, useDeleteStudentMutation, useGetStudentQuery, useGetStudentsBySubjectAndClassQuery, useCreateStudentMutation } = studentsApi;
+export const {
+  useGetStudentsQuery,
+  usePromoteStudentsMutation,
+  usePromoteStudentsToAlumniMutation,
+  useAssignElectiveSubjectsMutation,
+  useUpdateAssignedElectiveSubjectsMutation,
+  useUpdateStudentMutation,
+  useDeleteStudentMutation,
+  useGetStudentQuery,
+  useGetStudentsBySubjectAndClassQuery,
+  useCreateStudentMutation,
+  useGetAlumniRecordsQuery,
+  useGetPromotionRecordsQuery,
+  useGetStudentPerformanceQuery
+} = studentsApi;

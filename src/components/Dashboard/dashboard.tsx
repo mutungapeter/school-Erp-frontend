@@ -1,25 +1,21 @@
 "use client";
-// import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import Link from "next/link";
-import {
-  FaBookReader,
-  FaUniversity,
-  FaUser,
-  FaUserGraduate,
-  FaUserTie,
-} from "react-icons/fa";
-import { BsHousesFill } from "react-icons/bs";
-import { HiClipboardDocumentList } from "react-icons/hi2";
-import { FaBookOpen } from "react-icons/fa6";
-import { FaShop } from "react-icons/fa6";
-import { SiLevelsdotfyi } from "react-icons/si";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-// import ProtectedRoute from "../authorization/authentication";
-import { MdOutlineLibraryBooks } from "react-icons/md";
+import Link from "next/link";
+import { BsHousesFill } from "react-icons/bs";
+import {
+  FaBookReader,
+  FaUser,
+  FaUserTie
+} from "react-icons/fa";
+import { FaBookOpen, FaShop } from "react-icons/fa6";
+import { HiClipboardDocumentList } from "react-icons/hi2";
+import { SiLevelsdotfyi } from "react-icons/si";
+
 import ProtectedRoute from "@/src/app/authorization/authentication";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { MdOutlineLibraryBooks } from "react-icons/md";
 import DefaultLayout from "../adminDashboard/Layouts/DefaultLayout";
 const Dashboard = () => {
   const { user, loading, error } = useAppSelector(

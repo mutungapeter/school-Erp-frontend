@@ -9,6 +9,14 @@ export const marksApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    uploadMarks: builder.mutation({
+     query: (formData) => ({
+        url: `upload-marks/`, 
+        method: 'POST',
+        body: formData, 
+      }),
+
+    }),
     getMarksData: builder.query({
       query: (params: { subject: any; class_level: any;   admission_number?: any }) => {
         const queryParams: { subject: any; class_level: any;   admission_number?: any } = {
@@ -55,6 +63,7 @@ export const marksApi = apiSlice.injectEndpoints({
 
 export const {
    useRecorMarkMutation,
+   useUploadMarksMutation,
    useGetMarksDataQuery,
    useGetMarkDataQuery,
    useUpdateMarksDataMutation,

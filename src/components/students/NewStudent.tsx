@@ -87,7 +87,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
         className=" cursor-pointer text-center justify-center px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-sm  flex items-center space-x-2 "
       >
         <FaPlusCircle size={17} className="text-white   " />
-        <span className=" lg:text-lg md:text-lg text-sm text-white">Add Student</span>
+        <span className=" lg:text-sm md:text-sm text-xs text-white">Add Student</span>
       </div>
 
       {isOpen && (
@@ -438,7 +438,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   </select>
                   <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                   {errors.gender && (
@@ -477,7 +477,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                     </select>
                     <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                     {errors.class_level && (
@@ -505,7 +505,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                     </select>
                     <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                     {errors.admission_type && (
@@ -520,14 +520,14 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md px-6 py-3 hover:bg-gray-500 focus:outline-none"
+                    className="bg-gray-400 text-white rounded-md py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md px-6 py-3 hover:bg-[#36A000] focus:outline-none"
+                    className="bg-[#36A000] text-white rounded-md py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
                   >
                     {isSubmitting ? "Submitting..." : "Submit"}
                   </button>

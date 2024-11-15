@@ -52,6 +52,7 @@ const config: Config = {
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
         primary: "#1566FF",
+        // primary: "#0077B6",
 
         secondary: "#80CAEE",
         stroke: "#E2E8F0",
@@ -344,6 +345,10 @@ const config: Config = {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        slideX: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(1.25rem)' }, 
+        },
       },
       animation: {
         linspin: "linspin 1568.2353ms linear infinite",
@@ -364,7 +369,13 @@ const config: Config = {
         line3: "line 7s infinite linear",
         slideIn: 'slideIn 0.5s ease-linear',
         fadeIn: 'fadeIn 0.5s ease-in',
+        slideX: 'slideX 0.3s ease-out',
       },
+    },
+  },
+  variants: {
+    extend: {
+      translate: ['hover', 'focus'],
     },
   },
   plugins: [],

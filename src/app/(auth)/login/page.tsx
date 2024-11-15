@@ -3,11 +3,13 @@ import { FaLock, FaUser } from "react-icons/fa";
 import { IoIosLock } from "react-icons/io";
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
 import { redirect, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginMutation } from "@/redux/queries/auth/authApi";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { useLoginMutation } from "@/redux/queries/auth/authApi";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 import InlineSpinner from "@/src/components/layouts/inlineSpinner";
 import { IoLockClosedOutline } from "react-icons/io5";
@@ -44,24 +46,40 @@ const LoginPage = () => {
       }
     }
   };
+  const { user, loading } = useAppSelector((state: RootState) => state.auth);
+  
   useEffect(() => {
     if (isSuccess) {
       setRedirecting(true);
-      router.push("/dashboard");
+      // if(user.role==="Admin" || user.role==="Principal"){
+      //   router.push("/dashboard");
+      // }
+      // if(user.role==="Teacher"){
+      //   router.push("/teacher-dashboard")
+      // }
+      if (!user.role) {
+        router.push("/");
+      } else if (user.role === "Admin" || user.role === "Principal") {
+        router.push("/dashboard");
+      } else if (user.role === "Teacher") {
+        router.push("/teacher-dashboard");
+      }
     }
   }, [isSuccess, router]);
-
+const redirectToResetPassword=()=>{
+  router.push("/reset-password-request")
+}
   return (
     <>
-      <div className="bg-[#D6DBDC] h-screen flex items-center justify-center p-4 ">
-        {redirecting ? (
-          <div className="text-center flex flex-col items-center">
-            <InlineSpinner />
-            <p className="mt-4 text-xl font-semibold text-[#1F4772]">
-              Redirecting to dashboard...
-            </p>
-          </div>
-        ) : (
+      {redirecting ? (
+        <div className="text-center  h-screen flex flex-col justify-center bg-white items-center">
+          <InlineSpinner />
+          {/* <p className="mt-4 text-xl font-semibold text-[#1F4772]">
+            Redirecting to dashboard...
+          </p> */}
+        </div>
+      ) : (
+        <div className="bg-[#D6DBDC] h-screen flex items-center justify-center p-4 ">
           <div className=" flex justify-center items-center py-10 mx-auto min-h-screen">
             <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md shadow-md  ">
               <div className="flex items-center justify-center ">
@@ -137,11 +155,13 @@ const LoginPage = () => {
                       Show Password
                     </span>
                   </div>
-                  <div className="flex  ">
-                    <div className="text-primary text-xs lg:text-sm md:text-sm">
-                      <a href="#">Forgot password?</a>
+                  
+                    <div
+                    onClick={redirectToResetPassword}
+                     className="text-primary cursor-pointer text-xs lg:text-sm md:text-sm">
+                      <span>Forgot password?</span>
                     </div>
-                  </div>
+                 
                 </div>
 
                 <div>
@@ -178,8 +198,8 @@ const LoginPage = () => {
               </button> */}
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </>
   );
 };

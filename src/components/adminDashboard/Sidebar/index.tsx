@@ -1,77 +1,113 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import Image from "next/image";
-import SidebarItem from "./SidebarItem";
 import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { BsCalendar4Week } from "react-icons/bs";
-import { IoHomeOutline } from "react-icons/io5";
-import { RiMenuFill } from "react-icons/ri";
-import { BiMenuAltLeft } from "react-icons/bi";
-import { FaBookReader, FaUserTie } from "react-icons/fa";
-import { LiaChalkboardTeacherSolid } from "react-icons/lia";
-import { GrGroup } from "react-icons/gr";
-import { TiDocumentText } from "react-icons/ti";
-import { LiaSchoolSolid } from "react-icons/lia";
-import { BsShop } from "react-icons/bs";
-import { SlSettings } from "react-icons/sl";
-import { BsBarChart } from "react-icons/bs";
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
+// import AdminPermissions from "@/src/hooks/AdminProtected";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { BiLayer } from "react-icons/bi";
-import { PiUsersThreeLight } from "react-icons/pi";
-import { PiStudentLight } from "react-icons/pi";
-import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
+import { BsBarChart, BsShop } from "react-icons/bs";
+import {
+  HiOutlineClipboardDocument,
+  HiOutlineClipboardDocumentList,
+} from "react-icons/hi2";
+import { IoHomeOutline } from "react-icons/io5";
+import { LiaChalkboardTeacherSolid, LiaSchoolSolid } from "react-icons/lia";
+import {
+  PiStudentDuotone,
+  PiStudentLight,
+  PiUsersThreeLight,
+} from "react-icons/pi";
+import { SlSettings } from "react-icons/sl";
 import { TfiAlignLeft } from "react-icons/tfi";
+import { TiDocumentText } from "react-icons/ti";
+import SidebarItem from "./SidebarItem";
+import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
+import dynamic from "next/dynamic";
+import { MdOutlineDashboard } from "react-icons/md";
+import { RiHomeGearLine } from "react-icons/ri";
+
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
-  desktopSidebarOpen: boolean;  
+  desktopSidebarOpen: boolean;
   setDesktopSidebarOpen: (arg0: boolean) => void;
 }
 
-
-const menuGroups = [
+interface MenuItem {
+  icon?: JSX.Element;
+  label: string;
+  route: string;
+  children?: MenuItem[];
+}
+const AdminPermissions = dynamic(() => import('@/src/hooks/AdminProtected'), {
+  ssr: false,
+});
+interface MenuGroup {
+  name?: string;
+  menuItems: MenuItem[];
+}
+const menuGroups: MenuGroup[] = [
   {
     name: "MENU",
     menuItems: [
       {
-        icon:<IoHomeOutline size={20} />,
+        icon: <IoHomeOutline size={20} />,
         label: "Dashboard",
         route: "/dashboard",
-       
       },
+    
       {
-        icon:<PiStudentLight size={20} />,
+        icon: <PiStudentLight size={20} />,
         label: "Students",
         route: "/students",
       },
       {
-        icon:<LiaChalkboardTeacherSolid /> ,
+        icon: <LiaChalkboardTeacherSolid />,
         label: "Teachers",
         route: "/teachers",
       },
       {
-        icon:<BsShop />,
-        label: "Classes",
-        route: "/classes",
-      },
-      {
-        icon:<BsBarChart />,
-        label: "Form Levels",
-        route: "/form-levels",
-      },
-      {
-        icon:<BiLayer />,
-        label: "Streams",
-        route: "/streams",
-      },
-      {
-        icon:<LiaSchoolSolid />,
+        icon: <LiaSchoolSolid />,
         label: "Subjects",
         route: "/subjects",
       },
+      {
+        icon: <MdOutlineDashboard />,
+        label: "Terms",
+        route: "/terms",
+      },
+      {
+        icon: <RiHomeGearLine />,
+        label: "Class Settings",
+        route: "#",
+        children: [
+          { label: "Classes", route: "/classes" },
+          { label: "Form Levels", route: "/form-levels" },
+          { label: "Streams", route: "/streams" },
+        ],
+      },
+      // {
+      //   icon: <BsShop />,
+      //   label: "Classes",
+      //   route: "/classes",
+      // },
+      // {
+      //   icon: <BsBarChart />,
+      //   label: "Form Levels",
+      //   route: "/form-levels",
+      // },
+      // {
+      //   icon: <BiLayer />,
+      //   label: "Streams",
+      //   route: "/streams",
+      // },
+    
+
+     
     ],
   },
   {
@@ -87,13 +123,20 @@ const menuGroups = [
         ],
       },
       {
-        icon:<HiOutlineClipboardDocumentList />,
+        icon: <HiOutlineClipboardDocumentList  />,
         label: "Reports",
         route: "#",
-        children: [
-          { label: "Report Forms", route: "/reports/reportcard" },
-          
-        ],
+        children: [{ label: "Report Forms", route: "/reports/reportcard" }],
+      },
+      {
+        icon: <PiStudentDuotone />,
+        label: "Alumni",
+        route: "/alumni",
+      },
+      {
+        icon: <HiOutlineClipboardDocument />,
+        label: "Promotion Records",
+        route: "/promotions",
       },
       {
         icon: <SlSettings />,
@@ -105,34 +148,53 @@ const menuGroups = [
         ],
       },
       {
-        icon:<PiUsersThreeLight />,
+        icon: <PiUsersThreeLight />,
         label: "Accounts",
         route: "/accounts",
       },
-      
     ],
   },
 ];
-
-const Sidebar = ({ sidebarOpen, setSidebarOpen,desktopSidebarOpen,setDesktopSidebarOpen
+const adminOrPrincipalOnlyItems = [
+  "Dashboard",
+  "Accounts",
+  "Reports",
+  "Teachers",
+  "Classes",
+  "Form Levels",
+  "Streams",
+  "Settings",
+  "Alumni",
+  "Promotion Records",
+  "Subjects",
+];
+const teacherOnlyItems=[
+  "Subjects And Classes"
+]
+const Sidebar = ({
+  sidebarOpen,
+  setSidebarOpen,
+  desktopSidebarOpen,
+  setDesktopSidebarOpen,
 }: SidebarProps) => {
+
   const pathname = usePathname();
   const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
-  
-
- 
+  const { user, loading, error } = useAppSelector(
+    (state: RootState) => state.auth
+  );
+  if (loading) {
+    return <PageLoadingSpinner />;
+  }
   return (
-
     <ClickOutside onClick={() => setSidebarOpen(false)}>
-   <aside
-  className={`fixed left-0 top-0 z-9999 transition-all duration-300 ease-linear flex h-screen ${
-    desktopSidebarOpen ? "lg:w-72.5" : "w-0 lg:w-0" 
-  } flex-col overflow-y-hidden bg-white  dark:bg-boxdark lg:translate-x-0 ${
-    sidebarOpen ? "translate-x-0 w-72.5" : "-translate-x-full"
-  }`}
->
-
-        {/* <!-- SIDEBAR HEADER --> */}
+      <aside
+        className={`fixed left-0 top-0 z-9999 transition-all duration-300 ease-linear flex h-screen ${
+          desktopSidebarOpen ? "lg:w-72.5" : "w-0 lg:w-0"
+        } flex-col overflow-y-hidden bg-white  dark:bg-boxdark lg:translate-x-0 ${
+          sidebarOpen ? "translate-x-0 w-72.5" : "-translate-x-full"
+        }`}
+      >
         <div className="flex items-center justify-between gap-2 px-6 py-3 lg:py-4">
           <Link href="/" className="w-[176px] h-[60px]">
             <Image
@@ -150,14 +212,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen,desktopSidebarOpen,setDesktopSide
             aria-controls="sidebar"
             className="block lg:hidden"
           >
-           <TfiAlignLeft size={30} />
+            <TfiAlignLeft size={30} />
           </button>
         </div>
-        {/* <!-- SIDEBAR HEADER --> */}
 
         <div className=" flex flex-col overflow-y-auto duration-300 ease-linear">
-          {/* <!-- Sidebar Menu --> */}
-          <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-6">
+          <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-4">
             {menuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
                 {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-[#585882ff]">
@@ -165,19 +225,48 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen,desktopSidebarOpen,setDesktopSide
                 </h3> */}
 
                 <ul className="mb-6 flex flex-col gap-4">
-                  {group.menuItems.map((menuItem, menuIndex) => (
-                    <SidebarItem
-                      key={menuIndex}
-                      item={menuItem}
-                      pageName={pageName}
-                      setPageName={setPageName}
-                    />
-                  ))}
+                  {group.menuItems.map((menuItem, menuIndex) => {
+                    // if (adminOrPrincipalOnlyItems.includes(menuItem.label)) {
+                    //   return (
+                    //     <AdminPermissions
+                    //       key={menuIndex}
+                    //       rolesAllowed={["Admin", "Principal"]}
+                    //     >
+                    //       <SidebarItem
+                    //         item={menuItem}
+                    //         pageName={pageName}
+                    //         setPageName={setPageName}
+                    //       />
+                    //     </AdminPermissions>
+                    //   );
+                    // }
+                    // if (teacherOnlyItems.includes(menuItem.label)) {
+                    //   return (
+                    //     <AdminPermissions
+                    //       key={menuIndex}
+                    //       rolesAllowed={["Teacher"]}
+                    //     >
+                    //       <SidebarItem
+                    //         item={menuItem}
+                    //         pageName={pageName}
+                    //         setPageName={setPageName}
+                    //       />
+                    //     </AdminPermissions>
+                    //   );
+                    // }
+                    return (
+                      <SidebarItem
+                        key={menuIndex}
+                        item={menuItem}
+                        pageName={pageName}
+                        setPageName={setPageName}
+                      />
+                    );
+                  })}
                 </ul>
               </div>
             ))}
           </nav>
-          {/* <!-- Sidebar Menu --> */}
         </div>
       </aside>
     </ClickOutside>

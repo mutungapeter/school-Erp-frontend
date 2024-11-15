@@ -10,13 +10,22 @@ const Reports = dynamic(() => import('../../../components/ReportsForms/ReportCar
   loading: () => <PageLoadingSpinner />,
 });
 const ReportCardPage=()=>{
-  
-    return ( 
+    const ProtectedRoute = dynamic(
+        () => import("@/src/app/authorization/authentication"),
+        {
+          ssr: false,
+          loading: () => <PageLoadingSpinner />,
+        }
+      );
+      return (
+        // <ProtectedRoute requiredRoles={["Admin", "Principal", "Teacher"]}>
+    
         <DefaultLayout>
            
             <Reports />
             
-        </DefaultLayout>   
+        </DefaultLayout>  
+        // </ProtectedRoute> 
     )
 }
 export default ReportCardPage;

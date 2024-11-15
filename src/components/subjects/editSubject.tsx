@@ -148,7 +148,7 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
 
                   <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                     {errors.subject_type && (
@@ -189,7 +189,7 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
 
                   <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                   {errors.category && (

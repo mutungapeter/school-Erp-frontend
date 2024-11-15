@@ -44,7 +44,7 @@ const Teachers = () => {
   }, [currentPage, refetch]);
 
   const totalPages = Math.ceil((teachersData?.count || 0) / pageSize);
-
+console.log("teachers", teachersData)
   const handlePageChange = (page: number) => {
     if (page < 1 || page > totalPages) return;
     const currentParams = new URLSearchParams(searchParams.toString());

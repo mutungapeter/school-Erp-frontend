@@ -76,16 +76,16 @@ if (loadingClasses) {
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-6 py-4 font-normal text-xs lg:text-sm md:text-sm">
                   #
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-6 py-4 font-normal text-xs lg:text-sm md:text-sm">
                  Class
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-6 py-4 font-normal text-xs lg:text-sm md:text-sm">
                  Stream
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-6 py-4 font-normal text-xs lg:text-sm md:text-sm">
                   Actions
                 </th>
               </tr>
@@ -100,11 +100,11 @@ if (loadingClasses) {
               ) : classesData?.results && classesData?.results.length > 0 ? (
                 classesData?.results.map((cl: ClassLevel, index: number) => (
                   <tr key={cl.id} className="bg-white border-b">
-                    <th className="px-3 py-2 text-gray-900">{index + 1}</th>
-                    <td className="px-3 py-2 font-medium text-sm lg:text-lg md:text-lg text-gray-900 whitespace-nowrap">
+                    <th className="px-3 border py-2 text-gray-900">{index + 1}</th>
+                    <td className="px-3 border py-2 font-normal text-sm lg:text-sm md:text-sm whitespace-nowrap">
                       {cl.form_level.name}  {cl.stream?.name}
                     </td>
-                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">
+                    <td className="px-3 border py-2 font-normal text-sm lg:text-sm md:text-sm">
                       {cl?.stream ? cl.stream?.name : "No stream"}
                     </td>
                  

@@ -19,7 +19,7 @@ interface Addmarkprops {
 }
 
 export const AddMark = ({ studentSubject }: Addmarkprops) => {
-  console.log("studentSubject", studentSubject);
+  // console.log("studentSubject", studentSubject);
   const [isOpen, setIsOpen] = useState(false);
   const [recorMark, { data, error, isSuccess }] = useRecorMarkMutation();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
@@ -91,157 +91,185 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center md:py-2 md:px-4 py-1 px-2  lg:py-2 lg:px-4  bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-1 lg:space-x-2 "
+        className=" cursor-pointer lg:text-center md:text-center  py-1 px-2    bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-1 lg:space-x-2 "
       >
-        <FiPlus size={20} className="text-white   " />
-        <span className=" lg:text-lg md:text-lg text-xs text-white">
+        <FiPlus size={16} className="text-white   " />
+        <span className=" lg:text-sm md:text-sm text-xs text-white">
           Add Marks
         </span>
       </div>
 
       {isOpen && (
         <div
-        className="relative z-9999 animate-fadeIn"
-        aria-labelledby="modal-title"
-        role="dialog"
-        aria-modal="true"
-      >
-        <div
-          onClick={handleCloseModal}
-          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn"
-          aria-hidden="true"
-        ></div>
+          className="relative z-9999 animate-fadeIn"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            onClick={handleCloseModal}
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn"
+            aria-hidden="true"
+          ></div>
 
-        <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
-             {isSubmitting && <Spinner />}
-            
-              <div className="flex justify-between items-center pb-3">
-                <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
-                  Recording Mark for {studentSubject.subject.subject_name}{" "}
-                  belonging to {studentSubject.student.first_name}{" "}
-                  {studentSubject.student.last_name}
-                </p>
-              </div>
+          <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+                {isSubmitting && <Spinner />}
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                <div className="flex justify-between items-center pb-3">
+                  <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
+                    Record Marks
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3 py-2">
                   <div>
                     <label
-                      htmlFor="cat"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      htmlFor="student"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2"
                     >
-                      Cat Mark
+                      Student
                     </label>
-                    <input
-                      type="number"
-                      id="cat"
-                      placeholder="Enter cart mark"
-                      {...register("cat_mark", { valueAsNumber: true })}
-                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    />
-                    {errors.cat_mark && (
-                      <p className="text-red-500 text-sm">
-                        {String(errors.cat_mark.message)}
-                      </p>
-                    )}
+                    <div
+                      id="student"
+                      className="w-full py-2 px-4 rounded-md font-semibold border border-gray-400 shadow-sm bg-gray-100"
+                    >
+                      {studentSubject.student.first_name +
+                        " " +
+                        studentSubject.student.last_name}
+                    </div>
                   </div>
                   <div>
                     <label
-                      htmlFor="exam"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      htmlFor="subject"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2"
                     >
-                      Exam Mark
+                      Subject
                     </label>
-                    <input
-                      type="number"
-                      id="exam"
-                      placeholder="Enter exam mark"
-                      {...register("exam_mark", { valueAsNumber: true })}
-                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    />
-                    {errors.exam_mark && (
-                      <p className="text-red-500 text-sm">
-                        {String(errors.exam_mark.message)}
-                      </p>
-                    )}
+                    <div
+                      id="subject"
+                      className="w-full py-2 px-4 rounded-md font-semibold border border-gray-400  shadow-sm bg-gray-100"
+                    >
+                      {studentSubject.subject.subject_name}
+                    </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                  <div className="relative">
-                    <label
-                      htmlFor="term"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                    >
-                      Term
-                    </label>
-                    <select
-                      id="term"
-                      {...register("term", { valueAsNumber: true })}
-                      onChange={handleTermChange}
-                      className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    >
-                      {loadingTerms ? (
-                        <option value="">Loading...</option>
-                      ) : (
-                        <>
-                          <option value="">Select Term</option>
-                          {termsData?.map((term: any) => (
-                            <option key={term.id} value={term.id}>
-                              {term.term}
-                            </option>
-                          ))}
-                        </>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                    <div>
+                      <label
+                        htmlFor="cat"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Cat Mark
+                      </label>
+                      <input
+                        type="number"
+                        id="cat"
+                        placeholder="Enter cart mark"
+                        {...register("cat_mark", { valueAsNumber: true })}
+                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      />
+                      {errors.cat_mark && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.cat_mark.message)}
+                        </p>
                       )}
-                    </select>
-                    <BsChevronDown 
-                      color="gray" 
-                      size={20}
-                      className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                    />
-                    {errors.term && (
-                      <p className="text-red-500 text-sm">
-                        {String(errors.term.message)}
-                      </p>
-                    )}
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="exam"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Exam Mark
+                      </label>
+                      <input
+                        type="number"
+                        id="exam"
+                        placeholder="Enter exam mark"
+                        {...register("exam_mark", { valueAsNumber: true })}
+                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      />
+                      {errors.exam_mark && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.exam_mark.message)}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <label
-                      htmlFor="total"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                    <div className="relative">
+                      <label
+                        htmlFor="term"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Term
+                      </label>
+                      <select
+                        id="term"
+                        {...register("term", { valueAsNumber: true })}
+                        onChange={handleTermChange}
+                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      >
+                        {loadingTerms ? (
+                          <option value="">Loading...</option>
+                        ) : (
+                          <>
+                            <option value="">Select Term</option>
+                            {termsData?.map((term: any) => (
+                              <option key={term.id} value={term.id}>
+                                {term.term}
+                              </option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                      <BsChevronDown
+                        color="gray"
+                        size={16}
+                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                      />
+                      {errors.term && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.term.message)}
+                        </p>
+                      )}
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="total"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Total Marks
+                      </label>
+                      <input
+                        type="number"
+                        id="total"
+                        value={totalMark}
+                        readOnly
+                        className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-between mt-6">
+                    <button
+                      type="button"
+                      onClick={handleCloseModal}
+                      className="bg-gray-400 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
                     >
-                      Total Marks
-                    </label>
-                    <input
-                      type="number"
-                      id="total"
-                      value={totalMark}
-                      readOnly
-                      className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
-                    />
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="bg-primary text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-primary focus:outline-none"
+                    >
+                      {isSubmitting ? "Submitting..." : "Submit"}
+                    </button>
                   </div>
-                </div>
-                <div className="flex justify-between mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                  </button>
-                </div>
-              </form>
-            
-          </div>
-        </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}

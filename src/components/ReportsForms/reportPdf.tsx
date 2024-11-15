@@ -173,13 +173,13 @@ const styles = StyleSheet.create({
   },
   commentText: {
     fontSize: 10,
-    marginBottom: 5,
+    marginBottom: 3,
     padding: 5,
     fontWeight: "semibold",
   },
   dateAndSignText: {
     fontSize: 10,
-    marginBottom: 5,
+    marginBottom: 3,
     padding: 5,
     textTransform: "uppercase",
     fontWeight: "extralight",
@@ -500,7 +500,7 @@ const ReportPDF = ({ data }:ReportPDFProps) => {
                 </View>
               </View>
             </View>
-            <View style={{ flexDirection: "column", gap: 5, marginTop: 10 }}>
+            <View style={{ flexDirection: "column", gap: 5, marginTop: 5 }}>
               <View
                 style={{
                   flexDirection: "row",

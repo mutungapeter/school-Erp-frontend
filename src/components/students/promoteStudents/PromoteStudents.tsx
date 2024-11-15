@@ -80,7 +80,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
   return (
     <>
       <button
-        className="lg:py-2 lg:px-4 md:py-2 md:px-4 py-2 px-2 lg:text-lg md:text-lg text-sm  rounded-md border bg-[#1566FF]  text-white"
+        className="lg:py-2 lg:px-4 md:py-2 md:px-4 py-2 px-2 lg:text-lg md:text-lg text-xs  rounded-sm border bg-[#1566FF]  text-white"
         onClick={handleOpenModal}
       >
         Promote Students
@@ -136,7 +136,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
                     </select>
                     <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                     {errors.source_class_level && (
@@ -175,7 +175,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
                     </select>
                     <BsChevronDown 
                       color="gray" 
-                      size={25}
+                      size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                     {errors.target_class_level && (

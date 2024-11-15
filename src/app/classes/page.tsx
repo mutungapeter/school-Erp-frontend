@@ -4,15 +4,17 @@ import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout
 import Classes from "@/src/components/classlevels/ClassLevel";
 // import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
-import { Suspense } from "react";
-
+import dynamic from "next/dynamic";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 const ClassesPage = () => {
-return (
-  <DefaultLayout>
-    <Suspense fallback={<PageLoadingSpinner />}>
-  <Classes />
-    </Suspense>
-  </DefaultLayout>
-)
+  return (
+    <DefaultLayout>
+      <Suspense fallback={<PageLoadingSpinner />}>
+        <Classes />
+      </Suspense>
+    </DefaultLayout>
+  );
 };
 export default ClassesPage;
