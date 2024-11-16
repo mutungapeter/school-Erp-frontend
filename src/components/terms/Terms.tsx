@@ -9,9 +9,18 @@ import { useEffect, useState } from "react";
 // import { DefaultLayout } from "../layouts/DefaultLayout";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
+import { BsChevronDown } from "react-icons/bs";
+import { PiGearLight } from "react-icons/pi";
+import DeleteTerm from "./DeleteTerm";
+import ClickOutside from "../ClickOutside";
+
 const Terms = () => {
   const pageSize = 5;
   const searchParams = useSearchParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedTerm, setSelectedTerm] = useState<{ id: number | null }>({
+    id: null,
+  });
   const pathname = usePathname();
   const pageParam = searchParams.get("page");
   const [currentPage, setCurrentPage] = useState<number>(
@@ -53,7 +62,7 @@ const Terms = () => {
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
-const refetchClasses=()=>{
+const refetchTerms=()=>{
     refetch();
 }
 if (loadingClasses) {
@@ -64,29 +73,39 @@ if (loadingClasses) {
   </div>
   );
 }
+
+const handleOpenModal = (termId: number) => {
+  setSelectedTerm({ id: termId });
+  setIsOpen(true);
+};
+
+const handleCloseModal = () => {
+  setIsOpen(false);
+  setSelectedTerm({ id: null });
+};
   console.log("termsData", termsData?.results);
   return (
  
-    <div className=" space-y-5 shadow-md border py-2 bg-white overflow-x-auto ">
+    <div className=" space-y-5 shadow-md border py-2 bg-white  ">
        
         <div className="p-3 flex justify-between">
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Terms</h2>
         {/* <CreateClassLevel  refetchClasses={refetchClasses} /> */}
       </div>
       <div className=" relative overflow-x-auto p-2  ">
-        <table className="w-full bg-white text-xs border text-left rtl:text-right text-gray-500 ">
+        <table className="table-auto overflow-x-auto w-full bg-white  text-xs border text-left rtl:text-right text-gray-500 ">
           <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-                <th scope="col" className="px-3 border py-2 text-xs lg:text-sm md:text-sm">
+                <th scope="col" className="px-3 border text-center py-2 text-xs lg:text-sm md:text-sm">
                   #
                 </th>
-                <th scope="col" className="px-3 border py-2 text-xs lg:text-sm md:text-sm">
+                <th scope="col" className="px-3 border text-center py-2 text-xs lg:text-sm md:text-sm">
                  Name
                 </th>
-                <th scope="col" className="px-3 border py-2 text-xs lg:text-sm md:text-sm">
+                <th scope="col" className="px-3 border text-center py-2 text-xs lg:text-sm md:text-sm">
                  Calendar Year
                 </th>
-                <th scope="col" className="px-3 border py-2 text-xs lg:text-sm md:text-sm">
+                <th scope="col" className="px-3 text-center border py-2 text-xs lg:text-sm md:text-sm">
                   Actions
                 </th>
               </tr>
@@ -101,18 +120,25 @@ if (loadingClasses) {
               ) : termsData?.results && termsData?.results.length > 0 ? (
                 termsData?.results.map((term: any, index: number) => (
                   <tr key={term.id} className="bg-white border-b">
-                    <th className="px-3 border py-2 text-gray-900">{index + 1}</th>
-                    <td className="px-3 border py-2 font-normal text-sm lg:text-sm md:text-sm  whitespace-nowrap">
+                    <th className="px-3 border text-center py-2 text-gray-900">{index + 1}</th>
+                    <td className="px-3 border text-center py-2 font-normal text-sm lg:text-sm md:text-sm  whitespace-nowrap">
                       {term.term}  
                     </td>
-                    <td className="px-3 border py-2 text-sm lg:text-sm md:text-sm">
+                    <td className="px-3 border text-center  py-2 text-sm lg:text-sm md:text-sm">
                       {term.calendar_year}
                     </td>
-                 
-                    <td className="px-3 py-2 flex items-center space-x-5">
-                      {/* <EditClassLevel classLevelId={cl.id} refetchClassLevels={refetchClasses} />
-                      <DeleteClassLevel classLevelId={cl.id} refetchClassLevels={refetchClasses} /> */}
+                 {/* Actions */}
+                 <ClickOutside onClick={() => setIsOpen(false)} className="relative">
+     
+                    <td className="px-3 py-2 text-center ">
+                      <div
+                      onClick={() =>{ handleOpenModal(term.id)}}
+                       className="flex inline-flex items-center space-x-1 p-2 cursor-pointer bg-primary rounded-sm">
+                      <PiGearLight size={20} className="text-white" />
+                      <BsChevronDown  size={15} className="text-white "/>
+                      </div>
                     </td>
+                    </ClickOutside>
                   </tr>
                 ))
               ) : (
@@ -125,6 +151,17 @@ if (loadingClasses) {
             </tbody>
           </table>
         </div>
+        {isOpen && selectedTerm.id !== null &&(
+          <div
+          className={`absolute right-0 mb-4 flex w-62.5 z-9999 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark`}
+        >
+         
+
+            <DeleteTerm termId={selectedTerm.id} refetchTerms={refetchTerms} />
+           
+           
+           </div>
+        )}
         <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
         <nav className="flex items-center space-x-2">
             <button

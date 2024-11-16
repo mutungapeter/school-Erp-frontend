@@ -31,8 +31,14 @@ export const termsApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    deleteTerm: builder.mutation({
+      query: (id) => ({
+        url: `terms/${id}/`,
+        method: "DELETE",
+      }),
+    }), 
     
   }),
 });
 
-export const { useGetTermsQuery, useGetActiveTermsQuery } = termsApi;
+export const { useGetTermsQuery, useGetActiveTermsQuery, useDeleteTermMutation } = termsApi;
