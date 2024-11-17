@@ -1,5 +1,5 @@
 import { useRecorMarkMutation } from "@/redux/queries/marks/marksApi";
-import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
+import { useGetActiveTermsQuery, useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { StudentSubject } from "@/src/definitions/students";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -23,12 +23,12 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
   const [isOpen, setIsOpen] = useState(false);
   const [recorMark, { data, error, isSuccess }] = useRecorMarkMutation();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
   const {
     isLoading: loadingTerms,
     data: termsData,
     refetch: refetchTerms,
-  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
-
+  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
     cat_mark: z
       .number()

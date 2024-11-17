@@ -13,7 +13,7 @@ export default function DefaultLayout({
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   return (
     <>
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col min-h-screen w-full">
         <Sidebar
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
@@ -22,7 +22,10 @@ export default function DefaultLayout({
         />
 
         <div
-          className={`relative flex flex-1 flex-col transition-all duration-300 ease-linear ${desktopSidebarOpen ? "lg:ml-72.5" : "lg:ml-0"}`}
+        // relative
+          className={`
+            
+             flex flex-1 flex-col transition-all duration-300 ease-linear ${desktopSidebarOpen ? "lg:ml-72.5" : "lg:ml-0"}`}
         >
           <Header
             sidebarOpen={sidebarOpen}
@@ -31,11 +34,11 @@ export default function DefaultLayout({
             setDesktopSidebarOpen={setDesktopSidebarOpen}
           />
 
-          <main>
-            <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-2 lg:p-4 md:p-4 2xl:p-5">
+          {/* <main> */}
+            <main className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl min-h-screen p-2 lg:p-4 md:p-4 2xl:p-5">
               {children}
-            </div>
-          </main>
+            </main>
+          {/* </main> */}
         </div>
       </div>
     </>

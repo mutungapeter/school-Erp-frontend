@@ -15,6 +15,7 @@ import Spinner from "../layouts/spinner";
 import { useUpdateStudentMutation,useGetStudentQuery } from "@/redux/queries/students/studentsApi";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { BsChevronDown } from "react-icons/bs";
+import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 interface Props {
     studentId: number;
   refetchStudents: () => void;
@@ -23,16 +24,22 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
   console.log("studentId", studentId);
   const [isOpen, setIsOpen] = useState(false);
   const [updateStudent, { isLoading: Updating }] = useUpdateStudentMutation();
-  const { data: studentData, isLoading: isFetching } =
-  useGetStudentQuery(studentId);
+  const { data: studentData, isLoading: isFetching } =useGetStudentQuery(studentId);
+  const {
+    isLoading: loadingTerms,
+    data: termsData,
+    refetch: refetchTerms,
+  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
+ 
   const {data: classesData, isLoading:isLoadingClasses} = useGetClassesQuery({})
 
     const schema = z.object({
       first_name: z.string().min(1, "First name is required"),
       last_name: z.string().min(1, "Last name is required"),
       admission_number: z.string().min(1, "Admission number is required"),
-      kcpe_marks: z.number().min(1, "KCPE marks required"),
       class_level: z.number().min(1, "Select class level"),
+      kcpe_marks: z.number().min(1, "KCPE marks required"),
+      // current_term: z.number().min(1, "Current term is required"),
       gender: z.enum(["Male", "Female"], {
         errorMap: () => ({ message: "Select gender" }),
       }),
@@ -61,9 +68,10 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
       setValue("class_level", studentData.class_level.id);
       setValue("gender", studentData.gender);
       setValue("admission_type", studentData.admission_type);
+      // setValue("current_term", studentData.current_term);
     }
   }, [studentData, setValue]);
-
+console.log("studentData",studentData)
   const onSubmit = async (data: FieldValues) => {
     const id = studentId;
     try {
@@ -80,6 +88,9 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
   };
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("class_level", e.target.value);
+  };
+  const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("current_term", e.target.value);
   };
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);
@@ -253,6 +264,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
                     )}
                   </div>
                 </div>
+                {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5"> */}
                 <div className="relative">
                     <label
                       htmlFor="class_level"
@@ -291,6 +303,45 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
                       </p>
                     )}
                   </div>
+                  {/* <div className="relative">
+                      <label
+                        htmlFor="term"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Term
+                      </label>
+                      <select
+                        id="term"
+                        {...register("current_term", { valueAsNumber: true })}
+                        onChange={handleTermChange}
+                        value={watch("current_term") || ""}
+                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      >
+                        {loadingTerms ? (
+                          <option value="">Loading...</option>
+                        ) : (
+                          <>
+                            <option value="">Term</option>
+                            {termsData?.map((term: any) => (
+                              <option key={term.id} value={term.id}>
+                                {term.term} {term?.calendar_year}
+                              </option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                      <BsChevronDown
+                        color="gray"
+                        size={16}
+                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                      />
+                      {errors.current_term && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.current_term.message)}
+                        </p>
+                      )}
+                    </div> */}
+                    {/* </div> */}
                 <div className="flex justify-between mt-6">
                   <button
                     type="button"

@@ -6,15 +6,17 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import "../../style.css";
 import { FieldValues, useForm } from "react-hook-form";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import Spinner from "../../layouts/spinner";
 import { usePromoteStudentsMutation } from "@/redux/queries/students/studentsApi";
 import DatePicker from "react-datepicker";
 import { formatYear } from "@/src/utils/dates";
-import "../../style.css";
+
 import { HiChevronDown } from "react-icons/hi2";
 import { BsChevronDown } from "react-icons/bs";
+import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 
 interface Props {
   refetchStudents: () => void;
@@ -32,10 +34,15 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
     source_class_level: z.number().min(1, "Select  current class"),
     target_class_level: z.number().min(1, "Select target class"),
     year: z.number().min(4, "Enter a valid year"),
+    current_term: z.number().min(1, "Current term is required"),
   });
-  const [promoteStudents, { data, error, isSuccess }] =
-    usePromoteStudentsMutation();
-
+  const [promoteStudents, { data, error, isSuccess }] = usePromoteStudentsMutation();
+    const {
+      isLoading: loadingTerms,
+      data: termsData,
+      refetch: refetchTerms,
+    } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
+   
   const {
     register,
     handleSubmit,
@@ -52,8 +59,11 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
   const handleTargetClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("target_class_level", e.target.value);
   };
+  const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setValue("current_term", e.target.value);
+  };
   const onSubmit = async (data: FieldValues) => {
-    const { source_class_level, target_class_level, year } = data;
+    const { source_class_level, target_class_level, year, current_term } = data;
     try {
       const response = await promoteStudents(data).unwrap();
       const successMsg = response.message || "Student Promote successfully!";
@@ -185,10 +195,48 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
                     )}
                   </div>
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
+                <div className="relative">
+                      <label
+                        htmlFor="term"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Term
+                      </label>
+                      <select
+                        id="term"
+                        {...register("current_term", { valueAsNumber: true })}
+                        onChange={handleTermChange}
+                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      >
+                        {loadingTerms ? (
+                          <option value="">Loading...</option>
+                        ) : (
+                          <>
+                            <option value="">Term</option>
+                            {termsData?.map((term: any) => (
+                              <option key={term.id} value={term.id}>
+                                {term.term} {term?.calendar_year}
+                              </option>
+                            ))}
+                          </>
+                        )}
+                      </select>
+                      <BsChevronDown
+                        color="gray"
+                        size={16}
+                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                      />
+                      {errors.current_term && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.current_term.message)}
+                        </p>
+                      )}
+                    </div>
                 <div className="relative ">
                 <label
                   htmlFor="year"
-                  className="block  text-sm  font-normal mt-6 mb-2"
+                  className="block  text-sm  font-normal  mb-2"
                 >
                   YEAR(year the student is getting promoted to)
                 </label>
@@ -205,7 +253,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
                     </p>
                   )}
                 </div>
-
+</div>
                 <div className="flex justify-between mt-10">
                   <button
                     type="button"

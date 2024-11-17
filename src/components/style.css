@@ -26,7 +26,6 @@
   }
 
 
-  /* Style the calendar icon */
   .react-datepicker__calendar-icon {
     position: absolute;
     left: 0.75rem; 
@@ -35,15 +34,3 @@
     fill: currentColor;
   }
   
-/* .react-datepicker__calendar-icon {
-    display: none; 
-  }
-  
-  .custom-calendar-icon {
-    position: absolute;
-    left: 0.75rem; 
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none; 
-    font-size: 1.25rem; 
-  } */

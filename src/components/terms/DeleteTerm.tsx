@@ -32,11 +32,10 @@ const DeleteTerm = ({ termId, refetchTerms }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer flex-space-x-3 "
+        className=" cursor-pointer p-1 rounded-sm bg-red-100"
         onClick={handleOpenModal}
       >
-        <RiDeleteBinLine className="text-currentColor" size={17} />
-        <h4>Delete</h4>
+        <RiDeleteBinLine className="text-red-800" size={17} />
       </div>
       {isOpen && (
         <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">

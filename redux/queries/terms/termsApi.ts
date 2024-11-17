@@ -18,6 +18,13 @@ export const termsApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    createTerm: builder.mutation({
+      query: (data) => ({
+        url: `terms/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getActiveTerms: builder.query({
       query: ({ page, page_size }: GetStreamsInterface = {}) => {
         const queryParams: Record<string, any> = {};
@@ -31,14 +38,43 @@ export const termsApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    getTerm: builder.query({
+      query: (id: any) => ({
+        url: `terms/${id}/`,
+        method: "GET",
+      }),
+    }),
+    updateTerm: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `terms/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    updateTermStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/terms/${id}/`,
+        method: "PATCH", 
+        body: { status },
+      }),
+    }),
     deleteTerm: builder.mutation({
       query: (id) => ({
         url: `terms/${id}/`,
         method: "DELETE",
       }),
     }), 
+
     
   }),
 });
 
-export const { useGetTermsQuery, useGetActiveTermsQuery, useDeleteTermMutation } = termsApi;
+export const { 
+  useGetTermsQuery, 
+  useGetActiveTermsQuery, 
+  useUpdateTermMutation,
+  useDeleteTermMutation ,
+  useGetTermQuery,
+  useUpdateTermStatusMutation,
+  useCreateTermMutation
+} = termsApi;

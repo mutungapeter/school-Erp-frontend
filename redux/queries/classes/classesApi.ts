@@ -18,6 +18,19 @@ export const classesApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    getGraduatingClasses: builder.query({
+      query: ({ page, page_size }: GetClassesInterface = {}) => {
+        const queryParams: Record<string, any> = {};
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+
+        return {
+          url: `graduating-classes/`,
+          method: "GET",
+          params: queryParams,
+        };
+      }
+    }),
     createClass: builder.mutation({
       query: (data) => ({
         url: `class-levels/`,
@@ -52,4 +65,5 @@ export const {
   useGetCLassLevelQuery,
   useUpdateClassLevelMutation,
   useDeleteCLassLevelMutation,
+  useGetGraduatingClassesQuery,
   useCreateClassMutation } = classesApi;

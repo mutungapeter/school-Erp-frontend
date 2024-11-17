@@ -1,0 +1,190 @@
+"use client";
+import {
+  useGetTeacherQuery,
+  useUpdateTeacherMutation,
+} from "@/redux/queries/teachers/teachersApi";
+import { useEffect, useState } from "react";
+import { IoMdArrowDropdown } from "react-icons/io";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, useForm } from "react-hook-form";
+import { BiSolidEdit } from "react-icons/bi";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import Spinner from "../layouts/spinner";
+import { BsChevronDown } from "react-icons/bs";
+import "react-datepicker/dist/react-datepicker.css";
+import "../style.css";
+import { useGetTermQuery, useUpdateTermMutation } from "@/redux/queries/terms/termsApi";
+import DatePicker from "react-datepicker";
+import { formatYear } from "@/src/utils/dates";
+
+interface Props {
+  termId: number;
+  refetchTerms: () => void;
+}
+const EditTerm = ({ termId, refetchTerms }: Props) => {
+  console.log("termId", termId);
+  const [isOpen, setIsOpen] = useState(false);
+  const [updateTerm, { isLoading: Updating }] = useUpdateTermMutation();
+  const { data: termData, isLoading: isFetching } =useGetTermQuery(termId);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+    const schema = z.object({
+      term: z.string().min(1, "Term name is required"),
+      calendar_year: z.number().min(4, "Enter a valid year"),
+      
+    });
+  
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { isSubmitting, errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+
+  useEffect(() => {
+    if (termData) {
+      setValue("term", termData.term);
+      setValue("calendar_year", termData.calendar_year);
+      setSelectedDate(new Date(termData.calendar_year, 0, 1));
+
+     
+    }
+  }, [termData, setValue]);
+  const handleDateChange = (date: Date | null) => {
+    const formattedDate = date ? Number(formatYear(date)) : null;
+    setValue("calendar_year", formattedDate, { shouldValidate: true }); 
+    setSelectedDate(date);
+};
+  const onSubmit = async (data: FieldValues) => {
+    const id = termId;
+    try {
+      await updateTerm({ id, ...data }).unwrap();
+      toast.success("Term updated successfully!");
+      handleCloseModal();
+      refetchTerms();
+    } catch (error: any) {
+      if (error?.data?.error) {
+        console.log("error", error);
+        toast.error(error.data.error);
+      }
+    }
+  };
+
+  const handleOpenModal = () => setIsOpen(true);
+  const handleCloseModal = () =>{
+    // reset()
+    setIsOpen(false)
+  };
+
+  return (
+    <>
+      <div
+        className=" cursor-pointer p-1 rounded-sm bg-green-100 "
+        onClick={handleOpenModal}
+      >
+        <BiSolidEdit   size={17} className="text-green-800" />
+      </div>
+
+      {isOpen && (
+          <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+ 
+          <div 
+          onClick={handleCloseModal}
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
+        
+          <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+             
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-2xl p-4  md:p-6 lg:p-6 md:max-w-2xl">
+                 {isSubmitting && <Spinner />}
+            
+              <div className="flex justify-between items-center pb-3">
+              <p className="text-2xl md:text-lg lg:text-lg font-semibold text-black">
+                  Update Term details
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                    <label
+                      htmlFor="term"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="term"
+                      placeholder="Enter term name"
+                      {...register("term")}
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    />
+                    {errors.term && (
+                      <p className="text-red-500 text-sm">
+                        {String(errors.term.message)}
+                      </p>
+                    )}
+                  </div>
+                  <div className="relative ">
+                <label
+                  htmlFor="year"
+                 className="block text-gray-900
+                  md:text-lg text-sm lg:text-lg 
+                   font-normal  mb-2"
+                >
+                  Calendar year
+                </label>
+                <DatePicker
+                selected={selectedDate}
+                  onChange={handleDateChange}
+                  showYearPicker
+                  dateFormat="yyyy"
+                  className="py-2 px-4 rounded-md  border border-1
+                  border-gray-400 focus:outline-none 
+                  focus:border-[#1E9FF2] focus:bg-white 
+                  placeholder:text-sm md:placeholder:text-sm 
+                 lg:placeholder:text-sm w-full "
+                />
+                {errors.calendar_year && (
+                    <p className="text-red-500 text-sm">
+                      {String(errors.calendar_year.message)}
+                    </p>
+                  )}
+                </div>
+            
+               
+               
+
+                <div className="flex justify-between mt-6">
+                  <button
+                    type="button"
+                    onClick={handleCloseModal}
+                    className="bg-gray-400 text-white rounded-md px-6 py-3 hover:bg-gray-500 focus:outline-none"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={Updating}
+                    className="bg-[#36A000] text-white rounded-md px-6 py-3 hover:bg-[#36A000] focus:outline-none"
+                  >
+                    {Updating ? "Updating..." : "Submit"}
+                  </button>
+                </div>
+              </form>
+          
+          </div>
+        </div>
+        </div>
+        </div>
+      )}
+    </>
+  );
+};
+export default EditTerm;

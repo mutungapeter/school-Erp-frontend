@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetClassesQuery, useGetGraduatingClassesQuery } from "@/redux/queries/classes/classesApi";
 import Spinner from "../../layouts/spinner";
 import { usePromoteStudentsMutation, usePromoteStudentsToAlumniMutation } from "@/redux/queries/students/studentsApi";
 import DatePicker from "react-datepicker";
@@ -27,7 +27,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
     isLoading: loadingClassLevels,
     data: ClassLevelsData,
     refetch,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetGraduatingClassesQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
     final_class_level: z.number().min(1, "Select  graduation class"),
     graduation_year: z.number().min(4, "Enter a valid year"),
@@ -154,7 +154,11 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                   onChange={handleDateChange}
                   showYearPicker
                   dateFormat="yyyy"
-                  className="py-2 px-4 rounded-md  border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
+                  className="py-2 px-4 rounded-md  border border-1
+                   border-gray-400 focus:outline-none 
+                   focus:border-[#1E9FF2] focus:bg-white 
+                   placeholder:text-sm md:placeholder:text-sm 
+                  lg:placeholder:text-sm w-full"
                 />
                 {errors.graduation_year && (
                     <p className="text-red-500 text-sm">

@@ -249,11 +249,11 @@ export const UploadMarks = () => {
                         onChange={handleTermChange}
                         className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
-                        {loadingClasses ? (
+                        {loadingTerms ? (
                           <option value="">Loading...</option>
                         ) : (
                           <>
-                            <option value="">class</option>
+                            <option value="">Term</option>
                             {termsData?.map((term: any) => (
                               <option key={term.id} value={term.id}>
                                 {term.term} {term?.calendar_year}
