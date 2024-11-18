@@ -14,6 +14,7 @@ export const apiSlice = createApi({
       if (refreshToken) {
         headers.set("x-refresh-token", refreshToken);
       }
+      credentials: 'include',
       return headers;
     },
   }),
