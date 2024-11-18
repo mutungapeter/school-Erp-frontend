@@ -51,12 +51,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (isSuccess) {
       setRedirecting(true);
-      // if(user.role==="Admin" || user.role==="Principal"){
-      //   router.push("/dashboard");
-      // }
-      // if(user.role==="Teacher"){
-      //   router.push("/teacher-dashboard")
-      // }
+     
       if (!user.role) {
         router.push("/");
       } else if (user.role === "Admin" || user.role === "Principal") {
@@ -65,7 +60,7 @@ const LoginPage = () => {
         router.push("/teacher-dashboard");
       }
     }
-  }, [isSuccess, router]);
+  }, [isSuccess, router, user?.role]);
 const redirectToResetPassword=()=>{
   router.push("/reset-password-request")
 }
@@ -74,11 +69,9 @@ const redirectToResetPassword=()=>{
       {redirecting ? (
         <div className="text-center  h-screen flex flex-col justify-center bg-white items-center">
           <InlineSpinner />
-          {/* <p className="mt-4 text-xl font-semibold text-[#1F4772]">
-            Redirecting to dashboard...
-          </p> */}
+        
         </div>
-      ) : (
+    ) : (
         <div className="bg-[#D6DBDC] h-screen flex items-center justify-center p-4 ">
           <div className=" flex justify-center items-center py-10 mx-auto min-h-screen">
             <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md shadow-md  ">
@@ -199,7 +192,7 @@ const redirectToResetPassword=()=>{
             </div>
           </div>
         </div>
-      )}
+       )}
     </>
   );
 };

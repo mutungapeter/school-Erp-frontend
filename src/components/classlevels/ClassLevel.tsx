@@ -8,8 +8,9 @@ import DeleteClassLevel from "./deleteClassLevel";
 import EditClassLevel from "./editClassLevels";
 import { DefaultLayout } from "../layouts/DefaultLayout";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import { PAGE_SIZE } from "@/src/constants/constants";
 const Classes = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const pageParam = searchParams.get("page");

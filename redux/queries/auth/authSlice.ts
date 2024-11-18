@@ -62,7 +62,7 @@ const authSlice = createSlice({
         state.error = action.payload;  
       },
       loadUser: (state) => {
-        console.log("Loading user...");
+        // console.log("Loading user...");
         state.loading = true;
         const accessToken = Cookies.get("accessToken");
         const refreshToken = Cookies.get("refreshToken");
@@ -81,7 +81,7 @@ const authSlice = createSlice({
           state.tokenExpiry = null;
         }
         state.loading = false;
-        console.log("Loading state set to false");
+        // console.log("Loading state set to false");
       },
     }
 })

@@ -12,9 +12,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
+import { PAGE_SIZE } from "@/src/constants/constants";
 
 const AlumniRecords = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialFilters = useMemo(

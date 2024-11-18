@@ -16,6 +16,9 @@ import ContentSpinner from "../layouts/contentSpinner";
 import ReportPDF from "./reportPdf";
 import { IoMdArrowDropdown } from "react-icons/io";
 
+// import dynamic from "next/dynamic";
+
+// const ReportPDF = dynamic(() => import("./reportPdf"), { ssr: false });
 const Reports = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -267,19 +270,22 @@ const Reports = () => {
       )}
 
 
-      {show && (
+      {/* {show && (
         <div className="w-full flex justify-center items-center space-x-2">
           <div className="text-lg font-bold text-primary">
             {progress < 100 ? `${progress}%` : "Generation complete!"}
           </div>
         </div>
-      )}
+      )} */}
 
       {show && pdfData && pdfData.length > 0 && progress === 100 && (
         <PDFViewer width="100%" height="600">
           <ReportPDF data={pdfData} />
         </PDFViewer>
       )}
+      {/* {show && pdfData && pdfData.length > 0 &&(
+      <ReportHTML data={pdfData} />
+      )} */}
     </div>
   );
 };

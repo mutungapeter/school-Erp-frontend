@@ -82,8 +82,15 @@ const menuGroups: MenuGroup[] = [
           { label: "View Marks", route: "/marks/list" },
         ],
       },
+      {
+        icon: <HiOutlineClipboardDocumentList  />,
+        label: "Reports",
+        route: "#",
+        children: [{ label: "Report Forms", route: "/reports/reportcard" }],
+      },
     ],
   },
+  
 ];
 
 const Sidebar = ({

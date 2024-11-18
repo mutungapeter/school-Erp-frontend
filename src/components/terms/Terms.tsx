@@ -16,9 +16,10 @@ import { getStatusColor } from "@/src/utils/getStatus";
 import CustomPopover from "../Popover";
 import EditTermStatus from "./updateTermStatus";
 import CreateTerm from "./NewTerm";
+import { PAGE_SIZE } from "@/src/constants/constants";
 
 const Terms = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
 

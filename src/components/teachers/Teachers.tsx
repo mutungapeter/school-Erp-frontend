@@ -14,8 +14,9 @@ import { IoEyeOutline } from "react-icons/io5";
 import { IoEyeSharp } from "react-icons/io5";
 import { DefaultLayout } from "../layouts/DefaultLayout";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import { PAGE_SIZE } from "@/src/constants/constants";
 const Teachers = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const pageParam = searchParams.get("page");

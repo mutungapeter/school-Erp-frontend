@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import cookie from 'cookie';
+// import cookie from 'cookie';
+import { parse } from 'cookie';
 
   
 export function middleware(request: NextRequest) {
-  // console.log("Middleware is running");
-  const cookies = cookie.parse(request.headers.get('Cookie') || '');
-  const token = cookies.accessToken;
-  // console.log("token", token)
+  
+  const cookies = parse(request.headers.get('Cookie') || '');
+  const token = cookies?.accessToken;
+
  
     if (!token) {
       return NextResponse.redirect(new URL("/", request.url));

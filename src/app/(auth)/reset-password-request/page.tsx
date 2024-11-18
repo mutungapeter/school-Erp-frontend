@@ -86,7 +86,7 @@ const ResetPasswordRequestPage = () => {
             <p>
               {/* Enter your email address and we'll send
                you an email with instructions to reset your password. */}
-               Enter your email address and we'll generate for you a token  to reset your password.
+               Enter your email address and we&apos;ll generate for you a token  to reset your password.
                </p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>

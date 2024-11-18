@@ -13,10 +13,11 @@ import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 import { useGetFormLevelsQuery } from "@/redux/queries/formlevels/formlevelsApi";
 import { FormLevel } from "@/src/definitions/formlevels";
 import { BsChevronDown } from "react-icons/bs";
+import { PAGE_SIZE } from "@/src/constants/constants";
 
 
 const PromotionRecords = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialFilters = useMemo(

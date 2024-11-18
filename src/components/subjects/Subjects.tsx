@@ -15,6 +15,7 @@ import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import { SerializedError } from "@reduxjs/toolkit";
 import EditSubject from "./editSubject";
 import DeleteSubject from "./deleteSubject";
+import { PAGE_SIZE } from "@/src/constants/constants";
 
 interface Subject {
   id: number;
@@ -32,7 +33,7 @@ interface ApiError {
   };
 }
 const Subjects = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const pageParam = searchParams.get("page");

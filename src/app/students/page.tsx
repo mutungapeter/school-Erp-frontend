@@ -2,8 +2,8 @@
 import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 // import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
-import Students from "@/src/components/students/Students";
 import { Suspense } from "react";
+import Students from "@/src/components/students/Students";
 import dynamic from "next/dynamic";
 import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
 import { useAppSelector } from "@/redux/hooks";

@@ -8,11 +8,12 @@ import { EditMeanGradeConfig } from "./EditMeanGradeConfig";
 import { CreateMeanGradeConfig } from "./NewMeanGradingConfig";
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import DefaultLayout from "../../adminDashboard/Layouts/DefaultLayout";
+import { PAGE_SIZE } from "@/src/constants/constants";
 
 
 
 const MeanGradeConfigs = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const pageParam = searchParams.get("page");

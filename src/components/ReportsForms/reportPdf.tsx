@@ -1,12 +1,6 @@
 "use client";
 import { Marks, Report } from "@/src/definitions/marks";
-import {
-  Document,
-  Page,
-  StyleSheet,
-  Text,
-  View
-} from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 
 import { Image } from "@react-pdf/renderer";
 const styles = StyleSheet.create({
@@ -227,8 +221,9 @@ const styles = StyleSheet.create({
 interface ReportPDFProps {
   data: Report[];
 }
-const ReportPDF = ({ data }:ReportPDFProps) => {
-  console.log("data", data)
+const ReportPDF = ({ data }: ReportPDFProps) => {
+ 
+  console.log("data", data);
   if (!data || data.length === 0) {
     return (
       <Document>
@@ -243,13 +238,14 @@ const ReportPDF = ({ data }:ReportPDFProps) => {
       {data.map((report: Report, index: number) => (
         <Page key={report.student.id} size="A4" style={styles.page}>
           <View style={styles.headerContainer}>
-          
-            <Image style={styles.schoolLogo} src="/images/logo.jpg"  />
+            <Image style={styles.schoolLogo} src="/images/logo.jpg" />
             <View style={{ alignItems: "center" }}>
               <Text style={styles.header}>KWAMWATU SECONDARY SCHOOL </Text>
               <View style={styles.subHeaderSection}>
                 <Text style={styles.header1}>P.O Box 180-90119</Text>
-                <Text style={styles.subHeader}>TERMINAL REPORT FORM</Text>
+                
+                  <Text style={styles.subHeader}>TERMINAL REPORT FORM</Text>
+               
               </View>
             </View>
           </View>
@@ -452,8 +448,9 @@ const ReportPDF = ({ data }:ReportPDFProps) => {
                     <View style={{ padding: 5 }}>
                       <View style={styles.dateAndSignature}>
                         <Text style={styles.commentText}>
-                      
-                          {report.overall_grading.mean_remarks ? report.overall_grading.mean_remarks : "N/A"}
+                          {report.overall_grading.mean_remarks
+                            ? report.overall_grading.mean_remarks
+                            : "N/A"}
                         </Text>
                         <View
                           style={{
@@ -480,7 +477,9 @@ const ReportPDF = ({ data }:ReportPDFProps) => {
                   <View style={{ padding: 5 }}>
                     <View style={styles.dateAndSignature}>
                       <Text style={styles.commentText}>
-                      {report.overall_grading.mean_remarks ? report.overall_grading.mean_remarks : "N/A"}
+                        {report.overall_grading.mean_remarks
+                          ? report.overall_grading.mean_remarks
+                          : "N/A"}
                       </Text>
                       <View
                         style={{

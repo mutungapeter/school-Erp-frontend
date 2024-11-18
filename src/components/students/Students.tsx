@@ -14,15 +14,15 @@ import { CreateStudent } from "./NewStudent";
 import PromoteStudents from "./promoteStudents/PromoteStudents";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-// import { DefaultLayout } from "../layouts/DefaultLayout";
 import { BsChevronDown } from "react-icons/bs";
 import { useDebouncedCallback } from "use-debounce";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import PromoteStudentsToAlumni from "./alumni/Alumni";
 import { usePermissions } from "@/src/hooks/hasAdminPermission";
 import AdminPermissions from "@/src/hooks/AdminProtected";
+import { PAGE_SIZE } from "@/src/constants/constants";
 const Students = () => {
-  const pageSize = 5;
+  const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const router = useRouter();
   const { user, loading, error:loadingUserError } = useAppSelector(
