@@ -21,8 +21,8 @@ export const authApi = apiSlice.injectEndpoints({
         try {
           dispatch(userLoading());
           const result = await queryFulfilled;
-          Cookies.set("accessToken", result.data.accessToken);
-          Cookies.set("refreshToken", result.data.refreshToken);
+          // Cookies.set("accessToken", result.data.accessToken);
+          // Cookies.set("refreshToken", result.data.refreshToken);
           dispatch(
             userLoggedIn({
               accessToken: result.data.accessToken,
