@@ -127,17 +127,21 @@ const Students = () => {
           <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
             Students
           </h2>
+          {hasAdminPermissions() && (
+          <CreateStudent refetchStudents={refetchStudents} />
+          )}
         </div>
         {/* {hasAdminPermissions(user?.role) && (*/}
         {hasAdminPermissions() && (
         <div className="flex lg:justify-end md:justify-end justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
           <div className="grid grid-cols-2 gap-2">
-            <CreateStudent refetchStudents={refetchStudents} />
+            {/* <CreateStudent refetchStudents={refetchStudents} /> */}
             <PromoteStudents refetchStudents={refetchStudents} />
+            <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
           </div>
 
           <div>
-            <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
+            {/* <PromoteStudentsToAlumni refetchStudents={refetchStudents} /> */}
           </div>
         </div>
         )}

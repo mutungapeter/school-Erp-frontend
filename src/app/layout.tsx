@@ -9,11 +9,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import SessionChecker from "../components/Sessions/SessionChecker";
 
 // const inter = Inter({ subsets: ["latin"] });
-
+import { Analytics } from "@vercel/analytics/react"
 export const metadata: Metadata = {
-  title: "School Manager",
-  description: "manage school",
+  title: "Shule Yangu",
+  description: "Shule Yangu is a comprehensive school management system and ERP solution designed to streamline administrative tasks, enhance student management, and improve efficiency for schools of all sizes. Manage students, teachers, exams, and reports seamlessly in one platform.",
 };
+
 
 export default function RootLayout({
   children,
@@ -29,6 +30,7 @@ export default function RootLayout({
       <ReduxProvider>
         <SessionChecker />
         {children}
+        <Analytics />
         <ToastContainer
           position="top-right"
           autoClose={5000}

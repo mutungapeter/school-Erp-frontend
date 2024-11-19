@@ -12,13 +12,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const StudentsPage = () => {
-  const ProtectedRoute = dynamic(
-    () => import("@/src/app/authorization/authentication"),
-    {
-      ssr: false,
-      loading: () => <PageLoadingSpinner />,
-    }
-  );
+
 const{ user, loading } = useAppSelector((state: RootState) => state.auth);
 const Layout = user?.role === "Teacher" ? TeacherLayout : DefaultLayout;
   return (
