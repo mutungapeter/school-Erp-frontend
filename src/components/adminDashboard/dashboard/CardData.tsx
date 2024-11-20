@@ -10,7 +10,7 @@ interface CardDataStatsProps {
 
 const CardDataStats=({title,total,children,bgColor}:CardDataStatsProps) => {
   return (
-    <div className={`rounded-md border border-stroke   px-7.5 py-3 shadow-default  bg-white border border-1 `}>
+    <div className={`rounded-md border border-stroke   px-7.5 py-3 shadow-md  bg-white border border-1 `}>
      <div className="flex items-center justify-between">
 
       <span className="text-sm font-medium">{title}</span>
