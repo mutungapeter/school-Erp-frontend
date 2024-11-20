@@ -15,6 +15,7 @@ import { PDFViewer } from "@react-pdf/renderer";
 import ContentSpinner from "../layouts/contentSpinner";
 import ReportPDF from "./reportPdf";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { ImFilePdf } from "react-icons/im";
 
 // import dynamic from "next/dynamic";
 
@@ -147,41 +148,33 @@ const Reports = () => {
       <div className="flex flex-col lg:gap-0 gap-3 p-3 lg:flex lg:flex-row lg:items-center lg:justify-between">
         <div className="flex flex-col gap-2 ">
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
-            Generating Report Forms
+          Terminal Report Forms
           </h2>
         </div>
        
       </div>
       <div className="flex items-center lg:justify-end space-x-5 px-3">
-        <button
-          onClick={handleResetFilters}
-          className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-sm rounded-md font-bold border bg-white text-primary"
-        >
-          Reset Filters
-        </button>
-        <button
+      
+        <div
             onClick={handleGenerateReports}
-            className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-sm rounded-md font-bold border bg-green-600 text-white"
+            className="lg:py-2 lg:px-4 p-2 flex cursor-pointer space-x-2 items-center text-[13px] lg:text-sm rounded-md font-bold border bg-green-600 text-white"
           >
-            Generate Report
-          </button>
+            <ImFilePdf size={17} className="text-white" />
+            <span>Generate Report</span>
+          </div>
       </div>
-      <div>
-        <div className="lg:justify-end lg:flex space-y-2 lg:space-y-0 lg:items-center lg:space-x-3 px-3">
-          <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-            <label
-              htmlFor="class"
-              className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-            >
-              Class
-            </label>
+    
+      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
+      <div className="flex space-x-4 items-center">
+          <div className="relative w-32 lg:w-40 md:w-40 xl:w-40 ">
+           
             <select
               name="class_level"
               value={filters.class_level || ""}
               onChange={handleFilterChange}
-              className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-sm md:text-lg lg:text-lg font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
             >
-              <option value="">Select Class</option>
+              <option value="">Class</option>
               {classesData?.map((classLevel: ClassLevel) => (
                 <option key={classLevel.id} value={classLevel.id}>
                   {classLevel.form_level.name} {classLevel?.stream?.name}
@@ -191,23 +184,18 @@ const Reports = () => {
             <BsChevronDown
               color="gray"
               size={20}
-              className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-          <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-            <label
-              htmlFor="Term"
-              className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-            >
-              Term
-            </label>
+          <div className="relative w-32 lg:w-40 md:w-40 xl:w-40">
+          
             <select
               name="term"
               value={filters.term || ""}
               onChange={handleFilterChange}
-              className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-lg lg:text-lg font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
             >
-              <option value="">Select Term</option>
+              <option value="">Term</option>
               {termsData?.map((term: TermInterface) => (
                 <option key={term.id} value={term.id}>
                   {term.term} {term.calendar_year}
@@ -217,28 +205,32 @@ const Reports = () => {
             <BsChevronDown
               color="gray"
               size={20}
-              className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-          <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-            <label
-              htmlFor="class"
-              className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-            >
-              Admission No
-            </label>
+          </div>
+          <div className="flex space-x-4 items-center">
+          <div className="relative w-40 lg:w-40 md:w-40 xl:w-40 ">
+        
             <input
               type="text"
               name="admission_number"
               value={filters.admission_number || ""}
               onChange={handleFilterChange}
-              placeholder="Find by Admission Number"
-              className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              placeholder="Admission Number"
+              className="w-40 lg:w-40 md:w-40 xl:w-40 py-2 px-4 text-sm font-semibold md:text-lg lg:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm placeholder:font-semibold"
             />
           </div>
-          <div className="lg:flex lg:justify-between space-y-4 lg:space-y-0 lg:space-x-5 "></div>
+          <button
+          onClick={handleResetFilters}
+          className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-sm rounded-md font-bold border text-white bg-primary"
+        >
+          Reset Filters
+        </button>
+          </div>
+         
         </div>
-      </div>
+
 
       {loading && (
         <div className="w-full mx-2 md:mx-auto lg:mx-auto flex justify-center lg:w-11/12 md:w-11/12  bg-white  rounded-md shadow-md py-8  ">
@@ -246,7 +238,7 @@ const Reports = () => {
         </div>
       )}
       {message && pdfData && (
-        <div className="  w-full mx-2 md:mx-auto lg:mx-auto flex justify-center lg:w-11/12 md:w-11/12  bg-white  rounded-md shadow-md border border-green-200 py-5  ">
+        <div className="  w-full mx-auto flex justify-center lg:w-11/12 md:w-11/12  bg-white  rounded-md shadow-md border border-green-200 py-5  ">
           <h2 className="text-green-700 text-xl">{message}</h2>
         </div>
       )}

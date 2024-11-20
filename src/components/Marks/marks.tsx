@@ -22,7 +22,6 @@ const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-
   const initialFilters = useMemo(
     () => ({
       subject_id: searchParams.get("subjectId") || "",
@@ -34,8 +33,7 @@ const Marks = () => {
   const [filters, setFilters] = useState(initialFilters);
   useEffect(() => {
     const params = new URLSearchParams();
-    if (filters.subject_id)
-      params.set("subject_id", filters.subject_id);
+    if (filters.subject_id) params.set("subject_id", filters.subject_id);
     if (filters.class_level_id)
       params.set("class_level_id", filters.class_level_id);
     if (filters.admission_number)
@@ -48,7 +46,7 @@ const Marks = () => {
     () => ({
       ...filters,
     }),
-    [ filters]
+    [filters]
   );
   const {
     isLoading: loading,
@@ -69,24 +67,12 @@ const Marks = () => {
     refetch: refetchSubjects,
   } = useGetSubjectsQuery({}, { refetchOnMountOrArgChange: true });
 
-  
-
   const studentsData = data && data.length > 0 ? data : null;
   const handleSearch = useDebouncedCallback((value: string) => {
     console.log(`Debounced Search Term: ${value}`);
     setFilters((prev) => ({ ...prev, admission_number: value }));
   }, 200);
-  const handleSelectChange = (
-    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
-
-    // router.push(`marks/?${params.toString()}`);
-  };
+ 
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -116,106 +102,103 @@ const Marks = () => {
     <>
       <div className="space-y-5 shadow-md border py-2  bg-white  ">
         <div className="p-2  flex lg:flex-row md:flex-row lg:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
-          
-            <h2 className="font-semibold text-black text-xl">
-              Recording Marks
-            </h2>
+          <h2 className="font-semibold text-black text-xl">Recording Marks</h2>
           <div className="flex flex-row space-x-3 items-center mt-4">
-           <UploadMarks />
-            {/* <div className="flex items-center bg-green-700 space-x-2 px-2 py-1 rounded-sm cursor-pointer">
-            <BsFiletypeCsv  size={16} className="text-white" />
-            <h5 className="text-white text-xs lg:text-sm md:text-sm">upload csv</h5>
-            </div> */}
-        
+            <UploadMarks />
           </div>
-          
         </div>
-       
+
         <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
-         <div className="flex space-x-4 items-center">
-
-          <div className="relative w-32  lg:w-32 md:w-32 xl:w-32 ">      
-            <select
-              name="subject_id"
-              value={filters.subject_id || ""}
-              onChange={handleFilterChange}
-              className="w-32 lg:w-32 md:w-32 xl:w-32 text-sm md:text-md lg:text-md appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-            
-            >
-              <option value="">Subject</option>
-              {subjectsData?.map((subject: Subject) => (
-                <option key={subject.id} value={subject.id}>
-                  {subject.subject_name}
-                </option>
-              ))}
-            </select>
-            <BsChevronDown 
-                      color="gray" 
-                      size={17}
-              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-            />
+          <div className="flex space-x-4 items-center">
+            <div className="relative w-32  lg:w-32 md:w-32 xl:w-32 ">
+              <select
+                name="subject_id"
+                value={filters.subject_id || ""}
+                onChange={handleFilterChange}
+                className="w-32 lg:w-32 md:w-32 xl:w-32 text-sm md:text-lg lg:text-lg font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              >
+                <option value="">Subject</option>
+                {subjectsData?.map((subject: Subject) => (
+                  <option key={subject.id} value={subject.id}>
+                    {subject.subject_name}
+                  </option>
+                ))}
+              </select>
+              <BsChevronDown
+                color="gray"
+                size={17}
+                className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+              />
+            </div>
+            <div className="relative w-32   lg:w-32 md:w-32 xl:w-32 ">
+              <select
+                name="class_level_id"
+                value={filters.class_level_id || ""}
+                onChange={handleFilterChange}
+                className="w-32  lg:w-32 md:w-32 xl:w-32 text-sm md:text-lg lg:text-lg font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              >
+                <option value="">Class</option>
+                {classesData?.map((classLevel: ClassLevel) => (
+                  <option key={classLevel.id} value={classLevel.id}>
+                    {classLevel.form_level.name} {classLevel?.stream?.name}
+                  </option>
+                ))}
+              </select>
+              <BsChevronDown
+                color="gray"
+                size={17}
+                className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+              />
+            </div>
           </div>
-          <div className="relative w-32   lg:w-32 md:w-32 xl:w-32 ">
-            <select
-              name="class_level_id"
-              value={filters.class_level_id || ""}
-              onChange={handleFilterChange}
-              className="w-32  lg:w-32 md:w-32 xl:w-32 text-sm md:text-md lg:text-md appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-           >
-              <option value="">Class</option>
-              {classesData?.map((classLevel: ClassLevel) => (
-                <option key={classLevel.id} value={classLevel.id}>
-                  {classLevel.form_level.name} {classLevel?.stream?.name}
-                </option>
-              ))}
-            </select>
-            <BsChevronDown 
-                      color="gray" 
-                      size={17}
-              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-            />
+          <div className="flex space-x-4 items-center">
+            <div className="relative w-40  lg:w-40 md:w-40 xl:w-40  ">
+              <input
+                type="text"
+                name="admission_number"
+                value={filters.admission_number || ""}
+                onChange={handleFilterChange}
+                placeholder="Admission Number"
+                className="w-40  lg:w-40 md:w-40 xl:w-40 text-sm md:text-lg lg:text-lg font-semibold py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none  focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm placeholder:font-semibold lg:placeholder:text-sm"
+              />
+            </div>
+            <div>
+              <button
+                onClick={handleResetFilters}
+                className="py-1 px-2  text-[13px] lg:text-lg shadow-md rounded-md border bg-primary text-white"
+              >
+                Reset Filters
+              </button>
+            </div>
           </div>
-         </div>
-         <div className="flex space-x-4 items-center">
-
-          <div className="relative w-40  lg:w-40 md:w-40 xl:w-40  ">
-          
-            <input
-              type="text"
-              name="admission_number"
-              value={filters.admission_number || ""}
-              onChange={handleFilterChange}
-              placeholder="Admission Number"
-              className="w-40  lg:w-40 md:w-40 xl:w-40 text-xs md:text-md lg:text-md py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-            />
-          </div>
-          <div>
-
-          <button
-              onClick={handleResetFilters}
-              className="py-1 px-2  text-[13px] lg:text-lg shadow-md rounded-md border bg-primary text-white"
-            >
-              Reset Filters
-            </button>
-          </div>
-         </div>
-          
         </div>
         <div className=" relative overflow-x-auto p-2  ">
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="px-6  py-4 text-xs lg:text-sm md:text-sm">
+                <th
+                  scope="col"
+                  className="px-6  py-4 text-xs lg:text-sm md:text-sm"
+                >
                   #
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs lg:text-sm md:text-sm">
+                <th
+                  scope="col"
+                  className="px-6 py-4 text-xs lg:text-sm md:text-sm"
+                >
                   Name
                 </th>
-                <th scope="col" className="px-6 py-4 text-xs lg:text-sm md:text-sm">
+                <th
+                  scope="col"
+                  className="px-6 py-4 text-xs lg:text-sm md:text-sm"
+                >
                   Subject
                 </th>
 
-                <th scope="col" className="px-6 py-4 text-xs lg:text-sm md:text-sm">
+                <th
+                  scope="col"
+                  className="px-6 py-4 text-xs lg:text-sm md:text-sm"
+                >
                   Actions
                 </th>
               </tr>
@@ -261,8 +244,8 @@ const Marks = () => {
                 <tr>
                   <td colSpan={5} className="text-center py-4">
                     {studentsData?.length === 0 || !studentsData
-                      ? "No students found."
-                      : "No subjects found."}
+                      ? "No data found."
+                      : "No data found."}
                   </td>
                 </tr>
               )}

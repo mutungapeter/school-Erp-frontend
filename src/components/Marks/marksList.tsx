@@ -7,7 +7,7 @@ import { MarksInterface } from "@/src/definitions/marks";
 import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-
+import { useDebouncedCallback } from "use-debounce";
 import { TbDatabaseOff } from "react-icons/tb";
 import { DefaultLayout } from "../layouts/DefaultLayout";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
@@ -18,33 +18,31 @@ import { BsChevronDown } from "react-icons/bs";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const initialFilters = useMemo(
+    () => ({
+      subject: searchParams.get("subject") || "",
+      class_level: searchParams.get("class_level") || "",
+      admission_number: searchParams.get("admission_number") || "",
+    }),
+    [searchParams]
+  );
+  const [filters, setFilters] = useState(initialFilters);
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (filters.subject) params.set("subject", filters.subject);
+    if (filters.class_level)
+      params.set("class_level", filters.class_level);
+    if (filters.admission_number)
+      params.set("admission_number", filters.admission_number);
 
-  const subjectId = searchParams.get("subject");
-  const classLevelId = searchParams.get("class_level");
-  const admissionNumber = searchParams.get("admission_number");
-
-  const [filters, setFilters] = useState({
-    subject: subjectId || "",
-    class_level: classLevelId || "",
-    admission_number: admissionNumber || "",
-  });
-  const queryParams = useMemo(() => {
-    const params: any = {};
-
-    if (admissionNumber) {
-      params.admission_number = admissionNumber;
-    }
-
-    if (subjectId) {
-      params.subject = subjectId;
-    }
-
-    if (classLevelId) {
-      params.class_level = classLevelId;
-    }
-
-    return params;
-  }, [subjectId, classLevelId, admissionNumber]);
+    router.push(`?${params.toString()}`);
+  }, [filters]);
+  const queryParams = useMemo(
+    () => ({
+      ...filters,
+    }),
+    [filters]
+  );
   const {
     isLoading: loading,
     data,
@@ -63,58 +61,27 @@ const MarksList = () => {
     refetch: refetchSubjects,
   } = useGetSubjectsQuery({}, { refetchOnMountOrArgChange: true });
 
-  useEffect(() => {
-    if (!loading && refetch) {
-      if (admissionNumber) {
-        refetch();
-      } else if (subjectId && classLevelId) {
-        refetch();
-      } else if (subjectId && classLevelId) {
-        refetch();
-      }
-    }
-  }, [
-    subjectId,
-    classLevelId,
-    admissionNumber,
-    loading,
-
-    loadingClasses,
-    loadingSubjects,
-
-    refetch,
-  ]);
+ 
+  const handleSearch = useDebouncedCallback((value: string) => {
+    // console.log(`Debounced Search Term: ${value}`);
+    setFilters((prev) => ({ ...prev, admission_number: value }));
+  }, 100);
   const studentsData = data && data.length > 0 ? data : null;
 
-  const handleSelectChange = (
+  
+  const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value,
-    }));
+    if (name === "admission_number") {
+      handleSearch(value);
+    } else {
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleApplyFilters = () => {
-    const params = new URLSearchParams();
-    if (filters.admission_number) {
-      params.set("admission_number", filters.admission_number);
-    }
-    if (filters.subject) {
-      params.set("subject", filters.subject);
-    }
-    if (filters.class_level) {
-      params.set("class_level", filters.class_level);
-    }
-    router.push(`?${params.toString()}`);
-  };
   const handleResetFilters = () => {
-    setFilters({
-      subject: "",
-      class_level: "",
-      admission_number: "",
-    });
+    setFilters({ class_level: "", admission_number: "", subject: "" });
     router.push("?");
   };
 const refetchMarks=()=>{
@@ -131,46 +98,20 @@ if (loading) {
     <div className="space-y-5 shadow-md border py-2  bg-white">
       <div className=" p-3  space-y-3">
         <h2 className="font-semibold text-black text-xl">Marks Records</h2>
-        <div>
-          
-          <p className="text-[13px] lg:text-md md:text-md">
-            To view marks for a student, you select the subject and class, and
-            admission number. Note: For teachers in order to use admission
-            number you have to select subject and class first then enter
-            admission number.
-          </p>
-        </div>
       </div>
-      <div className="flex justify-between lg:justify-end px-3 lg:space-x-5 py-1 ">
-          <button
-            onClick={handleApplyFilters}
-            className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-primary text-white"
-          >
-            Apply Filters
-          </button>
-          <button
-            onClick={handleResetFilters}
-            className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-lg  rounded-md border bg-white text-primary"
-          >
-            Reset Filters
-          </button>
-        </div>
-      <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end lg:space-x-5 px-2  py-1">
-        <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-          <label
-            htmlFor="subject"
-            className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-          >
-            Subject
-          </label>
+     
+     <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
+     <div className="flex space-x-4 items-center">
+        <div className="relative w-full   lg:w-40 md:w-40 xl:w-40  ">
+        
           <select
             name="subject"
             value={filters.subject || ""}
-            onChange={handleSelectChange}
-            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-            // className="w-64  py-2 px-4 rounded-md border border-[#1F4772] focus:outline-none focus:bg-white"
+            onChange={handleFilterChange}
+            className="w-full  lg:w-40 md:w-40 xl:w-40  appearance-none py-2 px-4 text-sm md:text-lg lg:text-lg font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+           
           >
-            <option value="">Select Subject</option>
+            <option value="">Subject</option>
             {subjectsData?.map((subject: Subject) => (
               <option key={subject.id} value={subject.id}>
                 {subject.subject_name}
@@ -180,23 +121,18 @@ if (loading) {
           <BsChevronDown 
                       color="gray" 
                       size={20}
-            className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
-        <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-          <label
-            htmlFor="class"
-             className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-          >
-            Class
-          </label>
+        <div className="relative w-full  lg:w-40 md:w-40 xl:w-40  ">
+        
           <select
             name="class_level"
             value={filters.class_level || ""}
-            onChange={handleSelectChange}
-            className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+            onChange={handleFilterChange}
+            className="w-full  lg:w-40 md:w-40 xl:w-40  appearance-none py-2 px-4 text-sm md:text-lg lg:text-lg font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
           >
-            <option value="">Select Class</option>
+            <option value="">Class</option>
             {classesData?.map((classLevel: ClassLevel) => (
               <option key={classLevel.id} value={classLevel.id}>
                 {classLevel.form_level.name} {classLevel?.stream?.name}
@@ -206,24 +142,28 @@ if (loading) {
           <BsChevronDown 
                       color="gray" 
                       size={20}
-            className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
-        <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-          <label
-            htmlFor="class"
-            className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-          >
-            Admission No
-          </label>
+        </div>
+        <div className="flex space-x-4 items-center">
+        <div className="relative w-40 lg:w-40 md:w-40 xl:w-40">
+         
           <input
             type="text"
             name="admission_number"
             value={filters.admission_number || ""}
-            onChange={handleSelectChange}
-            placeholder="Find by Admission Number"
-            className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+            onChange={handleFilterChange}
+            placeholder="Admission Number"
+            className="w-40 lg:w-40 md:w-40 xl:w-40 py-2 px-4 rounded-md border text-sm md:text-sm lg:text-sm font-semibold border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm placeholder:font-semibold"
           />
+        </div>
+        <button
+            onClick={handleResetFilters}
+            className="py-1 px-2  text-[13px] lg:text-lg shadow-md rounded-md border bg-primary text-white"
+            >
+            Reset Filters
+          </button>
         </div>
       
       </div>
@@ -312,7 +252,7 @@ if (loading) {
             ) : (
               <tr>
                 <td colSpan={4} className="text-center py-4">
-                  No records found.
+                  No data found.
                 </td>
               </tr>
             )}

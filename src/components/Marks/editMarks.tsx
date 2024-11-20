@@ -5,7 +5,7 @@ import {
   useGetMarkDataQuery,
   useUpdateMarksDataMutation,
 } from "@/redux/queries/marks/marksApi";
-import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
+import { useGetActiveTermsQuery, useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { BiSolidEdit } from "react-icons/bi";
@@ -28,7 +28,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
     isLoading: loadingTerms,
     data: termsData,
     refetch: refetchTerms,
-  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
 
   const schema = z.object({
     cat_mark: z
@@ -187,7 +187,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
                           <option value="">Select Term</option>
                           {termsData?.map((term: any) => (
                             <option key={term.id} value={term.id}>
-                              {term.term}
+                              {term.term} - {term.calendar_year}
                             </option>
                           ))}
                         </>
@@ -224,14 +224,14 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
+                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-4 md:py-2 lg:px-4 lg:py-2 text-sm lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={Updating || isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
+                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-4 md:py-2 lg:px-4 lg:py-2 text-sm lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
                   >
                     {Updating || isSubmitting ? "Updating..." : "Submit"}
                   </button>
