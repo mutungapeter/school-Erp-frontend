@@ -65,14 +65,14 @@ const DeleteClassLevel = ({ classLevelId, refetchClassLevels }: Props) => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="bg-white border shadow-md  rounded-md px-6 py-3 focus:outline-none"
+                  className="bg-white border shadow-md  rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 focus:outline-none"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
                   disabled={deleting}
-                  className="bg-red-500 text-white rounded-md px-6 py-3 shadow-md focus:outline-none"
+                  className="bg-red-500 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 shadow-md focus:outline-none"
                 >
                   {deleting ? "Deleting..." : "Delete"}
                 </button>

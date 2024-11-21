@@ -111,14 +111,14 @@ const EditTermStatus = ({ termId, refetchTerms }: Props) => {
                 <button
   type="button"
   onClick={handleCloseModal}
-  className="bg-gray-400 text-white rounded-md py-2 px-4 text-sm lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
+  className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-sm lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
 >
   Cancel
 </button>
 
                 <button
                     onClick={handleUpdateStatus}
-                    className={`px-4 py-2 rounded-md ${
+                    className={`py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 rounded-md ${
                       Updating ? "bg-gray-500 cursor-not-allowed" : "bg-[#36A000] text-white"
                     }`}
                     disabled={Updating}

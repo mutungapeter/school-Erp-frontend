@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 const colors = require("tailwindcss/colors");
-
+const plugin = require('tailwindcss/plugin');
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,18 +9,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  // theme: {
-  //   extend: {
-      
-  //     colors:{
-  //       primary:"#1F4772",
-  //       light:"#E2E8F0",
-  //       secondary:"#36A000",
-  //       dark:"#1F4772",
-  //       secondaryLight:"#F6F7F9",
-  //     }
-  //   },
-  // },darkMode: "class",
+ 
   theme: {
     fontFamily: {
       satoshi: ["Satoshi", "sans-serif"],
@@ -30,8 +19,12 @@ const config: Config = {
       xsm: "425px",
       "3xl": "2000px",
       ...defaultTheme.screens,
+     
     },
     extend: {
+      screens: {
+        print: { raw: "print" },
+    },
       colors: {
         
 
@@ -39,7 +32,6 @@ const config: Config = {
         transparent: "transparent",
         white: "#FFFFFF",
         black: {
-          // ...colors.black,
           DEFAULT: "#1C2434",
           2: "#010101",
         },
@@ -373,11 +365,28 @@ const config: Config = {
       },
     },
   },
+  
   variants: {
     extend: {
       translate: ['hover', 'focus'],
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }: { addUtilities: (utilities: Record<string, object>) => void }) {
+        addUtilities({
+            ".page-break-before-always": { "page-break-before": "always" },
+            ".page-break-inside-avoid": { "page-break-inside": "avoid" },
+            ".print-container": {
+          "@media print": {
+            display: "block",
+            width: "100%",
+            margin: "0 auto",
+            padding: "1rem",
+            backgroundColor: "white", 
+          },
+        },
+        });
+    }),
+],
 };
 export default config;

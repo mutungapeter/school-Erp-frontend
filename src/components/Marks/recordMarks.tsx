@@ -255,14 +255,14 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                     <button
                       type="button"
                       onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
+                      className="bg-gray-400 text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-primary text-white rounded-md  py-1 px-2 md:px-4 md:py-2 lg:px-4 lg:py-2 text-xs lg:text-sm md:text-sm hover:bg-primary focus:outline-none"
+                      className="bg-primary text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-primary focus:outline-none"
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </button>
