@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     textDecoration: "underline",
     justifyContent: "center",
     marginTop: 20,
+    textTransform: "uppercase",
   },
   studentContainer: {
     marginBottom: 30,
