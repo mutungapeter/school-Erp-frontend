@@ -15,7 +15,8 @@ import {
 import { BsChevronDown } from "react-icons/bs";
 import { TbDatabaseOff } from "react-icons/tb";
 import { useDebouncedCallback } from "use-debounce";
-
+import { VscRefresh } from "react-icons/vsc";
+import { CiSearch } from "react-icons/ci";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { TermInterface } from "@/src/definitions/terms";
 import { useAppSelector } from "@/redux/hooks";
@@ -134,13 +135,13 @@ const Reports = () => {
         </div>
 
         <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
-          <div className="flex space-x-4 items-center">
-            <div className="relative w-32 lg:w-40 md:w-40 xl:w-40 ">
+          <div className="flex lg:space-x-4 space-x-2 md:space-x-4 items-center">
+            <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
               <select
                 name="class_level"
                 value={filters.class_level || ""}
                 onChange={handleFilterChange}
-                className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-sm md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                className="w-34 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Class</option>
                 {classesData?.map((classLevel: ClassLevel) => (
@@ -152,7 +153,7 @@ const Reports = () => {
               <BsChevronDown
                 color="gray"
                 size={20}
-                className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                className="absolute top-[50%] right-1 md:right-4 lg:right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
               />
             </div>
             <div className="relative w-32 lg:w-40 md:w-40 xl:w-40">
@@ -160,7 +161,7 @@ const Reports = () => {
                 name="term"
                 value={filters.term || ""}
                 onChange={handleFilterChange}
-                className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Term</option>
                 {termsData?.map((term: TermInterface) => (
@@ -176,23 +177,29 @@ const Reports = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-4 items-center">
-            <div className="relative w-40 lg:w-40 md:w-40 xl:w-40 ">
-              <input
-                type="text"
-                name="admission_number"
-                value={filters.admission_number || ""}
-                onChange={handleFilterChange}
-                placeholder="Admission Number"
-                className="w-40 lg:w-40 md:w-40 xl:w-40 py-2 px-4 text-sm font-semibold md:text-lg lg:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm placeholder:font-semibold"
-              />
-            </div>
-            <button
-              onClick={handleResetFilters}
-              className="lg:py-2 lg:px-4 p-2 text-[13px] lg:text-sm rounded-md font-bold border text-white bg-primary"
-            >
-              Reset Filters
-            </button>
+          <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
+                <CiSearch
+                  size={20}
+                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                />
+                <input
+                  type="text"
+                  name="admission_number"
+                  value={filters.admission_number || ""}
+                  onChange={handleFilterChange}
+                  placeholder="admission number"
+                  className="w-full lg:w-64 md:w-64 xl:w-64  py-2  pl-8 pr-4  rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-lg lg:placeholder:text-lg placeholder:font-semibold"
+                />
+              </div>
+
+              <div
+                onClick={handleResetFilters}
+                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
+              >
+                <VscRefresh className="text-white" />
+                <span>Reset Filters</span>
+              </div>
           </div>
         </div>
       </div>

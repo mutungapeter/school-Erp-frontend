@@ -142,11 +142,11 @@ export const UploadMarks = () => {
       <div
         onClick={handleOpenModal}
         className="flex items-center
-       bg-green-600 space-x-2 px-2 py-1 lg:py-2 lg:px-4 md:py-2 md:px-4 rounded-sm cursor-pointer"
+       bg-green-600 space-x-2 px-2 py-1 lg:py-2 lg:px-4 md:py-2 md:px-4 rounded-md cursor-pointer"
       >
-        <SiMicrosoftexcel size={16} className="text-white" />
+        <SiMicrosoftexcel size={20} className="text-white" />
         <h5 className="text-white text-xs lg:text-sm md:text-sm">
-          Upload excel/csv
+          Upload marks
         </h5>
       </div>
       {isOpen && (

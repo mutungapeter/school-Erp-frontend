@@ -18,6 +18,8 @@ import { BsChevronDown, BsFiletypeCsv } from "react-icons/bs";
 import { useDebouncedCallback } from "use-debounce";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { UploadMarks } from "./uploadMarks";
+import { VscRefresh } from "react-icons/vsc";
+import { CiSearch } from "react-icons/ci";
 const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -103,19 +105,20 @@ const Marks = () => {
       <div className="space-y-5 shadow-md border py-2  bg-white  ">
         <div className="p-2  flex lg:flex-row md:flex-row lg:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
           <h2 className="font-semibold text-black text-xl">Recording Marks</h2>
-          <div className="flex flex-row space-x-3 items-center mt-4">
+          <div className="flex justify-end lg:justify-none md:justify-none items-center mt-4">
             <UploadMarks />
           </div>
         </div>
 
         <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
-          <div className="flex space-x-4 items-center">
-            <div className="relative w-32  lg:w-32 md:w-32 xl:w-32 ">
+        <div className="flex lg:space-x-4 space-x-2 md:space-x-4 items-center">
+        <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
               <select
                 name="subject_id"
                 value={filters.subject_id || ""}
                 onChange={handleFilterChange}
-                className="w-32 lg:w-32 md:w-32 xl:w-32 text-sm md:text-lg lg:text-lg font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                className="w-34 lg:w-40 md:w-40 xl:w-40 
+                text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Subject</option>
                 {subjectsData?.map((subject: Subject) => (
@@ -130,12 +133,12 @@ const Marks = () => {
                 className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
               />
             </div>
-            <div className="relative w-32   lg:w-32 md:w-32 xl:w-32 ">
+            <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
               <select
                 name="class_level_id"
                 value={filters.class_level_id || ""}
                 onChange={handleFilterChange}
-                className="w-32  lg:w-32 md:w-32 xl:w-32 text-sm md:text-lg lg:text-lg font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                className="w-34 lg:w-40 md:w-40 xl:w-40 text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Class</option>
                 {classesData?.map((classLevel: ClassLevel) => (
@@ -151,25 +154,28 @@ const Marks = () => {
               />
             </div>
           </div>
-          <div className="flex space-x-4 items-center">
-            <div className="relative w-40  lg:w-40 md:w-40 xl:w-40  ">
+          <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64  ">
+            <CiSearch
+                  size={20}
+                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                />
               <input
                 type="text"
                 name="admission_number"
                 value={filters.admission_number || ""}
                 onChange={handleFilterChange}
-                placeholder="Admission Number"
-                className="w-40  lg:w-40 md:w-40 xl:w-40 text-sm md:text-lg lg:text-lg font-semibold py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none  focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm placeholder:font-semibold lg:placeholder:text-sm"
+                placeholder="admission number"
+                className="w-full lg:w-64 md:w-64 xl:w-64 text-sm md:text-lg lg:text-lg font-normal py-2 pl-8 pr-4 rounded-md border border-1 border-gray-400 focus:outline-none  focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm placeholder:font-semibold lg:placeholder:text-sm"
               />
             </div>
-            <div>
-              <button
+            <div
                 onClick={handleResetFilters}
-                className="py-1 px-2  text-[13px] lg:text-lg shadow-md rounded-md border bg-primary text-white"
+                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
               >
-                Reset Filters
-              </button>
-            </div>
+                <VscRefresh className="text-white" />
+                <span>Reset Filters</span>
+              </div>
           </div>
         </div>
         <div className=" relative overflow-x-auto p-2  ">

@@ -18,18 +18,13 @@ export const marksApi = apiSlice.injectEndpoints({
 
     }),
     getMarksData: builder.query({
-      query: (params: { subject: any; class_level: any;   admission_number?: any }) => {
-        const queryParams: { subject: any; class_level: any;   admission_number?: any } = {
-          subject: params.subject,
+      query: (params: {  class_level: any; term:any;    admission_number?: any; subject?:any; }) => {
+        const queryParams: { class_level: any; term: any; admission_number?: any; subject?:any; } = {
           class_level: params.class_level,
+          term: params.term,  
+          ...(params.admission_number && { admission_number: params.admission_number }),
+          ...(params.subject && { subject: params.subject }), 
         };
-    
-      
-        if (params.admission_number) {
-          queryParams.admission_number = params.admission_number;
-        }
-    
-       
         return {
           url: `filter-marks/`,
           method: "GET",
