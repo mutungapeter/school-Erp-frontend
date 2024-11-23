@@ -3,19 +3,26 @@ import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { useGetClassPerformanceQuery } from "@/redux/queries/perfomance/classPerformaceApi";
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { BsChevronDown } from "react-icons/bs";
 import ContentSpinner from "./contentSpinner";
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042','#924900'];
-  type DataItem = {
-    mean_grade: string;
-    no_of_students: number;
-    percentage?: number;
-  };
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#924900"];
+type DataItem = {
+  mean_grade: string;
+  no_of_students: number;
+  percentage?: number;
+};
 const ClassPerformance: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -72,13 +79,18 @@ const ClassPerformance: React.FC = () => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
   console.log("perfomance", classPerformanceData);
-  
-const filteredPerformanceData: DataItem[] = classPerformanceData
-  ?.filter((item: any) => item.mean_grade && item.no_of_students > 0) ?? [];
 
-  const totalStudents = filteredPerformanceData.reduce((sum:number, entry:DataItem) => sum + entry.no_of_students, 0);
+  const filteredPerformanceData: DataItem[] =
+    classPerformanceData?.filter(
+      (item: any) => item.mean_grade && item.no_of_students > 0
+    ) ?? [];
 
-  const dataWithPercentages = filteredPerformanceData.map((entry:DataItem) => {
+  const totalStudents = filteredPerformanceData.reduce(
+    (sum: number, entry: DataItem) => sum + entry.no_of_students,
+    0
+  );
+
+  const dataWithPercentages = filteredPerformanceData.map((entry: DataItem) => {
     const basePercentage = (entry.no_of_students / totalStudents) * 100;
     return {
       ...entry,
@@ -86,21 +98,23 @@ const filteredPerformanceData: DataItem[] = classPerformanceData
     };
   });
 
-  
   const totalPercentage = dataWithPercentages.reduce(
     (sum: number, entry: DataItem) => sum + (entry.percentage ?? 0),
     0
   );
   if (dataWithPercentages.length > 0) {
-    dataWithPercentages[dataWithPercentages.length - 1].percentage += parseFloat((100 - totalPercentage).toFixed(1));
+    dataWithPercentages[dataWithPercentages.length - 1].percentage +=
+      parseFloat((100 - totalPercentage).toFixed(1));
   }
 
   return (
     <div className="space-y-1">
-      <div className="flex   
+      <div
+        className="flex   
       md:justify-end lg:justify-end mt-2 lg:p-0 flex-row  
       items-center md:space-x-2 space-x-2  md:px-3
-       px-1 lg:px-3  lg:space-x-5">
+       px-1 lg:px-3  lg:space-x-5"
+      >
         <div className="relative w-[130px] lg:w-40 md:w-32 xl:w-48 ">
           <select
             name="class_level_id"
@@ -153,55 +167,62 @@ const filteredPerformanceData: DataItem[] = classPerformanceData
           />
         </div>
       </div>
-     {loadingClassPerformance ? (
+      {loadingClassPerformance ? (
         <ContentSpinner />
-      ): error ?  (
+      ) : error ? (
         <div>
-             <span>
-                          {(error as any)?.data?.error || "Internal Server Error"}
-                        </span>
+          <span>{(error as any)?.data?.error || "Internal Server Error"}</span>
         </div>
-      ) :filteredPerformanceData.length > 0 ? (
+      ) : filteredPerformanceData.length > 0 ? (
         <>
-      <ResponsiveContainer width="100%" height={250}>
-        <PieChart>
-          <Pie
-            data={dataWithPercentages}
-            cx="50%"
-            cy="50%"
-            labelLine={false}
-            outerRadius={80}
-            dataKey="no_of_students"
-            nameKey="mean_grade"
-            label={({ mean_grade, percentage }) =>
-              `${mean_grade}- ${percentage}%`
-            }
-          >
-            
-              {dataWithPercentages.map((entry: DataItem, index: number) =>
-    entry.no_of_students > 0 ? (
-      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-    ) : null
-  )}
-
-          </Pie>
-          <Tooltip
-            formatter={(value: any, name: any, { payload }: any) => [
-              `${value} students (${payload.percentage}%)`,
-              `Grade ${name}`,
-            ]}
-          />
-        </PieChart>
-      </ResponsiveContainer>
-      <div className="flex items-center justify-center space-x-5">
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={dataWithPercentages}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                innerRadius={40}
+                dataKey="no_of_students"
+                nameKey="mean_grade"
+                label={({ mean_grade, percentage }) =>
+                  `${mean_grade}- ${percentage}%`
+                }
+              >
+                {dataWithPercentages.map((entry: DataItem, index: number) =>
+                  entry.no_of_students > 0 ? (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ) : null
+                )}
+              </Pie>
+              <Tooltip
+                formatter={(value: any, name: any, { payload }: any) => [
+                  `${value} students (${payload.percentage}%)`,
+                  `Grade ${name}`,
+                ]}
+              />
+              <Legend
+                layout="horizontal"
+                align="center"
+                verticalAlign="bottom"
+                iconType="square"
+              />
+            </PieChart>
+          </ResponsiveContainer>
+          <div className="flex items-center justify-center space-x-5">
             <h2>Overall Class Mean</h2>
-            <h2>{classPerformanceData?.[0]?.class_overall_mean_mark || "N/A"}</h2>
-    </div>
+            <h2>
+              {classPerformanceData?.[0]?.class_overall_mean_mark || "N/A"}
+            </h2>
+          </div>
         </>
-     ) : (
+      ) : (
         <div>No valid data to display on the chart</div>
       )}
-   
     </div>
   );
 };

@@ -21,13 +21,19 @@ import PromoteStudentsToAlumni from "./alumni/Alumni";
 import { usePermissions } from "@/src/hooks/hasAdminPermission";
 import AdminPermissions from "@/src/hooks/AdminProtected";
 import { PAGE_SIZE } from "@/src/constants/constants";
+import { VscRefresh } from "react-icons/vsc";
+import { CiSearch } from "react-icons/ci";
+import { SiMicrosoftexcel } from "react-icons/si";
+
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, loading, error:loadingUserError } = useAppSelector(
-    (state: RootState) => state.auth
-  );
+  const {
+    user,
+    loading,
+    error: loadingUserError,
+  } = useAppSelector((state: RootState) => state.auth);
   const { hasAdminPermissions } = usePermissions();
   const initialFilters = useMemo(
     () => ({
@@ -118,52 +124,47 @@ const Students = () => {
       </div>
     );
   }
-  console.log("students", studentsData)
+  console.log("students", studentsData);
   return (
     <>
-      
       <div className=" space-y-5   ">
         <div className="flex items-center justify-between lg:px-3 md:px-3 lg:p-2 md:p-2 px-1 p-1  lg:mt-3  ">
           <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
             Students
           </h2>
-          {hasAdminPermissions() && (
-          <CreateStudent refetchStudents={refetchStudents} />
-          )}
+          <div className="flex items-center space-x-3">
+            {hasAdminPermissions() && (
+              <CreateStudent refetchStudents={refetchStudents} />
+            )}
+            <div className="flex py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-sm inline-flex items-center space-x-2 max-w-max">
+              <SiMicrosoftexcel size={20} className="text-white" />
+              <span>Upload students</span>
+            </div>
+          </div>
         </div>
         {/* {hasAdminPermissions(user?.role) && (*/}
         {hasAdminPermissions() && (
-        <div className="flex lg:justify-end md:justify-end justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
-          <div className="grid grid-cols-2 gap-2">
-            {/* <CreateStudent refetchStudents={refetchStudents} /> */}
-            <PromoteStudents refetchStudents={refetchStudents} />
-            <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
-          </div>
+          <div className="flex lg:justify-end md:justify-end justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
+            <div className="grid grid-cols-2 gap-2">
+              <PromoteStudents refetchStudents={refetchStudents} />
+              <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
+            </div>
 
-          <div>
-            {/* <PromoteStudentsToAlumni refetchStudents={refetchStudents} /> */}
+            <div> </div>
           </div>
-        </div>
         )}
 
         <div className="bg-white shadow-md rounded-sm  p-2">
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
-            <div className="flex flex-col gap-3 p-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="class"
-                  className="block text-gray-700 text-sm lg:text-lg md:text-lg  font-semibold mb-2"
-                >
-                  Class
-                </label>
+            <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
+              <div className="relative w-full lg:w-40 md:w-40 xl:w-40 ">
                 <select
                   name="class_level_id"
                   value={filters.class_level_id || ""}
-                  // onChange={handleSelectChange}
                   onChange={handleFilterChange}
-                  className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  className="w-full lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                 >
-                  <option value="">Select Class</option>
+                  <option value="">Class</option>
                   {classesData?.map((classLevel: ClassLevel) => (
                     <option key={classLevel.id} value={classLevel.id}>
                       {classLevel.form_level.name} {classLevel?.stream?.name}
@@ -173,33 +174,30 @@ const Students = () => {
                 <BsChevronDown
                   color="gray"
                   size={20}
-                  className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                 />
               </div>
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="class"
-                  className="block text-gray-700 text-sm lg:text-lg md:text-lg font-semibold mb-2"
-                >
-                  Admission No
-                </label>
+              <div className="relative w-full lg:w-48 md:w-48 xl:w-48 ">
+                <CiSearch
+                  size={20}
+                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                />
                 <input
                   type="text"
                   name="admission_number"
                   value={filters.admission_number || ""}
-                  // onChange={handleSelectChange}
                   onChange={handleFilterChange}
-                  placeholder="Find by Admission Number"
-                  className="w-full lg:w-64 md:w-full xl:w-64  py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  placeholder="admission number"
+                  className="w-full lg:w-48 md:w-48 xl:w-48  py-2  pl-8 pr-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                 />
               </div>
-              <div className="flex flex-row justify-between lg:justify-none lg:mt-6 lg:space-x-5 md:space-x-3 md:mt-6 md:justify-between ">
-                <button
-                  onClick={handleResetFilters}
-                  className="lg:py-2 lg:px-4 p-2 text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border bg-white text-primary"
-                >
-                  Reset Filters
-                </button>
+
+              <div
+                onClick={handleResetFilters}
+                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
+              >
+                <VscRefresh className="text-white" />
+                <span>Reset Filters</span>
               </div>
             </div>
           </div>
@@ -207,32 +205,35 @@ const Students = () => {
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     #
                   </th>
-                  <th scope="col" className="px-4 py-3 text-xs">
+                  <th
+                    scope="col"
+                    className="px-4 text-left border-r py-3 text-[10px]"
+                  >
                     Name
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     Adm No
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     Class
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     Gender
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     KCPE MARKS
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     Adm Date
                   </th>
-                  <th scope="col" className="px-6 py-3 text-xs">
+                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
                     Adm Type
                   </th>
-                  
-                  <th scope="col" className="px-6 py-3 text-xs">
+
+                  <th scope="col" className="px-4 py-3 text-[10px]">
                     Actions
                   </th>
                 </tr>
@@ -250,7 +251,8 @@ const Students = () => {
                       <div className="flex items-center justify-center space-x-6 text-#1F4772">
                         <TbDatabaseOff size={25} />
                         <span>
-                          {(error as any)?.data?.error || "Internal Server Error"}
+                          {(error as any)?.data?.error ||
+                            "Internal Server Error"}
                         </span>
                       </div>
                     </td>
@@ -260,29 +262,31 @@ const Students = () => {
                   studentsData.results.map(
                     (student: Student, index: number) => (
                       <tr key={student.id} className="bg-white border-b">
-                        <th className="px-6 py-4 text-gray-900">{index + 1}</th>
-                        <td className="px-3 py-2 font-medium text-sm lg:text-sm md:text-sm text-gray-900 whitespace-nowrap">
+                        <th className="px-3 py-2 text-gray-900 border-r">
+                          {index + 1}
+                        </th>
+                        <td className="px-3 py-2 text-left font-normal text-sm border-r lg:text-sm md:text-sm text-gray-900 whitespace-nowrap">
                           {student.first_name} {student.last_name}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                           {student.admission_number}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                           {student.class_level.form_level.name}
                           {student.class_level.stream
                             ? student.class_level.stream.name
                             : ""}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                           {student.gender}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                           {student.kcpe_marks}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-xs text-left lg:text-sm border-r md:text-sm">
                           {formattedDate(new Date(student.created_at))}
                         </td>
-                        <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                        <td className="px-3 py-2 text-sm text-left lg:text-sm border-r md:text-sm">
                           {student.admission_type}
                         </td>
                         <td className="px-3 py-2 flex items-center space-x-5">
@@ -294,21 +298,21 @@ const Students = () => {
                             />
                           </div>
                           {/* {hasAdminPermissions() && ( */}
-                            <AdminPermissions
+                          <AdminPermissions
                             rolesAllowed={["Admin", "Principal"]}
-                            >
+                          >
                             <>
-                          <EditStudent
-                            studentId={student.id}
-                            refetchStudents={refetchStudents}
-                          />
+                              <EditStudent
+                                studentId={student.id}
+                                refetchStudents={refetchStudents}
+                              />
 
-                          <DeleteStudent
-                            studentId={student.id}
-                            refetchStudents={refetchStudents}
-                          />
+                              <DeleteStudent
+                                studentId={student.id}
+                                refetchStudents={refetchStudents}
+                              />
                             </>
-                            </AdminPermissions>
+                          </AdminPermissions>
                           {/* )} */}
                         </td>
                       </tr>
@@ -317,9 +321,10 @@ const Students = () => {
                 ) : (
                   <tr>
                     <td colSpan={5} className="text-center py-4">
-                    <span>
-                          {(error as any)?.data?.error || "Apply Filters to fetch students records"}
-                        </span>
+                      <span>
+                        {(error as any)?.data?.error ||
+                          "Apply Filters to fetch students records"}
+                      </span>
                     </td>
                   </tr>
                 )}

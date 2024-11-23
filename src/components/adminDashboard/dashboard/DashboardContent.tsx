@@ -92,7 +92,7 @@ const DashboardData = () => {
   }
   return (
     <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6 lg:gap-6 lg:grid-cols-4  xl:grid-cols-4 2xl:gap-7.5">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-4 lg:gap-4 lg:grid-cols-4  xl:grid-cols-4 2xl:gap-7.5">
         {cardData.map((card) => (
           <CardDataStats
             key={card.title}

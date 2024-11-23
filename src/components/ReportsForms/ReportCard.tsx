@@ -3,24 +3,32 @@ import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useGetReportFormsQuery } from "@/redux/queries/marks/reportsApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChangeEvent, useEffect, useMemo, useState,Suspense, lazy } from "react";
+import { BsFiletypePdf } from "react-icons/bs";
+import {
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useState,
+  Suspense,
+  lazy,
+} from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { TbDatabaseOff } from "react-icons/tb";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { TermInterface } from "@/src/definitions/terms";
-
-import { PDFViewer } from "@react-pdf/renderer";
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
+import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import { pdf, PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
 import { ImFilePdf } from "react-icons/im";
 import ContentSpinner from "../layouts/contentSpinner";
 import dynamic from "next/dynamic";
 import ReportPDF from "./reportPdf";
 const Reports = () => {
-
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const initialFilters = useMemo(
     () => ({
       class_level: searchParams.get("class_level") || "",
@@ -31,7 +39,10 @@ const Reports = () => {
   );
 
   const [filters, setFilters] = useState(initialFilters);
- 
+  const { user, loading: loadingUser } = useAppSelector(
+    (state: RootState) => state.auth
+  );
+
   useEffect(() => {
     const params = new URLSearchParams();
     if (filters.class_level) params.set("class_level", filters.class_level);
@@ -41,7 +52,15 @@ const Reports = () => {
 
     router.replace(`?${params.toString()}`);
   }, [filters]);
-
+  const title = useMemo(() => {
+    if (user?.role === "Teacher") {
+      return "Unofficial Terminal Report Form";
+    } else if (user?.role === "Admin" || user?.role === "Principal") {
+      return "Official Terminal Report Form";
+    } else {
+      return "Terminal Report Form";
+    }
+  }, [user]);
   const {
     isLoading: loading,
     data,
@@ -73,13 +92,13 @@ const Reports = () => {
     setFilters((prev) => ({ ...prev, admission_number: value }));
   }, 200);
   if (loadingClasses || loadingTerms) {
-    return <ContentSpinner />; 
+    return <ContentSpinner />;
   }
-  
+
   if (!classesData || !termsData) {
     return <div>Failed to load classes or terms data.</div>;
   }
-  
+
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -102,9 +121,7 @@ const Reports = () => {
 
   console.log("data", data);
 
-
-  const handleGenerateReports = () => {};
-
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   return (
     <div className="space-y-5  py-2 px-2   min-h-[100vh] ">
       <div className="bg-white space-y-5 py-5">
@@ -186,16 +203,42 @@ const Reports = () => {
         </div>
       ) : error ? (
         <div className="w-full mx-2 md:mx-auto lg:mx-auto flex justify-center lg:w-11/12 md:w-11/12   items-center space-x-2 py-5 text-red-600">
-          <TbDatabaseOff className=" text-gray-400" size={30} />
           <p className="text-sm lg:text-lg md:text-lg font-bold">
             {(error as any)?.data?.error || "An error occurred."}
           </p>
         </div>
       ) : data?.students_data && data.students_data.length > 0 ? (
         <Suspense fallback={<ContentSpinner />}>
-        <PDFViewer style={{ width: "100%", height: "600px" }}>
-          <ReportPDF data={data.students_data} />
-        </PDFViewer>
+          {isMobile ? (
+            <div>
+              <PDFDownloadLink
+                document={<ReportPDF data={data.students_data} title={title} />}
+                fileName="report-cards.pdf"
+              >
+                <div className="mx-auto flex justify-center">
+                  <div>
+                    {loading ? (
+                      <span className="flex items-center space-x-2">
+                        <ContentSpinner />
+                        <span>Preparing PDF...</span>
+                      </span>
+                    ) : (
+                      <div className="flex inline-flex items-center space-x-2  max-w-max px-4 py-2 rounded-md bg-primary text-white">
+                        <BsFiletypePdf size={20} className="text-white" />
+                        <span className="text-sm lg:text-md md:text-md">
+                          Download ReportForms
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </PDFDownloadLink>
+            </div>
+          ) : (
+            <PDFViewer style={{ width: "100%", height: "600px" }}>
+              <ReportPDF data={data.students_data} title={title} />
+            </PDFViewer>
+          )}
         </Suspense>
       ) : (
         <div className="text-center text-red-600">

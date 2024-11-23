@@ -220,9 +220,10 @@ const styles = StyleSheet.create({
 
 interface ReportPDFProps {
   data: Report[];
+  title : string;
 }
-const ReportPDF = ({ data }: ReportPDFProps) => {
- 
+const ReportPDF = ({ data, title  }: ReportPDFProps) => {
+//  const reportTitle = userRole === "Admin" || userRole === "Principal" ? "TERMINAL REPORT FORM" : "UNOFFICIAL TERMINAL REPORT FORM";
   console.log("data", data);
   if (!data || data.length === 0) {
     return (
@@ -244,7 +245,7 @@ const ReportPDF = ({ data }: ReportPDFProps) => {
               <View style={styles.subHeaderSection}>
                 <Text style={styles.header1}>P.O Box 180-90119</Text>
                 
-                  <Text style={styles.subHeader}>TERMINAL REPORT FORM</Text>
+                  <Text style={styles.subHeader}>{title}</Text>
                
               </View>
             </View>
