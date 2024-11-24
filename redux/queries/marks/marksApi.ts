@@ -20,8 +20,9 @@ export const marksApi = apiSlice.injectEndpoints({
     getMarksData: builder.query({
       query: (params: {  class_level: any; term:any;    admission_number?: any; subject?:any; }) => {
         const queryParams: { class_level: any; term: any; admission_number?: any; subject?:any; } = {
-          class_level: params.class_level,
+          // class_level: params.class_level,
           term: params.term,  
+          ...(params.class_level && { class_level: params.class_level}),
           ...(params.admission_number && { admission_number: params.admission_number }),
           ...(params.subject && { subject: params.subject }), 
         };

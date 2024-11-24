@@ -34,11 +34,18 @@ const MarksList = () => {
   const [filters, setFilters] = useState(initialFilters);
   useEffect(() => {
     const params = new URLSearchParams();
-    if (filters.class_level) params.set("class_level", filters.class_level);
-    if (filters.admission_number)
-      params.set("admission_number", filters.admission_number);
-    if (filters.term) params.set("term", filters.term);
-    if (filters.subject) params.set("subject", filters.subject);
+    if (filters.class_level){
+      params.set("class_level", filters.class_level)
+    };
+    if (filters.admission_number) {
+      params.set("admission_number", filters.admission_number)
+    };
+    if (filters.term){
+      params.set("term", filters.term)
+    };
+    if (filters.subject){
+      params.set("subject", filters.subject)
+    };
 
     router.replace(`?${params.toString()}`);
   }, [filters]);
@@ -111,6 +118,7 @@ const MarksList = () => {
       </div>
     );
   }
+  console.log("terms", termsData)
   return (
     <div className="space-y-5 shadow-md border py-2  bg-white">
       <div className=" p-3  space-y-3">
@@ -302,7 +310,9 @@ const MarksList = () => {
             ) : (
               <tr>
                 <td colSpan={4} className="text-center py-4">
-                  No data found.
+                  <span className="text-sm lg:text-lg md:text-lg text-red-500">
+                    Internal server error
+                  </span>
                 </td>
               </tr>
             )}

@@ -73,7 +73,7 @@ const Marks = () => {
   const handleSearch = useDebouncedCallback((value: string) => {
     console.log(`Debounced Search Term: ${value}`);
     setFilters((prev) => ({ ...prev, admission_number: value }));
-  }, 200);
+  }, 100);
  
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
