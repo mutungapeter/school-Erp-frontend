@@ -19,6 +19,7 @@ import DataSpinner from "../layouts/dataSpinner";
 import { BsChevronDown } from "react-icons/bs";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { TermInterface } from "@/src/definitions/terms";
+import ContentSpinner from "../perfomance/contentSpinner";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -116,13 +117,13 @@ const MarksList = () => {
   const refetchMarks = () => {
     refetch();
   };
-  if (loading) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <PageLoadingSpinner />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+  //       <PageLoadingSpinner />
+  //     </div>
+  //   );
+  // }
   console.log("terms", termsData)
   return (
     <div className="space-y-5 shadow-md border py-2  bg-white">
@@ -259,7 +260,7 @@ const MarksList = () => {
             {loading ? (
               <tr>
                 <td colSpan={8} className="text-center py-4">
-                  <DataSpinner />
+                  <ContentSpinner />
                 </td>
               </tr>
             ) : error ? (
