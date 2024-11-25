@@ -20,14 +20,15 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { UploadMarks } from "./uploadMarks";
 import { VscRefresh } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
+import ContentSpinner from "../perfomance/contentSpinner";
 const Marks = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const initialFilters = useMemo(
     () => ({
-      subject_id: searchParams.get("subjectId") || "",
-      class_level_id: searchParams.get("classLevelId") || "",
+      subject_id: searchParams.get("subject_id") || "",
+      class_level_id: searchParams.get("class_level_id") || "",
       admission_number: searchParams.get("admission_number") || "",
     }),
     [searchParams]
@@ -35,27 +36,41 @@ const Marks = () => {
   const [filters, setFilters] = useState(initialFilters);
   useEffect(() => {
     const params = new URLSearchParams();
-    if (filters.subject_id) params.set("subject_id", filters.subject_id);
-    if (filters.class_level_id)
+    if (filters.subject_id) {
+      params.set("subject_id", filters.subject_id)
+    }
+    if (filters.class_level_id){
       params.set("class_level_id", filters.class_level_id);
-    if (filters.admission_number)
+    }
+    if (filters.admission_number){
       params.set("admission_number", filters.admission_number);
+    }
 
     router.push(`?${params.toString()}`);
   }, [filters]);
 
-  const queryParams = useMemo(
-    () => ({
-      ...filters,
-    }),
-    [filters]
-  );
+  // const queryParams = useMemo(
+  //   () => ({
+  //     ...filters,
+  //   }),
+  //   [filters]
+  // );
   const {
     isLoading: loading,
     data,
     error,
     refetch,
-  } = useGetStudentsBySubjectAndClassQuery(queryParams, { skip: false });
+  } = useGetStudentsBySubjectAndClassQuery( {
+    subject_id: filters.subject_id || "",
+    class_level_id: filters.class_level_id || "",
+    admission_number: filters.admission_number || "",
+  
+  }, { 
+    skip: false,
+    refetchOnMountOrArgChange: true,
+    refetchOnReconnect: true
+   }
+  );
 
   const {
     isLoading: loadingClasses,
@@ -87,19 +102,19 @@ const Marks = () => {
   };
 
   const handleResetFilters = () => {
-    setFilters({ class_level_id: "", admission_number: "", subject_id: "" });
+    setFilters({ 
+      class_level_id: "", 
+      admission_number: "",
+       subject_id: ""
+       });
+    const params = new URLSearchParams();
     router.push("?");
   };
 
-  if (loading) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <PageLoadingSpinner />
-      </div>
-    );
-  }
-  // console.log("data", data);
-  // console.log("studentsData", studentsData);
+  
+  console.log("data", data);
+  console.log("error", error)
+  console.log("studentsData", studentsData);
   return (
     <>
       <div className="space-y-5 shadow-md border py-2  bg-white  ">
@@ -213,7 +228,7 @@ const Marks = () => {
               {loading ? (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    <DataSpinner />
+                  <ContentSpinner />
                   </td>
                 </tr>
               ) : error ? (
@@ -222,7 +237,7 @@ const Marks = () => {
                     <div className="flex items-center justify-center space-x-6 text-#1F4772">
                       <TbDatabaseOff size={25} />
                       <span>
-                        {(error as any).data.error || "No data to show"}
+                        {(error as any)?.data?.error || "No data to show"}
                       </span>
                     </div>
                   </td>
@@ -249,9 +264,12 @@ const Marks = () => {
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    {studentsData?.length === 0 || !studentsData
-                      ? "No data found."
-                      : "No data found."}
+                  <div className="flex items-center justify-center space-x-6 text-#1F4772">
+                      <TbDatabaseOff size={25} />
+                      <span>
+                        {(error as any)?.data?.error || "No data to show"}
+                      </span>
+                    </div>
                   </td>
                 </tr>
               )}

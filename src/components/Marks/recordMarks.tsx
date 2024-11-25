@@ -218,7 +218,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                             <option value="">Select Term</option>
                             {termsData?.map((term: any) => (
                               <option key={term.id} value={term.id}>
-                                {term.term}
+                                {term.term} - {term.calendar_year}
                               </option>
                             ))}
                           </>
