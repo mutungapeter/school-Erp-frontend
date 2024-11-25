@@ -63,11 +63,8 @@ const MarksList = () => {
       subject: filters.subject || "",
     },
     { 
-      skip: !filters.term || 
-          (!filters.admission_number && !filters.class_level && !filters.subject) && !((filters.admission_number && filters.term) || (filters.class_level && filters.subject && filters.term) ||
-            (filters.subject && filters.term) ||
-            (filters.admission_number && filters.subject && filters.term)
-          ),
+      skip: false,
+      refetchOnMountOrArgChange: true,
       refetchOnReconnect: true
      }
   );
@@ -113,6 +110,7 @@ const MarksList = () => {
       subject: "",
       term: "",
     });
+    const params = new URLSearchParams();
     router.push("?");
   };
   const refetchMarks = () => {
