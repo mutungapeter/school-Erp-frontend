@@ -62,7 +62,14 @@ const MarksList = () => {
       admission_number: filters.admission_number || "",
       subject: filters.subject || "",
     },
-    { skip: false }
+    { 
+      skip: !filters.term || 
+          (!filters.admission_number && !filters.class_level && !filters.subject) && !((filters.admission_number && filters.term) || (filters.class_level && filters.subject && filters.term) ||
+            (filters.subject && filters.term) ||
+            (filters.admission_number && filters.subject && filters.term)
+          ),
+      refetchOnReconnect: true
+     }
   );
   const {
     isLoading: loadingClasses,
@@ -311,7 +318,7 @@ const MarksList = () => {
               <tr>
                 <td colSpan={4} className="text-center py-4">
                   <span className="text-sm lg:text-lg md:text-lg text-red-500">
-                    Internal server error
+                   No data to show
                   </span>
                 </td>
               </tr>
