@@ -133,7 +133,8 @@ const Students = () => {
 
   const handleDelete = async () => {
     const data = selectedStudents;
-    // console.log("data", data);
+    // const data = { student_ids: selectedStudents };
+    console.log("data", data);
 
     try {
       const response = await deleteStudents(data).unwrap();
@@ -250,8 +251,8 @@ const Students = () => {
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
                 <tr>
-                  <th scope="col" className="px-4 border-r py-3 text-center">
-                    <div className="flex items-center">
+                  <th scope="col" className="px-4 py-3 border-r  text-center">
+                  
                       <input
                         id="checkbox-all"
                         type="checkbox"
@@ -277,12 +278,12 @@ const Students = () => {
                                       dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
                                        dark:border-gray-600"
                       />
-                    </div>
+                  
                   </th>
 
                   <th
                     scope="col"
-                    className="px-4 text-left border-r py-3 text-[10px]"
+                    className="px-4 py-3 text-left border-r  text-[10px]"
                   >
                     Name
                   </th>
