@@ -92,7 +92,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
     reset();
     setIsOpen(false);
   };
-console.log("termsData", termsData)
+// console.log("termsData", termsData)
   return (
     <>
        <div

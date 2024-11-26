@@ -69,6 +69,14 @@ export const studentsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    uploadStudents: builder.mutation({
+      query: (formData) => ({
+         url: `upload-students/`, 
+         method: 'POST',
+         body: formData, 
+       }),
+ 
+     }),
     promoteStudents: builder.mutation({
       query: (data) => ({
         url: `promote-students/`,
@@ -118,6 +126,14 @@ export const studentsApi = apiSlice.injectEndpoints({
       query: (id) => ({
         url: `students/${id}/`,
         method: "DELETE",
+      }),
+    }),
+    deleteStudents: builder.mutation({
+      query: (data) => ({
+      
+        url: `students/`,
+        method: "DELETE",
+        body: data
       }),
     }),
     updateStudent: builder.mutation({
@@ -188,5 +204,7 @@ export const {
   useCreateStudentMutation,
   useGetAlumniRecordsQuery,
   useGetPromotionRecordsQuery,
-  useGetStudentPerformanceQuery
+  useGetStudentPerformanceQuery,
+  useUploadStudentsMutation,
+  useDeleteStudentsMutation
 } = studentsApi;

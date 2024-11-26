@@ -118,14 +118,14 @@ const Marks = () => {
   return (
     <>
       <div className="space-y-5 shadow-md border py-2  bg-white  ">
-        <div className="p-2  flex lg:flex-row md:flex-row lg:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
+        <div className="p-2  flex lg:flex-row md:flex-row lg:justify-between md:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
           <h2 className="font-semibold text-black text-xl">Recording Marks</h2>
           <div className="flex justify-end lg:justify-none md:justify-none items-center mt-4">
             <UploadMarks />
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
+        <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center md:justify-end lg:justify-end  lg:space-x-5 px-2 ">
         <div className="flex lg:space-x-4 space-x-2 md:space-x-4 items-center">
         <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
               <select

@@ -117,13 +117,7 @@ const MarksList = () => {
   const refetchMarks = () => {
     refetch();
   };
-  // if (loading) {
-  //   return (
-  //     <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-  //       <PageLoadingSpinner />
-  //     </div>
-  //   );
-  // }
+
   console.log("terms", termsData)
   return (
     <div className="space-y-5 shadow-md border py-2  bg-white">

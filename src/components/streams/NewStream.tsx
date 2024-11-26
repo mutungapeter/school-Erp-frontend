@@ -7,6 +7,8 @@ import { FaPlusCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
+import { IoCloseOutline } from "react-icons/io5";
+import { FiPlus } from "react-icons/fi";
 import "../style.css";
 interface CreateStreamProps {
   refetchStreams: () => void;
@@ -26,6 +28,7 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -36,8 +39,7 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
     try {
       await createStream(data).unwrap();
       toast.success("Stream created successfully!");
-      handleCloseModal();
-      refetchStreams();
+      
     } catch (error: any) {
       console.log(error);
       if (error?.data?.error) {
@@ -45,6 +47,10 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
       } else {
         toast.error("Failed to Create stream. Please try again.");
       }
+    }finally{
+      handleCloseModal();
+      refetchStreams();
+      reset();
     }
   };
 
@@ -78,13 +84,19 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-xl p-4 md:p-6 lg:p-6 md:max-w-xl">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
                   <p className="font-semibold text-black md:text-xl text-md lg:text-xl">
                     Add New Stream
                   </p>
+                  <div className="flex justify-end cursor-pointer">
+              <IoCloseOutline size={35}
+              onClick={handleCloseModal}
+               className=" text-gray-500 "
+                />
+              </div>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
@@ -109,20 +121,16 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
                     )}
                   </div>
 
-                  <div className="flex justify-between mt-6">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
+                  <div className="flex justify-start mt-7">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-[#36A000] text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-2 
+                       text-white rounded-md  px-5 py-2"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                      <FiPlus className="text-white " size={20} />
+                      <span>{isSubmitting ? "Submitting..." : "Add Stream"}</span>
                     </button>
                   </div>
                 </form>

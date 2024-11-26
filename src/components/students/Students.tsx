@@ -1,7 +1,10 @@
 "use client";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
+import {
+  useDeleteStudentsMutation,
+  useGetStudentsQuery,
+} from "@/redux/queries/students/studentsApi";
 import { Student } from "@/src/definitions/students";
 import { formattedDate } from "@/src/utils/dates";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,6 +27,9 @@ import { PAGE_SIZE } from "@/src/constants/constants";
 import { VscRefresh } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { UploadStudents } from "./uploadStudents";
+import ContentSpinner from "../perfomance/contentSpinner";
+import { toast } from "react-toastify";
 
 const Students = () => {
   const pageSize = PAGE_SIZE;
@@ -46,7 +52,7 @@ const Students = () => {
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
   const [filters, setFilters] = useState(initialFilters);
   const [currentPage, setCurrentPage] = useState(initialPage);
-
+  const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("page", currentPage.toString());
@@ -79,6 +85,7 @@ const Students = () => {
     refetch: refetchClasses,
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
 
+  const [deleteStudents, { isLoading: deleting }] = useDeleteStudentsMutation();
   const totalPages = Math.ceil((studentsData?.count || 0) / pageSize);
 
   const handlePageChange = (page: number) => {
@@ -116,15 +123,38 @@ const Students = () => {
   const handleViewDetails = (id: number) => {
     router.push(`/students/${id}/`);
   };
-
-  if (loadingStudents) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <PageLoadingSpinner />
-      </div>
+  const handleSelect = (studentId: number) => {
+    setSelectedStudents((prevSelected) =>
+      prevSelected.includes(studentId)
+        ? prevSelected.filter((id) => id !== studentId)
+        : [...prevSelected, studentId]
     );
-  }
-  console.log("students", studentsData);
+  };
+
+  const handleDelete = async () => {
+    const data = selectedStudents;
+    // console.log("data", data);
+
+    try {
+      const response = await deleteStudents(data).unwrap();
+      const successMessage =
+        response.message || "Selected students deleted successfully!";
+      toast.success(successMessage);
+    } catch (error: any) {
+      console.log("error", error);
+      if (error?.data?.error) {
+        toast.error(error.data.error);
+      }
+    } finally {
+      refetchStudents();
+      setSelectedStudents([]);
+    }
+  };
+  const cancelSelection = () => {
+    setSelectedStudents([]);
+  };
+
+  // console.log("students", studentsData);
   return (
     <>
       <div className=" space-y-5   ">
@@ -134,27 +164,28 @@ const Students = () => {
           </h2>
           <div className="flex items-center space-x-3">
             {hasAdminPermissions() && (
-              <CreateStudent refetchStudents={refetchStudents} />
+               <UploadStudents refetchStudents={refetchStudents} />
             )}
-            <div className="flex py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-sm inline-flex items-center space-x-2 max-w-max">
-              <SiMicrosoftexcel size={20} className="text-white" />
-              <span>Upload students</span>
-            </div>
           </div>
         </div>
         {/* {hasAdminPermissions(user?.role) && (*/}
         {hasAdminPermissions() && (
-          <div className="flex lg:justify-end md:justify-end justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
-            <div className="grid grid-cols-2 gap-2">
+          <div className="flex lg:justify-between  justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
+             <div className="flex justify-between items-center space-x-3"> 
+            <CreateStudent refetchStudents={refetchStudents} />
+            </div>
+            <div className="flex justify-between items-center space-x-3">
               <PromoteStudents refetchStudents={refetchStudents} />
               <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
+              
             </div>
 
-            <div> </div>
+           
           </div>
         )}
 
         <div className="bg-white shadow-md rounded-sm  p-2">
+          
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
             <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
               <div className="relative w-full lg:w-40 md:w-40 xl:w-40 ">
@@ -201,13 +232,54 @@ const Students = () => {
               </div>
             </div>
           </div>
+          {selectedStudents.length > 0 && (
+            <div className="flex items-center space-x-3 py-3">
+              <button
+                onClick={handleDelete}
+                disabled={deleting}
+                className="bg-red-500 text-sm text-white py-2 px-3 rounded-lg shadow-md"
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+              <button onClick={cancelSelection} className="text-sm bg-gray-500 text-white rounded-lg p-2 shadow-md btn-cancel">
+                Cancel
+              </button>
+            </div>
+          )}
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
                 <tr>
-                  <th scope="col" className="px-4 border-r py-3 text-[10px]">
-                    #
+                  <th scope="col" className="px-4 border-r py-3 text-center">
+                    <div className="flex items-center">
+                      <input
+                        id="checkbox-all"
+                        type="checkbox"
+                        checked={
+                          selectedStudents.length ===
+                          studentsData?.results.length
+                        }
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedStudents(
+                              studentsData?.results.map(
+                                (student: Student) => student.id
+                              )
+                            );
+                          } else {
+                            setSelectedStudents([]);
+                          }
+                        }}
+                        className="w-4 h-4
+                                    bg-gray-100 border-gray-300
+                                     rounded text-primary-600 
+                                     focus:ring-primary-500 dark:focus:ring-primary-600
+                                      dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
+                                       dark:border-gray-600"
+                      />
+                    </div>
                   </th>
+
                   <th
                     scope="col"
                     className="px-4 text-left border-r py-3 text-[10px]"
@@ -241,8 +313,8 @@ const Students = () => {
               <tbody>
                 {loadingStudents ? (
                   <tr>
-                    <td colSpan={5} className="text-center py-4">
-                      Loading...
+                    <td colSpan={8} className="text-center py-4">
+                      <ContentSpinner />
                     </td>
                   </tr>
                 ) : error ? (
@@ -262,9 +334,19 @@ const Students = () => {
                   studentsData.results.map(
                     (student: Student, index: number) => (
                       <tr key={student.id} className="bg-white border-b">
-                        <th className="px-3 py-2 text-gray-900 border-r">
-                          {index + 1}
+                        <th className="px-3 py-2 text-gray-900 text-center border-r">
+                          <input
+                            id="checkbox-table-search-1"
+                            type="checkbox"
+                            checked={selectedStudents.includes(student.id)}
+                            onChange={() => handleSelect(student.id)}
+                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded 
+                                   text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600
+                                    dark:ring-offset-gray-800 focus:ring-2
+                                     dark:bg-gray-700 dark:border-gray-600"
+                          />
                         </th>
+
                         <td className="px-3 py-2 text-left font-normal text-sm border-r lg:text-sm md:text-sm text-gray-900 whitespace-nowrap">
                           {student.first_name} {student.last_name}
                         </td>
@@ -307,10 +389,10 @@ const Students = () => {
                                 refetchStudents={refetchStudents}
                               />
 
-                              <DeleteStudent
+                              {/* <DeleteStudent
                                 studentId={student.id}
                                 refetchStudents={refetchStudents}
-                              />
+                              /> */}
                             </>
                           </AdminPermissions>
                           {/* )} */}

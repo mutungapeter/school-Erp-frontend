@@ -90,7 +90,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
   return (
     <>
       <button
-        className="lg:py-2 lg:px-4 md:py-2 md:px-4 py-2 px-2 lg:text-lg md:text-lg text-xs  rounded-sm border bg-[#1566FF]  text-white"
+        className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-sm border bg-[#1566FF]  text-white"
         onClick={handleOpenModal}
       >
         Promote Students

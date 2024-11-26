@@ -16,12 +16,13 @@ import { useUpdateStudentMutation,useGetStudentQuery } from "@/redux/queries/stu
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { BsChevronDown } from "react-icons/bs";
 import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
+import { IoCloseOutline } from "react-icons/io5";
 interface Props {
     studentId: number;
   refetchStudents: () => void;
 }
 const EditStudent = ({ studentId, refetchStudents }: Props) => {
-  console.log("studentId", studentId);
+  // console.log("studentId", studentId);
   const [isOpen, setIsOpen] = useState(false);
   const [updateStudent, { isLoading: Updating }] = useUpdateStudentMutation();
   const { data: studentData, isLoading: isFetching } =useGetStudentQuery(studentId);
@@ -71,7 +72,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
       // setValue("current_term", studentData.current_term);
     }
   }, [studentData, setValue]);
-console.log("studentData",studentData)
+// console.log("studentData",studentData)
   const onSubmit = async (data: FieldValues) => {
     const id = studentId;
     try {
@@ -120,6 +121,12 @@ console.log("studentData",studentData)
                 <p className="text-2xl md:text-lg lg:text-lg font-semibold text-black">
                   Update Student&apos;s details
                 </p>
+                 <div className="flex justify-end cursor-pointer">
+              <IoCloseOutline size={35}
+              onClick={handleCloseModal}
+               className=" text-gray-500 "
+                />
+                </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
