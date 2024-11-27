@@ -83,23 +83,23 @@ console.log("teachers", teachersData)
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-              <th scope="col" className="px-3 py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 #
               </th>
-              <th scope="col" className="px-3 py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Name
               </th>
-              <th scope="col" className="px-3 py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Staff No
               </th>
-              <th scope="col" className="px-3 py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Phone
               </th>
-              <th scope="col" className="px-3 py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 email
               </th>
 
-              <th scope="col" className="px-3 justify-center py-2">
+              <th scope="col" className="px-4 border-r py-3 text-[10px] justify-center">
                 Actions
               </th>
             </tr>
@@ -114,17 +114,17 @@ console.log("teachers", teachersData)
             ) : teachersData?.results && teachersData?.results.length > 0 ? (
               teachersData?.results.map((teacher: Teacher, index: number) => (
                 <tr key={teacher.id} className="bg-white border-b">
-                  <th className="px-3 py-2 text-gray-900">{index + 1}</th>
-                  <td className="px-3 py-2 text-sm lg:text-md md:text-md font-medium text-gray-900 whitespace-nowrap">
+                  <th className="px-2 md:px-3 lg:px-3 py-2 text-xs lg:text-sm border-r md:text-sm text-gray-900">{index + 1}</th>
+                  <td className="px-2 md:px-3 lg:px-3 py-2 text-xs lg:text-sm border-r md:text-sm  text-gray-900 whitespace-nowrap">
                     {teacher.user.first_name} {teacher.user.last_name}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-md md:text-md">
+                  <td className="px-2 md:px-3 lg:px-3 py-2 text-xs lg:text-sm border-r md:text-sm">
                     {teacher.staff_no}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-md md:text-md">
+                  <td className="px-3 py-2 text-xs lg:text-sm border-r md:text-sm">
                     {teacher.user.phone_number}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-md md:text-md ">
+                  <td className="px-3 py-2 text-xs lg:text-sm border-r md:text-sm ">
                     {teacher.user.email}
                   </td>
 
@@ -178,7 +178,7 @@ console.log("teachers", teachersData)
               onClick={() => handlePageChange(page)}
               className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
                 page === currentPage
-                  ? "bg-[#1F4772] text-white"
+                  ? "bg-primary text-white"
                   : "bg-white text-black border-gray-300 hover:bg-gray-100"
               }`}
             >
@@ -190,7 +190,7 @@ console.log("teachers", teachersData)
             className={`px-4 py-2 border rounded ${
               currentPage === totalPages
                 ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                : "bg-[#1F4772] text-white border-gray-300 hover:bg-gray-100"
+                : "bg-primary text-white border-gray-300 hover:bg-gray-100"
             }`}
             disabled={currentPage === totalPages}
           >

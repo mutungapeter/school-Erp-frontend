@@ -10,7 +10,8 @@ import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import "../style.css";
 import { BsChevronDown } from "react-icons/bs";
-
+import { IoCloseOutline } from "react-icons/io5";
+import { BiCheckCircle } from "react-icons/bi";
 interface CreateTeacherProps {
   refetchTeachers: () => void;
 }
@@ -99,24 +100,25 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-xl p-4 md:p-5 lg:p-5 md:max-w-xl">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
                   <p className="text-sm md:text-lg lg:text-lg font-semibold text-black">
                     Add New Teacher/Staff
                   </p>
+                  <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                    <div>
-                      <label
-                        htmlFor="firstName"
-                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        First Name
-                      </label>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                <div>
+                      
                       <input
                         type="text"
                         id="firstName"
@@ -130,13 +132,11 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                    <div>
-                      <label
-                        htmlFor="lastName"
-                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Last Name
-                      </label>
+                  
+                
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                  <div>
+                      
                       <input
                         type="text"
                         id="lastName"
@@ -150,15 +150,8 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
                     <div>
-                      <label
-                        htmlFor="Phone"
-                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Phone Number
-                      </label>
+                     
                       <input
                         type="text"
                         id="Phone"
@@ -172,35 +165,11 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="text"
-                        id="email"
-                        placeholder="Enter email"
-                        {...register("email")}
-                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      />
-                      {errors.email && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.email.message)}
-                        </p>
-                      )}
-                    </div>
+                   
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
                     <div>
-                      <label
-                        htmlFor="username"
-                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Username
-                      </label>
+                    
                       <input
                         type="text"
                         id="username"
@@ -215,12 +184,26 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                       )}
                     </div>
                     <div>
-                      <label
-                        htmlFor="staff_no"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Staff Number
-                      </label>
+                    
+                      <input
+                        type="text"
+                        id="email"
+                        placeholder="Enter email"
+                        {...register("email")}
+                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      />
+                      {errors.email && (
+                        <p className="text-red-500 text-sm">
+                          {String(errors.email.message)}
+                        </p>
+                      )}
+                    </div>
+                  
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
+                  <div>
+                     
                       <input
                         type="text"
                         id="staff_no"
@@ -234,29 +217,21 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
                     <div className="relative">
-                      <label
-                        htmlFor="gender"
-                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Gender
-                      </label>
+                     
                       <select
                         id="gender"
                         {...register("gender")}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
-                        <option value="">Gender</option>
+                        <option value="">Select gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                       </select>
                       <BsChevronDown 
                       color="gray" 
                       size={20}
-                        className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                        className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
                       {errors.gender && (
                         <p className="text-red-500 text-sm">
@@ -265,13 +240,11 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                       )}
                     </div>
 
-                    <div>
-                      <label
-                        htmlFor="password"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Password
-                      </label>
+                   
+                  </div>
+                  <div>
+                  <div>
+                    
                       <input
                         type={showPassword ? "text" : "password"}
                         id="password"
@@ -295,20 +268,16 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                     </div>
                   </div>
 
-                  <div className="flex justify-between mt-6">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-3 py-2">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                      <BiCheckCircle className="text-white " size={18} />
+                     <span> {isSubmitting ? "Submitting..." : "Save Teacher"}</span>
                     </button>
                   </div>
                 </form>

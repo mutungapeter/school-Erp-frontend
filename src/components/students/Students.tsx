@@ -159,11 +159,11 @@ const Students = () => {
     setSelectedStudents([]);
   };
   const handleOpenDeleteModal = () => {
-    setIsDeleteModalOpen(true); 
+    setIsDeleteModalOpen(true);
   };
 
   const handleCloseDeleteModal = () => {
-    setIsDeleteModalOpen(false);  
+    setIsDeleteModalOpen(false);
   };
   // console.log("students", studentsData);
   return (
@@ -175,28 +175,24 @@ const Students = () => {
           </h2>
           <div className="flex items-center space-x-3">
             {hasAdminPermissions() && (
-               <UploadStudents refetchStudents={refetchStudents} />
+              <UploadStudents refetchStudents={refetchStudents} />
             )}
           </div>
         </div>
         {/* {hasAdminPermissions(user?.role) && (*/}
         {hasAdminPermissions() && (
           <div className="flex lg:justify-between  justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
-             <div className="flex justify-between items-center space-x-3"> 
-            <CreateStudent refetchStudents={refetchStudents} />
+            <div className="flex justify-between items-center space-x-3">
+              <CreateStudent refetchStudents={refetchStudents} />
             </div>
             <div className="flex justify-between items-center space-x-3">
               <PromoteStudents refetchStudents={refetchStudents} />
               <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
-              
             </div>
-
-           
           </div>
         )}
 
         <div className="bg-white shadow-md rounded-sm  p-2">
-          
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
             <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
               <div className="relative w-full lg:w-40 md:w-40 xl:w-40 ">
@@ -245,14 +241,15 @@ const Students = () => {
           </div>
           {selectedStudents.length > 0 && (
             <div className="flex items-center space-x-3 py-3">
-             
-              <button onClick={cancelSelection} 
-             className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer">
+              <button
+                onClick={cancelSelection}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+              >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
               </button>
               <button
-                // onClick={handleDelete}
+                type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
                 className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
@@ -263,42 +260,39 @@ const Students = () => {
             </div>
           )}
           <DeleteStudentModal
-        isOpen={isDeleteModalOpen}
-        onClose={handleCloseDeleteModal}
-        onDelete={handleDelete}
-      />
+            isOpen={isDeleteModalOpen}
+            onClose={handleCloseDeleteModal}
+            onDelete={handleDelete}
+          />
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
                 <tr>
                   <th scope="col" className="px-4 py-3 border-r  text-center">
-                  
-                      <input
-                        id="checkbox-all"
-                        type="checkbox"
-                        checked={
-                          selectedStudents.length ===
-                          studentsData?.results.length
+                    <input
+                      id="checkbox-all"
+                      type="checkbox"
+                      checked={
+                        selectedStudents.length === studentsData?.results.length
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedStudents(
+                            studentsData?.results.map(
+                              (student: Student) => student.id
+                            )
+                          );
+                        } else {
+                          setSelectedStudents([]);
                         }
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectedStudents(
-                              studentsData?.results.map(
-                                (student: Student) => student.id
-                              )
-                            );
-                          } else {
-                            setSelectedStudents([]);
-                          }
-                        }}
-                        className="w-4 h-4
+                      }}
+                      className="w-4 h-4
                                     bg-gray-100 border-gray-300
                                      rounded text-primary-600 
                                      focus:ring-primary-500 dark:focus:ring-primary-600
                                       dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
                                        dark:border-gray-600"
-                      />
-                  
+                    />
                   </th>
 
                   <th

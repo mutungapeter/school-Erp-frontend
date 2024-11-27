@@ -5,6 +5,10 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
 import { MdOutlineClose } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
+import { CiSettings } from "react-icons/ci";
+import { HiChevronDown } from "react-icons/hi2";
+import { GoGear } from "react-icons/go";
 interface Props {
   teacher_id: number;
 }
@@ -98,9 +102,10 @@ console.log("subjectsData", subjectsData)
     <>
       <div
         onClick={handleOpenModal}
-        className="py-1 px-2 rounded-md bg-primary text-white text-sm cursor-pointer text-center"
+        className="p-1 flex items-center space-x-1 inline-flex rounded-sm bg-primary text-white text-sm cursor-pointer text-center"
       >
-        Assign subjects
+        <GoGear size={20} className="text-white" />
+        <HiChevronDown size={20} className="text-white mt-2" />
       </div>
       {isOpen && (
          <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -121,12 +126,13 @@ console.log("subjectsData", subjectsData)
                 <p className="lg:text-2xl md:text-2xl text-sm font-semibold text-black">
                 Assign Teacher to Subjects and Classes
                 </p>
-                <MdOutlineClose
-                  onClick={handleCloseModal}
-                  size={30}
-                  stroke="5"
-                  className="cursor-pointer font-bold text-primary"
-                />
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
             </div>
               <form
@@ -184,24 +190,19 @@ console.log("subjectsData", subjectsData)
                   ))}
                 </div>
                 </div>
-                <div className="sticky bottom-0 p-2  md:p-4 lg:p-4  bg-white z-10 border">
-                <div className="flex justify-between mt-2">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {isLoading ? "Submitting..." : "Submit"}
-                  </button>
-                </div>
-                </div>
+            
+                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6 px-4">
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      
+                      <span>{isLoading ? "Saving..." : "Save "}</span>
+                    </button>
+                  </div>
               </form>
             
           </div>

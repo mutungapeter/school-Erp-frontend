@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
 import { usePathname } from "next/navigation";
 import { MdOutlineClose } from "react-icons/md";
+import { IoCloseOutline } from "react-icons/io5";
 import { BiSolidEdit } from "react-icons/bi";
 interface Props {
   teacher_id: number;
@@ -152,7 +153,7 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
        <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
          <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
           
-           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl  sm:my-8  w-full sm:max-w-2xl  md:max-w-2xl">
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl  sm:my-5  w-full sm:max-w-2xl  md:max-w-2xl">
              {updating && <Spinner />}
 
             <div className="sticky top-0 bg-white z-10 py-3 text-left px-3 shadow-sm border">
@@ -160,23 +161,24 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
               <p className="lg:text-2xl md:text-2xl text-sm font-semibold text-black">
                   {modalTitle}
                 </p>
-                <MdOutlineClose
-                  onClick={handleCloseModal}
-                  size={30}
-                  stroke="5"
-                  className="cursor-pointer font-bold text-primary"
-                />
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
             </div>
 
             <form onSubmit={handleSubmit} className="w-full h-full">
-            <div className=" py-2 text-left px-6 z-9999 overflow-y-auto max-h-[70vh]">
+            <div className=" py-2 text-left px-6 space-y-4 z-9999 overflow-y-auto max-h-[65vh]">
             {loadingExisting ? (
                   <div>Loading...</div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
                     {subjectsData?.map((subject: any) => (
-                      <div key={subject.id} className="mb-6">
+                      <div key={subject.id} className="">
                         <div>
                           <input
                             type="checkbox"
@@ -210,7 +212,7 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
                                 />
                                 <label
                                   htmlFor={`class-${subject.id}-${classData.id}`}
-                                  className="ml-2 text-sm lg:text-md md:text-md"
+                                  className="ml-2 text-xs lg:text-md md:text-md"
                                 >
                                   {classData.form_level.name}{" "}
                                   {classData?.stream?.name}
@@ -225,24 +227,19 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
                 )}
               </div>
 
-              <div className="sticky bottom-0 p-2  md:p-3 lg:p-3  bg-white z-10 border">
-                <div className="flex justify-between mt-2">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {isLoading ? "Submitting..." : "Submit"}
-                  </button>
-                </div>
-                </div>
+              
+                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-4 px-4">
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{isLoading ? "Updating..." : "Update Subjects"}</span>
+                    </button>
+                  </div>
             </form>
           </div>
         </div>

@@ -17,6 +17,7 @@ import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { BsChevronDown } from "react-icons/bs";
 import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { IoCloseOutline } from "react-icons/io5";
+import { LiaEdit } from "react-icons/lia";
 interface Props {
     studentId: number;
   refetchStudents: () => void;
@@ -310,61 +311,20 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
                       </p>
                     )}
                   </div>
-                  {/* <div className="relative">
-                      <label
-                        htmlFor="term"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Term
-                      </label>
-                      <select
-                        id="term"
-                        {...register("current_term", { valueAsNumber: true })}
-                        onChange={handleTermChange}
-                        value={watch("current_term") || ""}
-                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      >
-                        {loadingTerms ? (
-                          <option value="">Loading...</option>
-                        ) : (
-                          <>
-                            <option value="">Term</option>
-                            {termsData?.map((term: any) => (
-                              <option key={term.id} value={term.id}>
-                                {term.term} {term?.calendar_year}
-                              </option>
-                            ))}
-                          </>
-                        )}
-                      </select>
-                      <BsChevronDown
-                        color="gray"
-                        size={16}
-                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                      />
-                      {errors.current_term && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.current_term.message)}
-                        </p>
-                      )}
-                    </div> */}
-                    {/* </div> */}
-                <div className="flex justify-between mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={Updating}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {Updating ? "Updating..." : "Submit"}
-                  </button>
-                </div>
+                  
+              
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                    <button
+                      type="submit"
+                      disabled={Updating}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{Updating ? "Updating..." : "Update Student"}</span>
+                    </button>
+                  </div>
               </form>
             
               </div>

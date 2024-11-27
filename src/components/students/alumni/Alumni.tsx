@@ -12,10 +12,11 @@ import Spinner from "../../layouts/spinner";
 import { usePromoteStudentsMutation, usePromoteStudentsToAlumniMutation } from "@/redux/queries/students/studentsApi";
 import DatePicker from "react-datepicker";
 import { formatYear } from "@/src/utils/dates";
+import { IoCloseOutline } from "react-icons/io5";
 import "../../style.css";
 import { HiChevronDown } from "react-icons/hi2";
 import { BsChevronDown } from "react-icons/bs";
-
+import { PiGraduationCapThin } from "react-icons/pi";
 interface Props {
   refetchStudents: () => void;
 }
@@ -97,8 +98,15 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
            
               <div className="flex justify-between items-center pb-3">
               <p className="text-md md:text-2xl lg:text-2xl font-semibold text-black">
-                  Promote Students to Alumni(Mark Students as Graduated)
+                  Promote Students to Alumni
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 md:space-y-5 lg:space-y-5">
@@ -168,22 +176,18 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                 </div>
                 
 
-                <div className="flex justify-between mt-10">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {isSubmitting ? "Promoting..." : "Mark as Graduated"}
-                  </button>
-                </div>
+                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="text-white flex inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-3
+                       text-white rounded-md  px-4 py-2"
+                    >
+                      <PiGraduationCapThin className="text-white " size={18} />
+                      <span>{isSubmitting ? "Submitting..." : "Mark Graduated"}</span>
+                    </button>
+                  </div>
               </form>
               </div>
           </div>
