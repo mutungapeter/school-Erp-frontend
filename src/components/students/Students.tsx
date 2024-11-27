@@ -30,7 +30,9 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { UploadStudents } from "./uploadStudents";
 import ContentSpinner from "../perfomance/contentSpinner";
 import { toast } from "react-toastify";
-
+import { FiDelete } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
+import DeleteStudentModal from "./DeleteModal";
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -53,6 +55,7 @@ const Students = () => {
   const [filters, setFilters] = useState(initialFilters);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [selectedStudents, setSelectedStudents] = useState<number[]>([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("page", currentPage.toString());
@@ -149,12 +152,19 @@ const Students = () => {
     } finally {
       refetchStudents();
       setSelectedStudents([]);
+      handleCloseDeleteModal();
     }
   };
   const cancelSelection = () => {
     setSelectedStudents([]);
   };
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true); 
+  };
 
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);  
+  };
   // console.log("students", studentsData);
   return (
     <>
@@ -235,18 +245,28 @@ const Students = () => {
           </div>
           {selectedStudents.length > 0 && (
             <div className="flex items-center space-x-3 py-3">
-              <button
-                onClick={handleDelete}
-                disabled={deleting}
-                className="bg-red-500 text-sm text-white py-2 px-3 rounded-lg shadow-md"
-              >
-                {deleting ? "Deleting..." : "Delete"}
+             
+              <button onClick={cancelSelection} 
+             className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer">
+                <IoIosClose size={20} className="" />
+                <span>Cancel</span>
               </button>
-              <button onClick={cancelSelection} className="text-sm bg-gray-500 text-white rounded-lg p-2 shadow-md btn-cancel">
-                Cancel
+              <button
+                // onClick={handleDelete}
+                onClick={handleOpenDeleteModal}
+                disabled={deleting}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+              >
+                <FiDelete size={20} className="" />
+                <span className="">{deleting ? "Deleting..." : "Delete"}</span>
               </button>
             </div>
           )}
+          <DeleteStudentModal
+        isOpen={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onDelete={handleDelete}
+      />
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
