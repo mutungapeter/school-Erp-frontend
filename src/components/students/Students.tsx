@@ -14,7 +14,7 @@ import { TbDatabaseOff } from "react-icons/tb";
 import DeleteStudent from "./deleteStudent";
 import EditStudent from "./editStudent";
 import { CreateStudent } from "./NewStudent";
-import PromoteStudents from "./promoteStudents/PromoteStudents";
+import PromoteStudentsToNextClass from "./promoteStudents/PromoteStudents";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import { BsChevronDown } from "react-icons/bs";
@@ -32,7 +32,8 @@ import ContentSpinner from "../perfomance/contentSpinner";
 import { toast } from "react-toastify";
 import { FiDelete } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
-import DeleteStudentModal from "./DeleteModal";
+import DeleteConfirmationModal from "./DeleteModal";
+import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -184,9 +185,10 @@ const Students = () => {
           <div className="flex lg:justify-between  justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
             <div className="flex justify-between items-center space-x-3">
               <CreateStudent refetchStudents={refetchStudents} />
+              <PromoteStudentsToNextTerm refetchStudents={refetchStudents} />
             </div>
             <div className="flex justify-between items-center space-x-3">
-              <PromoteStudents refetchStudents={refetchStudents} />
+              <PromoteStudentsToNextClass refetchStudents={refetchStudents} />
               <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
             </div>
           </div>
@@ -195,12 +197,12 @@ const Students = () => {
         <div className="bg-white shadow-md rounded-sm  p-2">
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
             <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
-              <div className="relative w-full lg:w-40 md:w-40 xl:w-40 ">
+              <div className="relative w-full lg:w-48 md:w-40 xl:w-40 ">
                 <select
                   name="class_level_id"
                   value={filters.class_level_id || ""}
                   onChange={handleFilterChange}
-                  className="w-full lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  className="w-full lg:w-48 md:w-40 xl:w-40 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                 >
                   <option value="">Class</option>
                   {classesData?.map((classLevel: ClassLevel) => (
@@ -259,10 +261,12 @@ const Students = () => {
               </button>
             </div>
           )}
-          <DeleteStudentModal
+          <DeleteConfirmationModal
             isOpen={isDeleteModalOpen}
             onClose={handleCloseDeleteModal}
             onDelete={handleDelete}
+            confirmationMessage="Are you sure you want to delete the selected student(s)?"
+            deleteMessage="This action cannot be undone."
           />
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">

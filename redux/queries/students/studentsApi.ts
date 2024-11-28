@@ -91,6 +91,13 @@ export const studentsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    promoteStudentsToNextTerm: builder.mutation({
+      query: (data) => ({
+        url: `promote-students-to-next-term/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
     getAlumniRecords: builder.query({
       query: ({ page, page_size, graduation_year }: GetAlumins) => {
         const queryParams: Record<string, any> = {};
@@ -206,5 +213,6 @@ export const {
   useGetPromotionRecordsQuery,
   useGetStudentPerformanceQuery,
   useUploadStudentsMutation,
-  useDeleteStudentsMutation
+  useDeleteStudentsMutation,
+  usePromoteStudentsToNextTermMutation
 } = studentsApi;

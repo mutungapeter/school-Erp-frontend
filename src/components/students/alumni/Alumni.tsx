@@ -93,7 +93,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
          <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
            <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
             
-             <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-2xl p-4  md:p-6 lg:p-6 md:max-w-2xl">
+             <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-lg p-4  md:p-6 lg:p-6 md:max-w-lg">
                 {isSubmitting && <Spinner />}
            
               <div className="flex justify-between items-center pb-3">

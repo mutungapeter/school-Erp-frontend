@@ -4,7 +4,7 @@ import { GoPlus } from "react-icons/go";
 import { FaPlus } from "react-icons/fa6";
 import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
 import { FiPrinter } from "react-icons/fi";
-import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
+import { useDeleteSubjectsMutation, useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { useState, useEffect } from "react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
@@ -16,7 +16,11 @@ import { SerializedError } from "@reduxjs/toolkit";
 import EditSubject from "./editSubject";
 import DeleteSubject from "./deleteSubject";
 import { PAGE_SIZE } from "@/src/constants/constants";
-
+import ContentSpinner from "../perfomance/contentSpinner";
+import { FiDelete } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import DeleteConfirmationModal from "../students/DeleteModal";
 interface Subject {
   id: number;
   subject_name: string;
@@ -37,9 +41,9 @@ const Subjects = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const pageParam = searchParams.get("page");
-  const [currentPage, setCurrentPage] = useState<number>(
-    parseInt(pageParam || "1")
-  );
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(pageParam || "1"));
+  const [selectedSubjects, setSelectedSubjects] = useState<number[]>([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
   const {
     isLoading: loadingSubjects,
@@ -50,7 +54,7 @@ const Subjects = () => {
     { page: currentPage || 1, page_size: pageSize },
     { refetchOnMountOrArgChange: true }
   );
-
+  const [deleteSubjects, { isLoading: deleting }] = useDeleteSubjectsMutation();
   useEffect(() => {
     const page = parseInt(pageParam || "1");
     if (page !== currentPage) {
@@ -77,14 +81,45 @@ const Subjects = () => {
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }
-  if (loadingSubjects) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
 
-      <PageLoadingSpinner />
-    </div>
+  const handleSelect = (subjectId: number) => {
+    setSelectedSubjects((prevSelected) =>
+      prevSelected.includes(subjectId)
+        ? prevSelected.filter((id) => id !== subjectId)
+        : [...prevSelected, subjectId]
     );
-  }
+  };
+  const handleDelete = async () => {
+    const data = selectedSubjects;
+    console.log("data", data);
+
+    try {
+      const response = await deleteSubjects(data).unwrap();
+      const successMessage =
+        response.message || "Selected Subjects deleted successfully!";
+      toast.success(successMessage);
+    } catch (error: any) {
+      console.log("error", error);
+      if (error?.data?.error) {
+        toast.error(error.data.error);
+      }
+    } finally {
+      refetchSubjects();
+      setSelectedSubjects([]);
+      handleCloseDeleteModal();
+    }
+  };
+  const cancelSelection = () => {
+    setSelectedSubjects([]);
+  };
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+  
 
   if (error) {
     const apiError = error as ApiError | SerializedError;
@@ -94,30 +129,78 @@ const Subjects = () => {
   // console.log("subjectsData", subjectsData);
   return (
     <>
-        <div className=" space-y-5 shadow-md border py-5 bg-white ">
+        <div className=" space-y-5  py-5  ">
       
         <div className=" p-3  flex justify-between">
           <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Subjects</h2>
           <AddSubject refetchSubjects={refetchSubjects} />
            </div>
-        {loadingSubjects && <Spinner />}
-        <div className=" relative overflow-x-auto p-2  ">
+     
+        <div className=" relative overflow-x-auto p-2 bg-white shadow-md border ">
+        {selectedSubjects.length > 0 && (
+            <div className="flex items-center space-x-3 py-3">
+              <button
+                onClick={cancelSelection}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+              >
+                <IoIosClose size={20} className="" />
+                <span>Cancel</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenDeleteModal}
+                disabled={deleting}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+              >
+                <FiDelete size={20} className="" />
+                <span className="">{deleting ? "Deleting..." : "Delete"}</span>
+              </button>
+            </div>
+          )}
+          <DeleteConfirmationModal
+            isOpen={isDeleteModalOpen}
+            onClose={handleCloseDeleteModal}
+            onDelete={handleDelete}
+            confirmationMessage="Are you sure you want to delete the selected subject(s)?"
+            deleteMessage="This action cannot be undone."
+          />
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-                <th scope="col" className="px-6 py-4">
-                  #
-                </th>
-                <th scope="col" className="px-6 py-4">
+            <th scope="col" className="px-4 py-3 border-r  text-center">
+                    <input
+                      id="checkbox-all"
+                      type="checkbox"
+                      checked={
+                        selectedSubjects.length === subjectsData?.results.length
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedSubjects(
+                            subjectsData?.results.map((subject: Subject) => subject.id)
+                          );
+                        } else {
+                          setSelectedSubjects([]);
+                        }
+                      }}
+                      className="w-4 h-4
+                                    bg-gray-100 border-gray-300
+                                     rounded text-primary-600 
+                                     focus:ring-primary-500 dark:focus:ring-primary-600
+                                      dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
+                                       dark:border-gray-600"
+                    />
+                  </th>
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Name
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Type
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Category
                 </th>
-                <th scope="col" className="px-6 py-4">
+                <th scope="col" className="px-4  py-3 text-[10px]">
                   Actions
                 </th>
               </tr>
@@ -125,23 +208,34 @@ const Subjects = () => {
             <tbody>
               {loadingSubjects ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-4">
-                    Loading...
+                  <td colSpan={8} className="text-center py-4">
+                    <ContentSpinner />
                   </td>
                 </tr>
               ) : subjectsData?.results && subjectsData?.results.length > 0 ? (
                 subjectsData?.results.map((subject: Subject, index: number) => (
                   <tr key={subject.id} className="bg-white border-b ">
-                    <th className="px-3 py-2 text-gray-900">{index + 1}</th>
-                    <td className="px-3 py-2 font-medium text-sm lg:text-lg md:text-lg text-gray-900 whitespace-nowrap">
+                     <th className="px-3 py-2 text-gray-900 text-center border-r">
+                          <input
+                            id="checkbox-table-search-1"
+                            type="checkbox"
+                            checked={selectedSubjects.includes(subject.id)}
+                            onChange={() => handleSelect(subject.id)}
+                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded 
+                                   text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600
+                                    dark:ring-offset-gray-800 focus:ring-2
+                                     dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </th>
+                    <td className="px-3 py-2 font-normal border-r text-sm lg:text-sm md:text-sm  whitespace-nowrap">
                       {subject.subject_name}
                     </td>
-                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">{subject.subject_type}</td>
-                    <td className="px-3 py-2 text-sm lg:text-lg md:text-lg">{subject.category.name}</td>
+                    <td className="px-3 py-2  border-r text-sm lg:text-sm md:text-sm">{subject.subject_type}</td>
+                    <td className="px-3 py-2  border-r text-sm lg:text-sm md:text-sm">{subject.category.name}</td>
 
                     <td className="px-3 py-2 flex items-center space-x-5">
                       <EditSubject subjectId={subject.id} refetchSubjects={refetchSubjects} />
-                      <DeleteSubject subjectId={subject.id} refetchSubjects={refetchSubjects} />
+                      {/* <DeleteSubject subjectId={subject.id} refetchSubjects={refetchSubjects} /> */}
                     </td>
                   </tr>
                 ))

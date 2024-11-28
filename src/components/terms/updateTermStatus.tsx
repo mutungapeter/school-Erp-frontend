@@ -20,7 +20,9 @@ import DatePicker from "react-datepicker";
 import { formatYear } from "@/src/utils/dates";
 import { IoRefresh } from "react-icons/io5";
 import { RxDotsVertical } from "react-icons/rx";
-
+import { HiChevronDown } from "react-icons/hi2";
+import { GoGear } from "react-icons/go";
+import { IoCloseOutline } from "react-icons/io5";
 interface Props {
   termId: number;
   refetchTerms: () => void;
@@ -56,13 +58,13 @@ const EditTermStatus = ({ termId, refetchTerms }: Props) => {
 
   return (
     <>
-    
-      <div
-       onClick={handleOpenModal}
-       className=" cursor-pointer">
-                        <RxDotsVertical size={17} className="text-primary" />
-                      
-                      </div>
+    <div
+        onClick={handleOpenModal}
+        className="p-1 flex items-center space-x-1 inline-flex rounded-sm bg-primary text-white text-sm cursor-pointer text-center"
+      >
+        <GoGear size={20} className="text-white" />
+        <HiChevronDown size={20} className="text-white mt-2" />
+      </div>
 
       {isOpen && (
           <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -74,13 +76,20 @@ const EditTermStatus = ({ termId, refetchTerms }: Props) => {
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
              
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-2xl p-4  md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-lg p-4  md:p-6 lg:p-6 md:max-w-lg">
                  {Updating && <Spinner />}
             
               <div className="flex justify-between items-center pb-3">
               <p className="text-2xl md:text-lg lg:text-lg font-semibold text-black">
                   Update Term Status
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <div className="space-y-4">
@@ -101,30 +110,25 @@ const EditTermStatus = ({ termId, refetchTerms }: Props) => {
                     <BsChevronDown 
                       color="gray" 
                       size={20}
-                      className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                      className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                     
                   </div>
                  
                 </div>
-                <div className="flex items-center justify-between mt-6">
-                <button
-  type="button"
-  onClick={handleCloseModal}
-  className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-sm lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
->
-  Cancel
-</button>
-
-                <button
-                    onClick={handleUpdateStatus}
-                    className={`py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 rounded-md ${
-                      Updating ? "bg-gray-500 cursor-not-allowed" : "bg-[#36A000] text-white"
-                    }`}
-                    disabled={Updating}
-                  >
-                    {Updating ? "Updating..." : "Save Changes"}
-                  </button>
+               
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                    <button
+                      type="submit"
+                      onClick={handleUpdateStatus}
+                      disabled={Updating}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{Updating ? "Updating..." : "Update Status"}</span>
+                    </button>
                   </div>
               </div>
           

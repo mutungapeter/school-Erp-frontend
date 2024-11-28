@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import { BsChevronDown } from "react-icons/bs";
-  
+import { IoCloseOutline } from "react-icons/io5";
 
 interface Props {
     subjectId: number;
@@ -97,19 +97,25 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
        <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
          <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
           
-           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-xl p-4 md:p-6 lg:p-6 md:max-w-xl">
               {isSubmitting && <Spinner />}
            
               <div className="flex justify-between items-center pb-3">
                 <p className="lg:text-2xl md:text-2xl text-xl font-bold text-black">
                   Update Subject 
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-3">
-              <div>
+             <div>
                   <label
                     htmlFor="subjectName"
                   className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
@@ -129,6 +135,7 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
                   </p>
                 )}
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-3">
                 <div className="relative">
                   <label
                     htmlFor="subjectType"
@@ -158,7 +165,6 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
                 )}
                 </div>
               
-                </div>
                 <div className="relative">
                   <label
                     htmlFor="subjectType"
@@ -198,22 +204,20 @@ const EditSubject = ({ subjectId, refetchSubjects }: Props) => {
                     </p>
                   )}
                 </div>
-                <div className="flex justify-between mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit"}
-                  </button>
                 </div>
+               
+                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                    <button
+                      type="submit"
+                      disabled={Updating}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{Updating ? "Updating..." : "Update Subject"}</span>
+                    </button>
+                  </div>
               </form>
          
           </div>

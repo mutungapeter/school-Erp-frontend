@@ -60,7 +60,15 @@ export const subjectsApi = apiSlice.injectEndpoints({
         url: `subjects/${id}/`,
         method: "DELETE",
       }),
-    }),  
+    }), 
+    deleteSubjects: builder.mutation({
+      query: (data) => ({
+      
+        url: `subjects/`,
+        method: "DELETE",
+        body: data
+      }),
+    }),   
   }),
 });
 
@@ -69,4 +77,6 @@ export const {useGetSubjectsQuery,
    useUpdateSubjectMutation,
    useGetSubjectQuery,
    useDeleteSubjectMutation,
-   useCreateSubjectMutation } = subjectsApi;
+   useCreateSubjectMutation,
+   useDeleteSubjectsMutation
+   } = subjectsApi;

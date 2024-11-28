@@ -57,7 +57,15 @@ export const teachersApi = apiSlice.injectEndpoints({
         url: `teachers/${id}/`,
         method: "DELETE",
       }),
-    }),    
+    }),  
+    deleteTeachers: builder.mutation({
+      query: (data) => ({
+      
+        url: `teachers/`,
+        method: "DELETE",
+        body: data
+      }),
+    }),  
     getTeacherSubjects: builder.query({
       query: (teacher_id: number) => ({
         url: `teacher-subjects/?teacher_id=${teacher_id}`,
@@ -77,4 +85,5 @@ export const {
    useAssignTeacherToSubjectsAndClassesMutation, 
    useUpdateTeacherSubjectsMutation,
    useDeleteTeacherMutation,
+   useDeleteTeachersMutation
   } = teachersApi;

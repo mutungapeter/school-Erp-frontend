@@ -44,7 +44,7 @@ const refetchDetails=()=>{
     const errorMessage =
       "data" in apiError && apiError.data?.error
         ? apiError.data.error
-        : "Error loading teacher details. Please try again later.";
+        : "Server Error. Please try again later.";
 
     return (
       <Layout>

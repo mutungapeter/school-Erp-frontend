@@ -38,6 +38,19 @@ export const termsApi = apiSlice.injectEndpoints({
         };
       }
     }),
+    getUpcomingTerms: builder.query({
+      query: ({ page, page_size }: GetStreamsInterface = {}) => {
+        const queryParams: Record<string, any> = {};
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+
+        return {
+          url: `upcoming-terms/`,
+          method: "GET",
+          params: queryParams,
+        };
+      }
+    }),
     getTerm: builder.query({
       query: (id: any) => ({
         url: `terms/${id}/`,
@@ -64,6 +77,14 @@ export const termsApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }), 
+    deleteTerms: builder.mutation({
+      query: (data) => ({
+      
+        url: `terms/`,
+        method: "DELETE",
+        body: data
+      }),
+    }),
 
     
   }),
@@ -76,5 +97,7 @@ export const {
   useDeleteTermMutation ,
   useGetTermQuery,
   useUpdateTermStatusMutation,
-  useCreateTermMutation
+  useCreateTermMutation,
+  useGetUpcomingTermsQuery,
+  useDeleteTermsMutation
 } = termsApi;
