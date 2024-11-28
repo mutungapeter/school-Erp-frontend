@@ -99,7 +99,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
     <>
        <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-sm  flex items-center space-x-2 "
+        className=" cursor-pointer text-center justify-center px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-md shadow-sm  flex items-center space-x-2 "
       >
         <FaPlusCircle size={17} className="text-white   " />
         <span className=" lg:text-sm md:text-sm text-xs text-white">Add Student</span>

@@ -100,10 +100,11 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer p-1 rounded-sm bg-green-100 "
+        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
-        <BiSolidEdit   size={17} className="text-green-600" />
+        <BiSolidEdit   size={15} className="text-white" />
+        <span className="text-xs">Edit</span>
       </div>
 
       {isOpen && (

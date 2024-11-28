@@ -74,10 +74,11 @@ const EditStream = ({ streamId, refetchStreams }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer  p-1 rounded-sm bg-green-100"
+        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
-        <BiSolidEdit   size={17} className="text-green-800" />
+        <BiSolidEdit   size={15} className="text-white" />
+        <span className="text-xs">Edit</span>
       </div>
 
       {isOpen && (
@@ -132,8 +133,8 @@ const EditStream = ({ streamId, refetchStreams }: Props) => {
                
                 
                
-                <div className="flex justify-start mt-7 py-6">
-                    <button
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                  <button
                       type="submit"
                       disabled={Updating}
                       className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4

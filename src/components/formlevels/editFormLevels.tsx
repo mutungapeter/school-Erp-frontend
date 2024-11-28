@@ -1,32 +1,25 @@
 "use client";
-import {
-  useGetTeacherQuery,
-  useUpdateTeacherMutation,
-} from "@/redux/queries/teachers/teachersApi";
 import { useEffect, useState } from "react";
-import { IoMdArrowDropdown } from "react-icons/io";
 
+import { useGetFormLevelQuery, useUpdateFormLevelMutation } from "@/redux/queries/formlevels/formlevelsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { BiSolidEdit } from "react-icons/bi";
+import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
-import { useUpdateStudentMutation,useGetStudentQuery } from "@/redux/queries/students/studentsApi";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { useGetStreamsQuery,useGetStreamQuery, useUpdateStreamMutation } from "@/redux/queries/streams/streamsApi";
-import { useGetFormLevelQuery, useUpdateFormLevelMutation } from "@/redux/queries/formlevels/formlevelsApi";
 interface Props {
     formLevelId: number;
     refetchFormLevels: () => void;
 }
 const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
-//   console.log("studentId", streamId);
+
   const [isOpen, setIsOpen] = useState(false);
   const [updateFormLevel, { isLoading: Updating }] = useUpdateFormLevelMutation();
   const { data: formLevelData, isLoading: isFetching } =
   useGetFormLevelQuery(formLevelId);
-  const {data: classesData, isLoading:isLoadingClasses} = useGetClassesQuery({})
+  
 
     const schema = z.object({
       name: z.string().min(1, "Form level name is required"),
@@ -73,10 +66,11 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer p-1 rounded-sm bg-green-100 "
+        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
-        <BiSolidEdit   size={17} className="text-green-800" />
+        <BiSolidEdit   size={15} className="text-white" />
+        <span className="text-xs">Edit</span>
       </div>
 
       {isOpen && (
@@ -89,13 +83,20 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
         <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
           <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
            
-            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
               {isSubmitting && <Spinner />}
           
               <div className="flex justify-between items-center pb-3">
                 <p className="text-2xl font-bold text-[#1F4772]">
                   Update Form Level details
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
@@ -141,22 +142,19 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
                     )}
                   </div>
                  
-                <div className="flex justify-between mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={Updating}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
-                  >
-                    {Updating ? "Updating..." : "Submit"}
-                  </button>
-                </div>
+              
+                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                    <button
+                      type="submit"
+                      disabled={Updating}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
+                    >
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{Updating ? "Updating..." : "Update"}</span>
+                    </button>
+                  </div>
               </form>
            
           </div>

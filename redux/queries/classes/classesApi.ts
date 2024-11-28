@@ -56,7 +56,15 @@ export const classesApi = apiSlice.injectEndpoints({
         url: `class-levels/${id}/`,
         method: "DELETE",
       }),
-    }),  
+    }), 
+    deleteClassLevels: builder.mutation({
+      query: (data) => ({
+      
+        url: `class-levels/`,
+        method: "DELETE",
+        body: data
+      }),
+    }), 
   }),
 });
 
@@ -66,4 +74,6 @@ export const {
   useUpdateClassLevelMutation,
   useDeleteCLassLevelMutation,
   useGetGraduatingClassesQuery,
-  useCreateClassMutation } = classesApi;
+  useCreateClassMutation,
+  useDeleteClassLevelsMutation
+ } = classesApi;

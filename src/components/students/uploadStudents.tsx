@@ -125,7 +125,7 @@ import { IoCloseOutline } from "react-icons/io5";
     
         <div 
         onClick={handleOpenModal}
-        className="flex py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-sm inline-flex items-center space-x-2 max-w-max">
+        className="flex py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-md inline-flex items-center space-x-2 max-w-max">
               <SiMicrosoftexcel size={20} className="text-white" />
               <span>Upload students</span>
             </div>
