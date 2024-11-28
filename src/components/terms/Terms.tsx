@@ -249,11 +249,11 @@ const Terms = () => {
                     
                     <div className="flex items-center space-x-3">
                     <EditTermStatus termId={term.id} refetchTerms={refetchTerms} />
-                  
+{/*                   
                       <DeleteTerm
                         termId={term.id}
                         refetchTerms={refetchTerms}
-                      />
+                      /> */}
                       <EditTerm termId={term.id} refetchTerms={refetchTerms} />
                     
                     </div>
