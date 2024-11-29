@@ -12,7 +12,7 @@ import { BiSolidEdit } from "react-icons/bi";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
-import { useUpdateStudentMutation,useGetStudentQuery } from "@/redux/queries/students/studentsApi";
+import { useUpdateStudentMutation,useEditStudentQuery } from "@/redux/queries/students/studentsApi";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { BsChevronDown } from "react-icons/bs";
 import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
@@ -26,7 +26,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
   // console.log("studentId", studentId);
   const [isOpen, setIsOpen] = useState(false);
   const [updateStudent, { isLoading: Updating }] = useUpdateStudentMutation();
-  const { data: studentData, isLoading: isFetching } =useGetStudentQuery(studentId);
+  const { data: studentData, isLoading: isFetching } =useEditStudentQuery(studentId);
   const {
     isLoading: loadingTerms,
     data: termsData,

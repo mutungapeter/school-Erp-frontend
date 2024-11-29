@@ -150,12 +150,12 @@ export const studentsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    // getStudent: builder.query({
-    //   query: (id) => ({
-    //     url: `students/${id}/`,
-    //     method: "GET",
-    //   }),
-    // }),
+    editStudent: builder.query({
+      query: (id) => ({
+        url: `students/${id}/`,
+        method: "GET",
+      }),
+    }),
     getStudent: builder.query({
       query: (params: { id: number; class_level_id?: any }) => {
         const queryParams: { id: number; class_level_id?: any } = {
@@ -233,5 +233,6 @@ export const {
   useGetStudentPerformanceQuery,
   useUploadStudentsMutation,
   useDeleteStudentsMutation,
-  usePromoteStudentsToNextTermMutation
+  usePromoteStudentsToNextTermMutation,
+  useEditStudentQuery,
 } = studentsApi;

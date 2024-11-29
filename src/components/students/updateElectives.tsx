@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
 import { CreateClassLevel } from "../classlevels/NewClasslevel";
 import { BiSolidEdit } from "react-icons/bi";
+import { IoCloseOutline } from "react-icons/io5";
 interface Props {
   studentsData: any;
   refetchDetails: () => void;
@@ -115,6 +116,13 @@ const UpdateElectives = ({ studentsData, refetchDetails }: Props) => {
                   <p className="text-2xl font-bold text-[#1F4772]">
                     Update Electives
                   </p>
+                  <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
                 </div>
 
                 <form className="space-y-2" onSubmit={handleSubmit}>
