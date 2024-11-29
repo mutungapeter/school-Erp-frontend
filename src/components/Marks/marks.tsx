@@ -49,12 +49,7 @@ const Marks = () => {
     router.push(`?${params.toString()}`);
   }, [filters]);
 
-  // const queryParams = useMemo(
-  //   () => ({
-  //     ...filters,
-  //   }),
-  //   [filters]
-  // );
+
   const {
     isLoading: loading,
     data,

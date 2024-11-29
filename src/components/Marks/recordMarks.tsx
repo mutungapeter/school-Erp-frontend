@@ -11,6 +11,8 @@ import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import "../style.css";
 import { BsChevronDown } from "react-icons/bs";
+import { IoCloseOutline } from "react-icons/io5";
+
 interface CreateStudentProps {
   refetchStudents: () => void;
 }
@@ -114,13 +116,20 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
-                  <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
+                  <p className="lg:text-2xl md:text-2xl text-md font-bold text-[#1F4772]">
                     Record Marks
                   </p>
+                  <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={30}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3 py-2">
                   <div>
@@ -251,20 +260,16 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                       />
                     </div>
                   </div>
-                  <div className="flex justify-between mt-6">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-primary text-white rounded-md  py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-primary focus:outline-none"
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
                     >
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                      {/* <LiaEdit className="text-white " size={18} /> */}
+                      <span>{isSubmitting ? "Submitting..." : "Save Marks"}</span>
                     </button>
                   </div>
                 </form>

@@ -9,6 +9,11 @@ import { SerializedError } from "@reduxjs/toolkit";
 import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useDeleteClassLevelsMutation, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { Suspense } from "react";
 interface DetailProps {
   params: {
     id: number;
@@ -23,42 +28,24 @@ interface ApiError {
 }
 
 const StudentDetailsPage = ({ params: { id } }: DetailProps) => {
-  const { data, isLoading, isSuccess, error, refetch } = useGetStudentQuery(id);
-  console.log("data", data);
+
   const{ user, loading } = useAppSelector((state: RootState) => state.auth);
   const Layout = user?.role === "Teacher" ? TeacherLayout : DefaultLayout;
    
-  if (isLoading) {
-    return (
-      <Layout>
-        <PageLoadingSpinner />
-      </Layout>
-    );
-  }
+ 
 
-const refetchDetails=()=>{
-  refetch();
-}
-  if (error) {
-    const apiError = error as ApiError | SerializedError;
-    const errorMessage =
-      "data" in apiError && apiError.data?.error
-        ? apiError.data.error
-        : "Server Error. Please try again later.";
 
-    return (
-      <Layout>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-          <div className="text-red-500  text-center p-6 text-xs lg:text-lg  md:text-lg  bg-white rounded shadow-md">
-            <p>{errorMessage}</p>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
+
   return (
     <Layout>
-      {isSuccess && data && <StudentDetails data={data} refetchDetails={refetchDetails} />}
+      <>
+      <Suspense fallback={<PageLoadingSpinner />}>
+      
+      
+      {/* {isSuccess && data && <StudentDetails data={data} refetchDetails={refetchDetails} />} */}
+      <StudentDetails student_id={id} />
+      </Suspense>
+      </>
     </Layout>
   );
 };

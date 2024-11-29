@@ -150,12 +150,31 @@ export const studentsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    // getStudent: builder.query({
+    //   query: (id) => ({
+    //     url: `students/${id}/`,
+    //     method: "GET",
+    //   }),
+    // }),
     getStudent: builder.query({
-      query: (id) => ({
-        url: `students/${id}/`,
-        method: "GET",
-      }),
+      query: (params: { id: number; class_level_id?: any }) => {
+        const queryParams: { id: number; class_level_id?: any } = {
+          id: params.id,
+        };
+        
+     
+        if (params.class_level_id) {
+          queryParams.class_level_id = params.class_level_id;
+        }
+    
+        return {
+          url: `students/${params.id}/`, 
+          method: "GET",
+          params: queryParams,  
+        };
+      },
     }),
+    
     getStudentsBySubjectAndClass: builder.query({
       query: (params: {
         subject_id: any;

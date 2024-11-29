@@ -149,7 +149,7 @@ const menuGroups: MenuGroup[] = [
       },
       {
         icon: <PiUsersThreeLight />,
-        label: "Accounts",
+        label: "Admins",
         route: "/accounts",
       },
     ],
@@ -167,6 +167,7 @@ const adminOrPrincipalOnlyItems = [
   "Alumni",
   "Promotion Records",
   "Subjects",
+  "Admins"
 ];
 const teacherOnlyItems=[
   "Subjects And Classes"

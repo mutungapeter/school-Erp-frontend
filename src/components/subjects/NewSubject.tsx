@@ -36,6 +36,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { isSubmitting, isSubmitSuccessful, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -63,6 +64,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
   };
   const handleCloseModal = () => {
     setIsOpen(false);
+    reset();
   };
 
   console.log("subjectCategoriesData", subjectCategoriesData);
@@ -96,7 +98,7 @@ export const AddSubject = ({ refetchSubjects }: AddSubject) => {
                 </p>
                 <div className="flex justify-end cursor-pointer">
                     <IoCloseOutline
-                      size={35}
+                      size={30}
                       onClick={handleCloseModal}
                       className=" text-gray-500 "
                     />

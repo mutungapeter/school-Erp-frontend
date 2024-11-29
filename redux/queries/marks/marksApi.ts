@@ -18,9 +18,8 @@ export const marksApi = apiSlice.injectEndpoints({
 
     }),
     getMarksData: builder.query({
-      query: (params: {  class_level: any; term:any;    admission_number?: any; subject?:any; }) => {
+      query: (params: {  class_level?: any; term:any;     admission_number?: any; subject?:any; }) => {
         const queryParams: { class_level: any; term: any; admission_number?: any; subject?:any; } = {
-          // class_level: params.class_level,
           term: params.term,  
           ...(params.class_level && { class_level: params.class_level}),
           ...(params.admission_number && { admission_number: params.admission_number }),
@@ -53,6 +52,14 @@ export const marksApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }), 
+    deleteMarks: builder.mutation({
+      query: (data) => ({
+      
+        url: `marks/`,
+        method: "DELETE",
+        body: data
+      }),
+    }),  
     
   }),
 });
@@ -64,4 +71,5 @@ export const {
    useGetMarkDataQuery,
    useUpdateMarksDataMutation,
    useDeleteMarksDataMutation,
+   useDeleteMarksMutation,
     } = marksApi;

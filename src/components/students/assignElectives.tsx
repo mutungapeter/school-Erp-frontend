@@ -6,6 +6,7 @@ import { useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Spinner from "../layouts/spinner";
+import { IoCloseOutline } from "react-icons/io5";
 interface Props {
   studentId: number;
   refetchDetails: () => void;
@@ -73,10 +74,10 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center  px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-2 lg:space-x-2 "
+        className=" cursor-pointer text-center justify-center  px-2 py-2 md:py-2 md:px-3 lg:py-2 lg:px-3 bg-green-700 rounded-md  flex items-center md:space-x-2 space-x-2 lg:space-x-2 "
       >
-        <FaPlusCircle size={20} className="text-white" />
-        <span className="lg:text-lg md:text-lg text-xs text-white">Register Electives</span>
+        <FaPlusCircle size={15} className="text-white" />
+        <span className="text-sm text-white">Register Electives</span>
       </div>
       {isOpen && (
        <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -95,6 +96,13 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
               <p className="text-2xl md:text-lg lg:text-lg font-semibold text-black">
                   Register Electives
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={35}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <form className="space-y-2" onSubmit={handleSubmit}>

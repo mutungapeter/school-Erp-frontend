@@ -86,10 +86,10 @@ const UpdateElectives = ({ studentsData, refetchDetails }: Props) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center    px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-2 lg:space-x-2 "
+        className=" cursor-pointer text-center justify-center    px-2 py-2 md:py-2 md:px-3 lg:py-2 lg:px-3 bg-green-700 rounded-md  flex items-center md:space-x-2 space-x-2 lg:space-x-2 "
       >
         <BiSolidEdit size={17} className="text-white" />
-        <span className="lg:text-lg md:text-lg text-xs text-white">
+        <span className=" text-sm text-white">
           Update Electives
         </span>
       </div>

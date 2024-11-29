@@ -1,6 +1,6 @@
 "use client";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
+import { useDeleteMarksMutation, useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { MarksInterface } from "@/src/definitions/marks";
@@ -20,9 +20,19 @@ import { BsChevronDown } from "react-icons/bs";
 import { useGetTermsQuery } from "@/redux/queries/terms/termsApi";
 import { TermInterface } from "@/src/definitions/terms";
 import ContentSpinner from "../perfomance/contentSpinner";
+import { FiDelete } from "react-icons/fi";
+import { IoIosClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import DeleteConfirmationModal from "../students/DeleteModal";
+import { PAGE_SIZE } from "@/src/constants/constants";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // const pageParam = searchParams.get("page");
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState(initialPage)
+  const [selectedMarks, setSelectedMarks] = useState<number[]>([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const initialFilters = useMemo(
     () => ({
       class_level: searchParams.get("class_level") || "",
@@ -33,8 +43,10 @@ const MarksList = () => {
     [searchParams]
   );
   const [filters, setFilters] = useState(initialFilters);
+  const pageSize = PAGE_SIZE;
   useEffect(() => {
     const params = new URLSearchParams();
+    // params.set("page", currentPage.toString());
     if (filters.class_level){
       params.set("class_level", filters.class_level)
     };
@@ -49,26 +61,44 @@ const MarksList = () => {
     };
 
     router.replace(`?${params.toString()}`);
-  }, [filters]);
-
+  }, [
+    // , currentPage
+    filters
+  ]);
+  const queryParams = useMemo(
+    () => ({
+      // page: currentPage,
+      // page_size: pageSize,
+      ...filters,
+    }),
+    [
+      // currentPage,
+       filters]
+  );
+  console.log("queryParams",queryParams)
   const {
     isLoading: loading,
     data,
     error,
     refetch,
   } = useGetMarksDataQuery(
-    {
-      class_level: filters.class_level || "",
-      term: filters.term || "",
-      admission_number: filters.admission_number || "",
-      subject: filters.subject || "",
-    },
+    // {
+    //   class_level: filters.class_level || "",
+    //   term: filters.term || "",
+    //   admission_number: filters.admission_number || "",
+    //   subject: filters.subject || "",
+    //   page: currentPage || 1,
+    //   page_size: pageSize
+    // },
+    queryParams,
     { 
       skip: false,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true
      }
   );
+  const [deleteMarks, { isLoading: deleting }] = useDeleteMarksMutation();
+  
   const {
     isLoading: loadingClasses,
     data: classesData,
@@ -117,7 +147,67 @@ const MarksList = () => {
   const refetchMarks = () => {
     refetch();
   };
+  const handleSelect = (marksId: number) => {
+    setSelectedMarks((prevSelected) =>
+      prevSelected.includes(marksId)
+        ? prevSelected.filter((id) => id !== marksId)
+        : [...prevSelected, marksId]
+    );
+  };
+  const handleDelete = async () => {
+    const data = selectedMarks;
+    console.log("data", data);
 
+    try {
+      const response = await deleteMarks(data).unwrap();
+      const successMessage =
+        response.message || "Selected Mark records deleted successfully!";
+      toast.success(successMessage);
+    } catch (error: any) {
+      console.log("error", error);
+      if (error?.data?.error) {
+        toast.error(error.data.error);
+      }
+    } finally {
+      refetchMarks();
+      setSelectedMarks([]);
+      handleCloseDeleteModal();
+    }
+  };
+  const cancelSelection = () => {
+    setSelectedMarks([]);
+  };
+  const handleOpenDeleteModal = () => {
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+  };
+  
+  // useEffect(() => {
+  //   const page = parseInt(pageParam || "1");
+  //   if (page !== currentPage) {
+  //     setCurrentPage(page);
+  //   }
+  // }, [pageParam, currentPage]);
+
+  // useEffect(() => {
+  //   refetch();
+  // }, [currentPage, refetch]);
+
+  const totalPages = Math.ceil((data?.count || 0) / pageSize);
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    const currentParams = new URLSearchParams(searchParams.toString());
+    currentParams.set("page", page.toString());
+    router.push(`?${currentParams.toString()}`);
+  };
+
+  const pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
   console.log("terms", termsData)
   return (
     <div className="space-y-5 shadow-md border py-2  bg-white">
@@ -218,34 +308,82 @@ const MarksList = () => {
           </div>
         </div>
       <div className=" relative overflow-x-auto p-2  ">
+      {selectedMarks.length > 0 && (
+            <div className="flex items-center space-x-3 py-3">
+              <button
+                onClick={cancelSelection}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+              >
+                <IoIosClose size={20} className="" />
+                <span>Cancel</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenDeleteModal}
+                disabled={deleting}
+                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+              >
+                <FiDelete size={20} className="" />
+                <span className="">{deleting ? "Deleting..." : "Delete"}</span>
+              </button>
+            </div>
+          )}
+          <DeleteConfirmationModal
+            isOpen={isDeleteModalOpen}
+            onClose={handleCloseDeleteModal}
+            onDelete={handleDelete}
+            confirmationMessage="Are you sure you want to delete the selected Marks record(s)?"
+            deleteMessage="This action cannot be undone."
+          />
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-              <th scope="col" className="px-6 py-3 text-xs">
-                #
-              </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+            <th scope="col" className="px-4 py-3 border-r  text-center">
+            <input
+                      id="checkbox-all"
+                      type="checkbox"
+                      checked={
+                        selectedMarks.length === data?.length
+                      }
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedMarks(
+                            data?.map((marksRecord: MarksInterface) => marksRecord.id)
+                          );
+                        } else {
+                          setSelectedMarks([]);
+                        }
+                      }}
+                      className="w-4 h-4
+                                    bg-gray-100 border-gray-300
+                                     rounded text-primary-600 
+                                     focus:ring-primary-500 dark:focus:ring-primary-600
+                                      dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
+                                       dark:border-gray-600"
+                    />
+                  </th>
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Name
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Subject
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Cat
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Exam
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Total
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Grade
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Points
               </th>
-              <th scope="col" className="px-6 py-3 text-xs">
+              <th scope="col" className="px-4  py-3 text-[10px]">
                 Actions
               </th>
             </tr>
@@ -268,31 +406,40 @@ const MarksList = () => {
                   </div>
                 </td>
               </tr>
-            ) : data && data.length > 0 ? (
-              data.map((marksData: MarksInterface, index: number) => (
+            ) : data && data?.length > 0 ? (
+              data?.map((marksData: MarksInterface, index: number) => (
                 <tr key={marksData.id} className="bg-white border-b">
-                  <th className="px-3 py-2 text-sm lg:text-lg md:text-lg text-gray-900">
-                    {index + 1}
-                  </th>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
+                 <th className="px-3 py-2 text-gray-900 text-center border-r">
+                          <input
+                            id="checkbox-table-search-1"
+                            type="checkbox"
+                            checked={selectedMarks.includes(marksData.id)}
+                            onChange={() => handleSelect(marksData.id)}
+                            className="w-4 h-4 bg-gray-100 border-gray-300 rounded 
+                                   text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600
+                                    dark:ring-offset-gray-800 focus:ring-2
+                                     dark:bg-gray-700 dark:border-gray-600"
+                          />
+                        </th>
+                  <td className="px-3 py-2 border-r text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
                     {marksData.student.first_name} {marksData.student.last_name}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                  <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
                     {marksData.student_subject?.subject.subject_name}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                  <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
                     {marksData.cat_mark}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                  <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
                     {marksData.exam_mark}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                  <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
                     {marksData.total_score}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-lg md:text-sm">
+                  <td className="px-3 py-2 border-r text-sm lg:text-lg md:text-sm">
                     {marksData.grade}
                   </td>
-                  <td className="px-3 py-2 text-sm lg:text-sm md:text-sm">
+                  <td className="px-3 py-2  border-r text-sm lg:text-sm md:text-sm">
                     {marksData.points}
                   </td>
                   <td className="px-3 py-2 flex items-center space-x-5">
@@ -300,10 +447,10 @@ const MarksList = () => {
                       marksId={marksData.id}
                       refetchMarks={refetchMarks}
                     />
-                    <DeleteMarkRecord
+                    {/* <DeleteMarkRecord
                       marksId={marksData.id}
                       refetchMarks={refetchMarks}
-                    />
+                    /> */}
                   </td>
                 </tr>
               ))
@@ -319,6 +466,45 @@ const MarksList = () => {
           </tbody>
         </table>
       </div>
+      {/* <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6">
+          <nav className="flex items-center space-x-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`px-4 py-2  lg:text-sm md:text-sm text-xs border rounded ${
+                currentPage === 1
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-white text-black border-gray-300 hover:bg-gray-100"
+              }`}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            {pages.map((page) => (
+              <button
+                key={page}
+                onClick={() => handlePageChange(page)}
+                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
+                  page === currentPage
+                    ? "bg-primary text-white"
+                    : "bg-white text-black border-gray-300 hover:bg-gray-100"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
+                currentPage === totalPages
+                  ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
+                  : "bg-primary text-white border-gray-300 "
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </nav>
+        </div> */}
     </div>
   );
 };
