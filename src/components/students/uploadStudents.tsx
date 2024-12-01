@@ -149,7 +149,7 @@ import { IoCloseOutline } from "react-icons/io5";
   
                   <div className="flex justify-between items-center pb-3">
                     <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
-                      Upload Marks
+                      Upload Students
                     </p>
                     <div className="flex justify-end cursor-pointer">
               <IoCloseOutline size={35}

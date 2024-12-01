@@ -34,6 +34,7 @@ import { FiDelete } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import DeleteConfirmationModal from "./DeleteModal";
 import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
+import PromoteStudents from "./promoteStudents/PromoteStudentsNew";
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -185,10 +186,12 @@ const Students = () => {
           <div className="flex lg:justify-between  justify-none flex-col md:flex-row lg:flex-row   justify-between space-y-2 md:space-x-3 space-x-0 lg:space-x-3 md:space-y-0 lg:space-y-0">
             <div className="flex justify-between items-center space-x-3">
               <CreateStudent refetchStudents={refetchStudents} />
-              <PromoteStudentsToNextTerm refetchStudents={refetchStudents} />
+              {/* <PromoteStudentsToNextTerm refetchStudents={refetchStudents} /> */}
             </div>
             <div className="flex justify-between items-center space-x-3">
-              <PromoteStudentsToNextClass refetchStudents={refetchStudents} />
+              {/* <PromoteStudentsToNextClass refetchStudents={refetchStudents} /> */}
+              <PromoteStudents refetchStudents={refetchStudents} />
+              
               <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
             </div>
           </div>

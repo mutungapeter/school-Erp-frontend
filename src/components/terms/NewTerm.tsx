@@ -17,15 +17,19 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../style.css";
 import { useCreateTermMutation, useGetTermQuery, useUpdateTermMutation } from "@/redux/queries/terms/termsApi";
 import DatePicker from "react-datepicker";
-import { formatYear } from "@/src/utils/dates";
+
 import { FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import { formatYear, formatDate } from "@/src/utils/dates";
 interface Props {
   refetchTerms: () => void;
 }
 const CreateTerm = ({  refetchTerms }: Props) => {
  
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+
   const [
     createTerm,
     { 
@@ -43,7 +47,12 @@ const CreateTerm = ({  refetchTerms }: Props) => {
     term: z.enum(["Term 1", "Term 2", "Term 3"], {
         required_error: "Term is required",
     }),
-      calendar_year: z.number().min(4, "Enter a valid year"),
+    // start_date: z.date().refine((date) => date instanceof Date && !isNaN(date.getTime()), {
+    //   message: "Start date is required",
+    // }),
+    // end_date: z.date().refine((date) => date instanceof Date && !isNaN(date.getTime()), {
+    //   message: "End date is required",
+    // }),
       
     });
   
@@ -62,13 +71,17 @@ const CreateTerm = ({  refetchTerms }: Props) => {
   const handleTermNameChange= (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("term", e.target.value);
   };
-  const handleDateChange = (date: Date | null) => {
-    const formattedDate = date ? Number(formatYear(date)) : null;
-    setValue("calendar_year", formattedDate, { shouldValidate: true }); 
-    setSelectedDate(date);
-};
+  const handleStartDateChange = (date: Date | null) => {
+    setSelectedStartDate(date);
+    setValue("start_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
+  };
+
+  const handleEndDateChange = (date: Date | null) => {
+    setSelectedEndDate(date);
+    setValue("end_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
+  };
   const onSubmit = async (data: FieldValues) => {
-    const {term, calendar_year} = data;
+    const {term} = data;
    
     try {
       await createTerm(data).unwrap();
@@ -155,32 +168,32 @@ const CreateTerm = ({  refetchTerms }: Props) => {
                     </p>
                   )}
                 </div>
-                  <div className="relative ">
-                <label
-                  htmlFor="year"
-                 className="block text-gray-900
-                  md:text-lg text-sm lg:text-lg 
-                   font-normal  mb-2"
-                >
-                  Calendar year
-                </label>
-                <DatePicker
-                selected={selectedDate}
-                  onChange={handleDateChange}
-                  showYearPicker
-                  dateFormat="yyyy"
-                  className="py-2 px-4 rounded-md  border border-1
-                  border-gray-400 focus:outline-none 
-                  focus:border-[#1E9FF2] focus:bg-white 
-                  placeholder:text-sm md:placeholder:text-sm 
-                 lg:placeholder:text-sm w-full "
-                />
-                {errors.calendar_year && (
-                    <p className="text-red-500 text-sm">
-                      {String(errors.calendar_year.message)}
-                    </p>
-                  )}
-                </div>
+               
+                {/* <div className="relative">
+                    <label htmlFor="start_date" className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2">
+                      Start Date
+                    </label>
+                    <DatePicker
+                      selected={selectedStartDate}
+                      onChange={handleStartDateChange}
+                      dateFormat="YYYY-MM-MM"
+                      className="py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
+                    />
+                    {errors.start_date && <p className="text-red-500 text-sm">{String(errors.start_date.message)}</p>}
+                  </div>
+
+                  <div className="relative">
+                    <label htmlFor="end_date" className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2">
+                      End Date
+                    </label>
+                    <DatePicker
+                      selected={selectedEndDate}
+                      onChange={handleEndDateChange}
+                      dateFormat="YYYY-MM-DD"
+                      className="py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
+                    />
+                    {errors.end_date && <p className="text-red-500 text-sm">{String(errors.end_date.message)}</p>}
+                  </div> */}
             
                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button

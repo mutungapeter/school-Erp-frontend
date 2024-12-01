@@ -1,12 +1,14 @@
 "use client";
+import "react-datepicker/dist/react-datepicker.css";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { usePromoteStudentsMutation } from "@/redux/queries/students/studentsApi";
 import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { formatYear } from "@/src/utils/dates";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+
 import { FieldValues, useForm } from "react-hook-form";
 import { BsChevronDown } from "react-icons/bs";
 import { IoCloseOutline } from "react-icons/io5";
