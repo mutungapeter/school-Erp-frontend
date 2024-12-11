@@ -17,7 +17,7 @@ import {
   import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
   import { IoMdCheckmarkCircleOutline } from "react-icons/io";
   import { ClassLevel } from "@/src/definitions/classlevels";
-  import { SiMicrosoftexcel } from "react-icons/si";
+  import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { useUploadStudentsMutation } from "@/redux/queries/students/studentsApi";
 import { IoCloseOutline } from "react-icons/io5";
   interface UploadProps {
@@ -125,8 +125,8 @@ import { IoCloseOutline } from "react-icons/io5";
     
         <div 
         onClick={handleOpenModal}
-        className="flex py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-md inline-flex items-center space-x-2 max-w-max">
-              <SiMicrosoftexcel size={20} className="text-white" />
+        className=" py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-md inline-flex items-center space-x-2 max-w-max">
+              <PiMicrosoftExcelLogoFill size={20} className="text-white" />
               <span>Upload students</span>
             </div>
         {isOpen && (

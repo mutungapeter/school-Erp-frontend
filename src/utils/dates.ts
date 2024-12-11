@@ -6,7 +6,7 @@ import dayjs from "dayjs";
  * @param date - The date to format
  * @returns The formatted date string
  */
-export const formatDate = (date: Date): string => {
+export const formattDate = (date: Date): string => {
   if (!date) return ""; 
   return dayjs(date).format("YYYY-MM-DD");
 };
@@ -37,6 +37,7 @@ export const formatDetailedDate = (date: Date): string => {
 export const formattedDate = (date: Date): string => {
     if (!date) return "";
     return dayjs(date).format("DD-MM-YYYY");
+    // return dayjs(date).format("YYYY-MM-DD");
   };
 
   export const formatYear = (date: Date): string => {

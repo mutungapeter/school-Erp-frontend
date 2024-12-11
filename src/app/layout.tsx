@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "./../css/style.css";
 import "./../css/satoshi.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { ReduxProvider } from "./Provider";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
