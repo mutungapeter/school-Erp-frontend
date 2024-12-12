@@ -96,8 +96,8 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      source_class_level: 0,
-      target_form_level: 0,
+      source_class_level: undefined,
+      target_form_level: undefined,
       next_calendar_year: calendarYear,
       terms: termsData,
     },
@@ -108,14 +108,16 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
   const handleSourceClassLevelChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const value = Number(e.target.value);
-    setValue("source_class_level", value);
+    // const value = Number(e.target.value) ;
+    // setValue("source_class_level", value );
+    const value = parseInt(e.target.value);
+    setValue("source_class_level", value ?? undefined);
   };
   const handleTargetFormLevelChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const value = Number(e.target.value);
-    setValue("target_form_level", value);
+    const value = parseInt(e.target.value);
+    setValue("target_form_level", value ?? undefined);
   };
 
 
