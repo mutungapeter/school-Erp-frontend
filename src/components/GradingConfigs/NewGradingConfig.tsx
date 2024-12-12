@@ -1,25 +1,17 @@
 
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { z } from "zod";
 
-import Spinner from "../layouts/spinner";
-import { FaCalendarAlt, FaPlusCircle } from "react-icons/fa";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { format } from "date-fns";
-import { formatDate } from "@/src/utils/dates";
-import "../style.css";
-import styles from "../custom.module.css";
-import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
-import { useGetAvailableTeacherUsersQuery } from "@/redux/queries/users/usersApi";
-import { useCreateTeacherMutation } from "@/redux/queries/teachers/teachersApi";
 import { useCreateGradingConfigMutation } from "@/redux/queries/gradingConfig/gradingConfigApi";
 import { useGetSubjectCategoriesQuery } from "@/redux/queries/subjects/subjectCategoriesApi";
+import "react-datepicker/dist/react-datepicker.css";
 import { BsChevronDown } from "react-icons/bs";
+import { FaPlusCircle } from "react-icons/fa";
+import Spinner from "../layouts/spinner";
+import "../style.css";
 
 interface CreateConfigProps {
   refetchConfigs: () => void;

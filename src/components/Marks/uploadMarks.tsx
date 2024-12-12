@@ -17,8 +17,8 @@ import { BsChevronDown } from "react-icons/bs";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { IoCloseOutline } from "react-icons/io5";
 import { ClassLevel } from "@/src/definitions/classlevels";
-import { SiMicrosoftexcel } from "react-icons/si";
 
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 export const UploadMarks = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [uploadMarks, { data, error, isSuccess }] = useUploadMarksMutation();
@@ -144,7 +144,7 @@ export const UploadMarks = () => {
         className="flex items-center
        bg-green-600 space-x-2 px-2 py-1 lg:py-2 lg:px-4 md:py-2 md:px-4 rounded-md cursor-pointer"
       >
-        <SiMicrosoftexcel size={20} className="text-white" />
+        <PiMicrosoftExcelLogoFill size={20} className="text-white" />
         <h5 className="text-white text-xs lg:text-sm md:text-sm">
           Upload marks
         </h5>
