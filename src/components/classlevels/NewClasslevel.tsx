@@ -16,7 +16,7 @@ import Spinner from "../layouts/spinner";
 import "../style.css";
 import { BsChevronDown } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
-import { formatYear, formatDate } from "@/src/utils/dates";
+import { formatYear, formattDate } from "@/src/utils/dates";
 
 interface CreateClassProps {
   refetchClasses: () => void;
@@ -79,9 +79,9 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
         term:
           termsData.find((term) => term.id === parseInt(termId))?.name || "",
         start_date: termDates.start_date
-          ? formatDate(termDates.start_date)
+          ? formattDate(termDates.start_date)
           : "",
-        end_date: termDates.end_date ? formatDate(termDates.end_date) : "",
+        end_date: termDates.end_date ? formattDate(termDates.end_date) : "",
       })
     );
     const formData = {
@@ -126,7 +126,7 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
         ...prev,
         [termId]: {
           ...prev[termId],
-          [field]: date ? formatDate(date) : null,
+          [field]: date ? formattDate(date) : null,
         },
       }));
     };

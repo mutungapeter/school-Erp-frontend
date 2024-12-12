@@ -1,26 +1,17 @@
 
-import { useState } from "react";
-import { toast } from "react-toastify";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  useCreateSubjectMutation,
-  useGetSubjectCategoriesQuery,
-} from "@/redux/queries/subjects/subjectsApi";
-import Spinner from "../layouts/spinner";
-import { FaCalendarAlt } from "react-icons/fa";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { format } from "date-fns";
-import { formatDate } from "@/src/utils/dates";
-import "../style.css";
-import styles from "../custom.module.css";
-import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { FieldValues, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import Spinner from "../layouts/spinner";
+
 import { useCreateUserMutation } from "@/redux/queries/users/usersApi";
-import { FaPlusCircle } from "react-icons/fa";
 import { BsChevronDown } from "react-icons/bs";
+import { FaPlusCircle } from "react-icons/fa";
+import "../style.css";
 
 interface CreateAccountProps {
   refetchUsers: () => void;
@@ -87,11 +78,7 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("class_level", e.target.value);
   };
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    const formattedDate = date ? formatDate(date) : "";
-    setValue("birth_date", formattedDate);
-  };
+  
 
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);

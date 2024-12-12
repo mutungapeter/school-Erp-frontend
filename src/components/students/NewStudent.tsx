@@ -1,20 +1,19 @@
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
-import { formatDate } from "@/src/utils/dates";
+
+import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
+import { BiCheckCircle } from "react-icons/bi";
+import { BsChevronDown } from "react-icons/bs";
 import { FaPlusCircle } from "react-icons/fa";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import "../style.css";
-import { BsChevronDown } from "react-icons/bs";
-import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
-import { IoCloseOutline } from "react-icons/io5";
-import { BiCheckCircle } from "react-icons/bi";
 interface CreateStudentProps {
   refetchStudents: () => void;
 }
@@ -80,11 +79,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("class_level", e.target.value);
   };
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
-    const formattedDate = date ? formatDate(date) : "";
-    setValue("birth_date", formattedDate);
-  };
+
   const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("current_term", e.target.value);
   };

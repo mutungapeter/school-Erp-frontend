@@ -1,26 +1,19 @@
 "use client";
-import {
-  useGetTeacherQuery,
-  useUpdateTeacherMutation,
-} from "@/redux/queries/teachers/teachersApi";
-import { useEffect, useState } from "react";
-import { IoMdArrowDropdown } from "react-icons/io";
+import { useState } from "react";
 
+import { useCreateTermMutation } from "@/redux/queries/terms/termsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { BiSolidEdit } from "react-icons/bi";
+import { BsChevronDown } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
-import { BsChevronDown } from "react-icons/bs";
-import "react-datepicker/dist/react-datepicker.css";
 import "../style.css";
-import { useCreateTermMutation, useGetTermQuery, useUpdateTermMutation } from "@/redux/queries/terms/termsApi";
-import DatePicker from "react-datepicker";
 
 import { FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
-import { formatYear, formatDate } from "@/src/utils/dates";
+// import { formatYear, formattDate } from "@/src/utils/dates";
 interface Props {
   refetchTerms: () => void;
 }
@@ -71,15 +64,15 @@ const CreateTerm = ({  refetchTerms }: Props) => {
   const handleTermNameChange= (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("term", e.target.value);
   };
-  const handleStartDateChange = (date: Date | null) => {
-    setSelectedStartDate(date);
-    setValue("start_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
-  };
+  // const handleStartDateChange = (date: Date | null) => {
+  //   setSelectedStartDate(date);
+  //   setValue("start_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
+  // };
 
-  const handleEndDateChange = (date: Date | null) => {
-    setSelectedEndDate(date);
-    setValue("end_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
-  };
+  // const handleEndDateChange = (date: Date | null) => {
+  //   setSelectedEndDate(date);
+  //   setValue("end_date", date || "", { shouldValidate: true }); // Ensure it's a Date object
+  // };
   const onSubmit = async (data: FieldValues) => {
     const {term} = data;
    
