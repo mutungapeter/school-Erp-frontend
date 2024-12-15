@@ -78,7 +78,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
   return (
     <>
       <button
-        className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-sm border bg-green-900  text-white"
+        className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-md border bg-green-900  text-white"
         onClick={handleOpenModal}
       >
         Promote To Alumni

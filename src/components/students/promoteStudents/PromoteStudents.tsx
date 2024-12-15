@@ -32,7 +32,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
   const schema = z.object({
     source_class_level: z.number().min(1, "Select  current class"),
     target_class_level: z.number().min(1, "Select target class"),
-    year: z.number().min(4, "Enter a valid year"),
+    // year: z.number().min(4, "Enter a valid year"),
   });
   const [promoteStudents, { data, error, isSuccess }] =
     usePromoteStudentsMutation();
@@ -60,7 +60,11 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
   };
   
   const onSubmit = async (data: FieldValues) => {
-    const { source_class_level, target_class_level, year } = data;
+    const { 
+      source_class_level, 
+      target_class_level, 
+      // year 
+    } = data;
     console.log("data")
     try {
       const response = await promoteStudents(data).unwrap();
@@ -91,7 +95,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
         className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-md border bg-[#1566FF]  text-white"
         onClick={handleOpenModal}
       >
-        Yearly Promotion
+        Promote Students
       </button>
       {isOpen && (
         <div
@@ -108,7 +112,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
@@ -125,7 +129,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
+                  
                     <div className="relative">
                       <label
                         htmlFor="class_level"
@@ -148,7 +152,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                             <option value="">Select current class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""}
+                                {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
@@ -187,7 +191,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                             <option value="">Select target class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""}
+                                {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
@@ -204,9 +208,9 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                         </p>
                       )}
                     </div>
-                  </div>
+               
                  
-                    <div className="relative ">
+                    {/* <div className="relative ">
                       <label
                         htmlFor="year"
                         className="block  text-sm  font-normal  mb-2"
@@ -225,14 +229,14 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                           {String(errors.year.message)}
                         </p>
                       )}
-                    </div>
+                    </div> */}
                  
                   <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white flex inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className="  inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       <LuRefreshCcw className="text-white " size={18} />

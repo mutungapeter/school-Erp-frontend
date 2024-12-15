@@ -17,31 +17,18 @@ import "../style.css";
 import { BsChevronDown } from "react-icons/bs";
 import { GoPlus } from "react-icons/go";
 import { formatYear, formattDate } from "@/src/utils/dates";
-
+import { addMonths, subMonths } from "date-fns";
+import { PiCalendarDotsLight } from "react-icons/pi";
 interface CreateClassProps {
   refetchClasses: () => void;
 }
 
-interface Term {
-  id: number;
-  name: string;
-  start_date: string;
-  end_date: string;
-}
 
-const termsData = [
-  { id: 1, name: "Term 1" },
-  { id: 2, name: "Term 2" },
-  { id: 3, name: "Term 3" },
-];
 export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedYear, setSelectedYear] = useState<Date | null>(new Date());
-  const [selectedTerms, setSelectedTerms] = useState<
-    Record<number, { start_date: Date | null; end_date: Date | null }>
-  >({});
-  const [activeTerm, setActiveTerm] = useState<number | null>(null);
-
+  // const [calendarYear, setCalendarYear] = useState<number>(
+  //   parseInt(formatYear(new Date()))
+  // );
   const {
     isLoading: loadingFormLevels,
     data: formLevelsData,
@@ -67,6 +54,7 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -74,23 +62,10 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
 
   const onSubmit = async (data: FieldValues) => {
     const { form_level, stream, calendar_year } = data;
-    const formattedTerms = Object.entries(selectedTerms).map(
-      ([termId, termDates]) => ({
-        term:
-          termsData.find((term) => term.id === parseInt(termId))?.name || "",
-        start_date: termDates.start_date
-          ? formattDate(termDates.start_date)
-          : "",
-        end_date: termDates.end_date ? formattDate(termDates.end_date) : "",
-      })
-    );
-    const formData = {
-      ...data,
-      terms: formattedTerms,
-    };
-    console.log("formData", formData);
+
+    console.log("formData", data);
     try {
-      await createClass(formData).unwrap();
+      await createClass(data).unwrap();
       toast.success("Class added successfully!");
       handleCloseModal();
       refetchClasses()
@@ -109,31 +84,15 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
   const handleStreamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("stream", e.target.value);
   };
+ 
+
+ const calendarYear = watch("calendar_year");
   const handleYearChange = (date: Date | null) => {
-    setSelectedDate(date);
-    const formattedDate = date ? Number(formatYear(date)) : null;
-    setValue("calendar_year", formattedDate, { shouldValidate: true });
+    const formattedDate = date ? parseInt(formatYear(date)) : undefined;
+    setValue("calendar_year", formattedDate ?? null, {
+      shouldValidate: true,
+    });
   };
-
-  const handleTermSelect = (termId: number) => {
-    setActiveTerm((prev) => (prev === termId ? null : termId));
-  };
-
-  const handleDateChange =
-    (termId: number, field: "start_date" | "end_date") =>
-    (date: Date | null) => {
-      setSelectedTerms((prev) => ({
-        ...prev,
-        [termId]: {
-          ...prev[termId],
-          [field]: date ? formattDate(date) : null,
-        },
-      }));
-    };
-
-  const isTermSelected = (termId: number) =>
-    !!selectedTerms[termId] && activeTerm === termId;
-
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => setIsOpen(false);
   console.log("formlevesdata", formLevelsData);
@@ -181,11 +140,13 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2  lg:gap-5">
+                    <div>
+
                     <div className="relative">
                       <label
                         htmlFor="form_level"
-                        className="block text-gray-900 text-sm  font-normal  mb-2"
+                        className="block text-gray-900 text-sm md:text-lg lg:text-lg  font-normal  mb-2"
                       >
                         Form Level
                       </label>
@@ -213,19 +174,24 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                         size={20}
                         className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.form_level && (
                         <p className="text-red-500 text-sm">
                           {String(errors.form_level.message)}
                         </p>
                       )}
                     </div>
+                    <div>
+
                     <div className="relative">
                       <label
                         htmlFor="stream"
-                        className="block text-gray-900 text-sm  font-normal  mb-2"
+                        className="block text-gray-900 text-sm md:text-lg lg:text-lg  font-normal  mb-2"
                       >
-                        Stream
+                       Stream <span className="text-gray-500 text-sm md:text-lg lg:text-lg">(Optional)</span>
+                       
                       </label>
+                     
                       <select
                         id="stream"
                         {...register("stream")}
@@ -250,6 +216,7 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                         size={20}
                         className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.stream && (
                         <p className="text-red-500 text-sm">
                           {String(errors.stream.message)}
@@ -261,105 +228,31 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                   <div className="relative ">
                     <label
                       htmlFor="year"
-                      className="block  text-sm  font-normal  mb-2"
+                      className="block  text-sm  md:text-lg lg:text-lg font-normal  mb-2"
                     >
                       Calendar Year
                     </label>
                     <DatePicker
-                      selected={selectedYear}
+                    
+                    selected={calendarYear ? new Date(calendarYear, 0, 1) : null}
+
                       onChange={handleYearChange}
                       showYearPicker
                       dateFormat="yyyy"
-                      className="py-2 px-4 rounded-md  mt-2 border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
-                    />
+                      showIcon
+                      icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+                      yearDropdownItemNumber={5}
+                      placeholderText="YYYY"
+                      isClearable
+                      className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                   />
                     {errors.calendar_year && (
                       <p className="text-red-500 text-sm">
                         {String(errors.calendar_year.message)}
                       </p>
                     )}
                   </div>
-                  <div>
-                    <label className="block font-semibold text-sm  mb-3">
-                      Select Start dates and End dates for your academic year
-                      for this class.(The dates can be updated later if changes)
-                    </label>
-                    {termsData.map((term) => (
-                      <div key={term.id} className="space-y-3">
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="checkbox"
-                            id={`term-${term.id}`}
-                            checked={!!selectedTerms[term.id]}
-                            onChange={() => {
-                              setSelectedTerms((prev) => {
-                                if (prev[term.id]) {
-                                  const { [term.id]: removed, ...rest } = prev;
-                                  return rest;
-                                } else {
-                                  return {
-                                    ...prev,
-                                    [term.id]: {
-                                      start_date: null,
-                                      end_date: null,
-                                    },
-                                  };
-                                }
-                              });
-                            }}
-                          />
-                          <label
-                            htmlFor={`term-${term.id}`}
-                            className="cursor-pointer"
-                            onClick={() => handleTermSelect(term.id)}
-                          >
-                            {term.name}
-                          </label>
-                        </div>
-
-                        {selectedTerms[term.id] && (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
-                            <div className="relative w-full ">
-                              <label
-                                htmlFor="start_date"
-                                className="text-sm block mb-2 text-sm"
-                              >
-                                Start Date
-                              </label>
-                              <DatePicker
-                                id="start_date"
-                                selected={
-                                  selectedTerms[term.id]?.start_date || null
-                                }
-                                onChange={handleDateChange(
-                                  term.id,
-                                  "start_date"
-                                )}
-                                className="p-2 border border-gray-300 rounded-md w-full text-sm focus:outline-none focus:ring-0"
-                                placeholderText="YYYY-MM-DD"
-                              />
-                            </div>
-                            <div className="relative w-full">
-                              <label
-                                htmlFor="end_date"
-                                className="text-sm block mb-2 text-sm"
-                              >
-                                End Date
-                              </label>
-                              <DatePicker
-                                id="end_date"
-                                selected={
-                                  selectedTerms[term.id]?.end_date || null
-                                }
-                                onChange={handleDateChange(term.id, "end_date")}
-                                className="p-2 border border-gray-300 rounded-md w-full text-sm placeholder:text-sm focus:outline-none focus:ring-0"
-                                placeholderText="YYYY-MM-DD"
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                 
 
                   <div className="flex justify-start lg:justify-end md:justify-end mt-3 py-2">
                     <button

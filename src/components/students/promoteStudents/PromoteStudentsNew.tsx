@@ -1,33 +1,31 @@
 "use client";
-import { useForm, useFieldArray, Controller, SubmitHandler, FieldValues } from "react-hook-form";
+import { formattDate } from "@/src/utils/dates";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
-import { formattDate, formattedDate } from "@/src/utils/dates";
-import DatePicker from "react-datepicker";
 
 
-import { formatYear } from "@/src/utils/dates";
+import {
+  useGetClassesQuery
+} from "@/redux/queries/classes/classesApi";
+import {
+  useGetFormLevelsQuery
+} from "@/redux/queries/formlevels/formlevelsApi";
 import { usePromoteStudentsMutation } from "@/redux/queries/students/studentsApi";
-import "../../style.css";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { FormLevel } from "@/src/definitions/formlevels";
+import { formatYear } from "@/src/utils/dates";
+import { BsChevronDown } from "react-icons/bs";
 import { IoCloseOutline } from "react-icons/io5";
 import { LuRefreshCcw } from "react-icons/lu";
 import Spinner from "../../layouts/spinner";
-import { BsChevronDown } from "react-icons/bs";
-import {
-  useDeleteFormLevelsMutation,
-  useGetFormLevelsQuery,
-} from "@/redux/queries/formlevels/formlevelsApi";
-import { FormLevel } from "@/src/definitions/formlevels";
-import {
-  useDeleteClassLevelsMutation,
-  useGetClassesQuery,
-} from "@/redux/queries/classes/classesApi";
-import { ClassLevel } from "@/src/definitions/classlevels";
+import "../../style.css";
 
+import { addMonths, subMonths } from "date-fns";
 import { PiCalendarDotsLight } from "react-icons/pi";
-import { subMonths, addMonths } from "date-fns";
 type Term = {
   id: number;
   term: string;
@@ -231,7 +229,7 @@ const PromoteStudents = ({ refetchStudents }: Props) => {
                         {classesData?.map((class_level: ClassLevel) => (
                           <option key={class_level.id} value={class_level.id}>
                             {class_level.form_level.name}{" "}
-                            {class_level?.stream?.name || ""}
+                            {class_level?.stream?.name || ""} - {class_level.calendar_year}
                           </option>
                         ))}
                       </select>

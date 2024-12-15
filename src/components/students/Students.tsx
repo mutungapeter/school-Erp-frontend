@@ -188,8 +188,8 @@ const Students = () => {
               {/* <PromoteStudentsToNextTerm refetchStudents={refetchStudents} /> */}
             </div>
             <div className="flex justify-between items-center space-x-3">
-              {/* <PromoteStudentsToNextClass refetchStudents={refetchStudents} /> */}
-              <PromoteStudents refetchStudents={refetchStudents} />
+              <PromoteStudentsToNextClass refetchStudents={refetchStudents} />
+              {/* <PromoteStudents refetchStudents={refetchStudents} /> */}
               
               <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
             </div>
