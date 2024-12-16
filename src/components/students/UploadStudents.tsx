@@ -12,7 +12,7 @@ import {
   import { toast } from "react-toastify";
   import { z } from "zod";
   import Spinner from "../layouts/spinner";
-  import "../../style.css";
+  import "../style.css";
   import { BsChevronDown } from "react-icons/bs";
   import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
   import { IoMdCheckmarkCircleOutline } from "react-icons/io";
