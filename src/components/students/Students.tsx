@@ -34,7 +34,8 @@ import { IoIosClose } from "react-icons/io";
 import DeleteConfirmationModal from "./DeleteModal";
 import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
 import PromoteStudents from "./promoteStudents/PromoteStudentsNew";
-import { UploadStudents } from "./UploadStudents/uploadStudents";
+import { AdmitStudents } from "./uploadStudents/UploadStudents";
+
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -177,7 +178,7 @@ const Students = () => {
           </h2>
           <div className="flex items-center space-x-3">
             {hasAdminPermissions() && (
-              <UploadStudents refetchStudents={refetchStudents} />
+              <AdmitStudents refetchStudents={refetchStudents} />
             )}
           </div>
         </div>

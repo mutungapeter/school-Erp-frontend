@@ -23,7 +23,7 @@ import { IoCloseOutline } from "react-icons/io5";
   interface UploadProps {
     refetchStudents: () => void;
   }
-  export const UploadStudents = ({refetchStudents}: UploadProps) => {
+  export const AdmitStudents = ({refetchStudents}: UploadProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [uploadStudents, { data, error, isSuccess }] = useUploadStudentsMutation();
   
