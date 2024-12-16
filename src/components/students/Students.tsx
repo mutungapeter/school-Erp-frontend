@@ -26,7 +26,7 @@ import AdminPermissions from "@/src/hooks/AdminProtected";
 import { PAGE_SIZE } from "@/src/constants/constants";
 import { VscRefresh } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
-import { UploadStudents } from "./uploadStudents";
+import { UploadStudents } from "./UploadStudents/UploadStudents";
 import ContentSpinner from "../perfomance/contentSpinner";
 import { toast } from "react-toastify";
 import { FiDelete } from "react-icons/fi";
