@@ -26,7 +26,7 @@ import AdminPermissions from "@/src/hooks/AdminProtected";
 import { PAGE_SIZE } from "@/src/constants/constants";
 import { VscRefresh } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
-import { UploadStudents } from "./UploadStudents/UploadStudents";
+
 import ContentSpinner from "../perfomance/contentSpinner";
 import { toast } from "react-toastify";
 import { FiDelete } from "react-icons/fi";
@@ -34,6 +34,7 @@ import { IoIosClose } from "react-icons/io";
 import DeleteConfirmationModal from "./DeleteModal";
 import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
 import PromoteStudents from "./promoteStudents/PromoteStudentsNew";
+import { UploadStudents } from "./UploadStudents/uploadStudents";
 const Students = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
