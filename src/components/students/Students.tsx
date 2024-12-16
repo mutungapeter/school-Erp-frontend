@@ -34,7 +34,7 @@ import { IoIosClose } from "react-icons/io";
 import DeleteConfirmationModal from "./DeleteModal";
 import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
 import PromoteStudents from "./promoteStudents/PromoteStudentsNew";
-import AdmitStudents from "./uploadStudents/UploadStudents";
+import AdmitStudents from "./UploadStudents";
 
 
 const Students = () => {
