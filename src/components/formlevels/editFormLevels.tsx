@@ -66,7 +66,7 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
+        className=" cursor-pointer  inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
         <BiSolidEdit   size={15} className="text-white" />
@@ -87,7 +87,7 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
               {isSubmitting && <Spinner />}
           
               <div className="flex justify-between items-center pb-3">
-                <p className="text-2xl font-bold text-[#1F4772]">
+                <p className="text-lg lg:2xl md:text-2xl font-bold text-black">
                   Update Form Level details
                 </p>
                 <div className="flex justify-end cursor-pointer">
@@ -147,8 +147,8 @@ const EditFormLevel = ({ formLevelId, refetchFormLevels }: Props) => {
                     <button
                       type="submit"
                       disabled={Updating}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       {/* <LiaEdit className="text-white " size={18} /> */}

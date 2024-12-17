@@ -1,25 +1,17 @@
-import {
-    useRecorMarkMutation,
-    useUploadMarksMutation,
-  } from "@/redux/queries/marks/marksApi";
-  import { useGetActiveTermsQuery, useGetTermsQuery } from "@/redux/queries/terms/termsApi";
-  import { StudentSubject } from "@/src/definitions/students";
-  import { zodResolver } from "@hookform/resolvers/zod";
-  import { useState } from "react";
-  import "react-datepicker/dist/react-datepicker.css";
-  import { FieldValues, useForm } from "react-hook-form";
-  import { FiPlus } from "react-icons/fi";
-  import { toast } from "react-toastify";
-  import { z } from "zod";
-  import Spinner from "../layouts/spinner";
-  import "../style.css";
-  import { BsChevronDown } from "react-icons/bs";
-  import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-  import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-  import { ClassLevel } from "@/src/definitions/classlevels";
-  import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useUploadStudentsMutation } from "@/redux/queries/students/studentsApi";
-import { IoCloseOutline } from "react-icons/io5";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import { FieldValues, useForm } from "react-hook-form";
+import { BsChevronDown } from "react-icons/bs";
+import { IoCloseOutline, IoCloudUploadOutline } from "react-icons/io5";
+import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import Spinner from "../layouts/spinner";
+import "../style.css";
   interface UploadProps {
     refetchStudents: () => void;
   }
@@ -27,11 +19,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [uploadStudents, { data, error, isSuccess }] = useUploadStudentsMutation();
   
-    const {
-      isLoading: loadingTerms,
-      data: termsData,
-      refetch: refetchTerms,
-    } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
+   
     const {
       isLoading: loadingClasses,
       data: classesData,
@@ -39,8 +27,17 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
     } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
   
     const schema = z.object({
-      term: z.number().min(1, "Term is required"),
-      class_level: z.number().min(1, "Class level is required"),
+     
+      // class_level: z.number().min(1, "Class level is required"),
+      class_level: z
+    .string()
+    .refine((value) => value !== "", {
+      message: "class is required",
+    })
+    .transform((value) => Number(value))
+    .refine((val) => !isNaN(val) && val > 0, {
+      message: "Class must be a valid class",
+    }),
       admission_type: z.enum(["New Admission", "Transfer"], {
         errorMap: () => ({ message: "Select admission type" }),
       }),
@@ -63,9 +60,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
       resolver: zodResolver(schema),
     });
   
-    const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setValue("term", e.target.value);
-    };
+  
     const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setValue("class", e.target.value);
     };
@@ -75,7 +70,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
   
       if (students_file && students_file instanceof FileList) {
         const formData = new FormData();
-        formData.append("term", term);
+        
         formData.append("class_level", class_level);
         formData.append("admission_type", admission_type);
         formData.append("students_file", students_file[0]);
@@ -148,7 +143,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                   {isSubmitting && <Spinner />}
   
                   <div className="flex justify-between items-center pb-3">
-                    <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
+                    <p className="lg:text-2xl md:text-2xl text-sm font-bold text-black">
                       Upload Students
                     </p>
                     <div className="flex justify-end cursor-pointer">
@@ -185,18 +180,20 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                   
                   {/* </div> */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                      <div>
+
                       <div className="relative">
                         <label
                           htmlFor="term"
-                          className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                          className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal  mb-2"
                         >
                           Class
                         </label>
                         <select
                           id="term"
-                          {...register("class_level", { valueAsNumber: true })}
+                          {...register("class_level")}
                           onChange={handleClassChange}
-                          className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                          className="w-full appearance-none py-2 px-4 text-sm md:text-lg lg:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                         >
                           {loadingClasses ? (
                             <option value="">Loading...</option>
@@ -206,7 +203,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                               {classesData?.map((classLevel: ClassLevel) => (
                                 <option key={classLevel.id} value={classLevel.id}>
                                   {classLevel.form_level.name}{" "}
-                                  {classLevel?.stream?.name}
+                                  {classLevel?.stream?.name} ({classLevel.calendar_year})
                                 </option>
                               ))}
                             </>
@@ -217,50 +214,16 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                           size={16}
                           className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                         />
+                      </div>
                         {errors.class_level && (
                           <p className="text-red-500 text-sm">
                             {String(errors.class_level.message)}
                           </p>
                         )}
                       </div>
-                      <div className="relative">
-                        <label
-                          htmlFor="term"
-                          className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                        >
-                          Term
-                        </label>
-                        <select
-                          id="term"
-                          {...register("term", { valueAsNumber: true })}
-                          onChange={handleTermChange}
-                          className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                        >
-                          {loadingTerms ? (
-                            <option value="">Loading...</option>
-                          ) : (
-                            <>
-                              <option value="">Term</option>
-                              {termsData?.map((term: any) => (
-                                <option key={term.id} value={term.id}>
-                                  {term.term} {term?.calendar_year}
-                                </option>
-                              ))}
-                            </>
-                          )}
-                        </select>
-                        <BsChevronDown
-                          color="gray"
-                          size={16}
-                          className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                        />
-                        {errors.term && (
-                          <p className="text-red-500 text-sm">
-                            {String(errors.term.message)}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                    
+                    <div>
+
                     <div className="relative">
                     <label
                       htmlFor="admission_type"
@@ -271,7 +234,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                     <select
                       id="admission_type"
                       {...register("admission_type")}
-                      className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      className="w-full appearance-none py-2 px-4 text-sm lg:text-lg md:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
                       <option value="">Admission Type</option>
                       <option value="New Admission">New Admission</option>
@@ -282,21 +245,23 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.admission_type && (
                       <p className="text-red-500 text-sm">
                         {String(errors.admission_type.message)}
                       </p>
                     )}
-                  </div>
+                    </div>
+                    </div>
                   <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white flex inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
-                      <IoMdCheckmarkCircleOutline className="text-white " size={18} />
+                      <IoCloudUploadOutline className="text-white " size={18} />
                       <span>{isSubmitting ? "Submitting..." : "Upload Students"}</span>
                     </button>
                   </div>

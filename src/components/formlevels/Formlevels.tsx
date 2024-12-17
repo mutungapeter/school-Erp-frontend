@@ -110,12 +110,12 @@ const FormLevels = () => {
           </h2>
           <CreateFormLevel refetchFormLevels={refetchFormLevels} />
         </div>
-        <div className=" relative overflow-x-auto p-2 shadow-md bg-white  ">
+        <div className=" relative overflow-x-auto  shadow-md bg-white  ">
         {selectedFormLevels.length > 0 && (
-            <div className="flex items-center space-x-3 py-3">
+            <div className="flex items-center space-x-3 py-3 px-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
@@ -124,7 +124,7 @@ const FormLevels = () => {
                 type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
               >
                 <FiDelete size={20} className="" />
                 <span className="">{deleting ? "Deleting..." : "Delete"}</span>
@@ -139,9 +139,9 @@ const FormLevels = () => {
             deleteMessage="This action cannot be undone."
           />
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
-            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+            <thead className=" text-black uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-              <th scope="col" className="px-4 py-3 border-r  text-center">
+              <th scope="col" className="p-2 border-r  text-center">
                     <input
                       id="checkbox-all"
                       type="checkbox"
@@ -167,14 +167,14 @@ const FormLevels = () => {
                                        dark:border-gray-600"
                     />
                   </th>
-                <th scope="col" className="px-4 border-r py-3 text-[10px]">
+                <th scope="col" className="p-2 border-r  text-xs md:text-sm lg:text-sm">
                   Name
                 </th>
-                <th scope="col" className="px-4 border-r py-3 text-[10px]">
+                <th scope="col" className="p-2 border-r  text-xs md:text-sm lg:text-sm">
                   Level
                 </th>
 
-                <th scope="col" className="px-4 py-3 text-[10px]">
+                <th scope="col" className="p-2 text-xs md:text-sm lg:text-sm">
                   Actions
                 </th>
               </tr>
@@ -191,7 +191,7 @@ const FormLevels = () => {
                 formLevelsData.results.map(
                   (form_level: FormLevel, index: number) => (
                     <tr key={form_level.id} className="bg-white border-b">
-                      <th className="px-3 py-2 text-gray-900 text-center border-r">
+                      <th className="p-2 text-gray-900 text-center border-r">
                           <input
                             id="checkbox-table-search-1"
                             type="checkbox"
@@ -203,22 +203,19 @@ const FormLevels = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                           />
                         </th>
-                      <td className="px-3 py-2 font-normal border-r text-sm lg:text-sm md:text-sm whitespace-nowrap">
+                      <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg whitespace-nowrap">
                         {form_level.name}
                       </td>
-                      <td className="px-3 py-2 font-normal border-r text-sm lg:text-sm md:text-sm">
+                      <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg">
                         {form_level.level}
                       </td>
 
-                      <td className="px-3 py-2 font-normal border-r text-sm lg:text-sm md:text-sm flex items-center space-x-5">
+                      <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg flex items-center space-x-5">
                         <EditFormLevel
                           formLevelId={form_level.id}
                           refetchFormLevels={refetchFormLevels}
                         />
-                        {/* <DeleteFormLevel
-                          formLevelId={form_level.id}
-                          refetchFormLevels={refetchFormLevels}
-                        /> */}
+                        
                       </td>
                     </tr>
                   )

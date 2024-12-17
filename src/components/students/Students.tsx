@@ -1,39 +1,35 @@
 "use client";
+import { useAppSelector } from "@/redux/hooks";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
-import { ClassLevel } from "@/src/definitions/classlevels";
 import {
   useDeleteStudentsMutation,
   useGetStudentsQuery,
 } from "@/redux/queries/students/studentsApi";
+import { RootState } from "@/redux/store";
+import { PAGE_SIZE } from "@/src/constants/constants";
+import { ClassLevel } from "@/src/definitions/classlevels";
 import { Student } from "@/src/definitions/students";
+import AdminPermissions from "@/src/hooks/AdminProtected";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 import { formattedDate } from "@/src/utils/dates";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { BsChevronDown } from "react-icons/bs";
+import { CiSearch } from "react-icons/ci";
 import { IoEyeSharp } from "react-icons/io5";
 import { TbDatabaseOff } from "react-icons/tb";
-import DeleteStudent from "./deleteStudent";
+import { VscRefresh } from "react-icons/vsc";
+import { useDebouncedCallback } from "use-debounce";
+import PromoteStudentsToAlumni from "./alumni/Alumni";
 import EditStudent from "./editStudent";
 import { CreateStudent } from "./NewStudent";
 import PromoteStudentsToNextClass from "./promoteStudents/PromoteStudents";
-import { useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
-import { BsChevronDown } from "react-icons/bs";
-import { useDebouncedCallback } from "use-debounce";
-import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
-import PromoteStudentsToAlumni from "./alumni/Alumni";
-import { usePermissions } from "@/src/hooks/hasAdminPermission";
-import AdminPermissions from "@/src/hooks/AdminProtected";
-import { PAGE_SIZE } from "@/src/constants/constants";
-import { VscRefresh } from "react-icons/vsc";
-import { CiSearch } from "react-icons/ci";
 
-import ContentSpinner from "../perfomance/contentSpinner";
-import { toast } from "react-toastify";
 import { FiDelete } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
+import { toast } from "react-toastify";
+import ContentSpinner from "../perfomance/contentSpinner";
 import DeleteConfirmationModal from "./DeleteModal";
-import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
-import PromoteStudents from "./promoteStudents/PromoteStudentsNew";
 import AdmitStudents from "./UploadStudents";
 
 
@@ -239,10 +235,10 @@ const Students = () => {
 
               <div
                 onClick={handleResetFilters}
-                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
+                className=" p-2 cursor-pointer max-w-max  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
               >
                 <VscRefresh className="text-white" />
-                <span>Reset Filters</span>
+                <span className="text-sm font-semibold">Reset Filters</span>
               </div>
             </div>
           </div>
@@ -250,7 +246,7 @@ const Students = () => {
             <div className="flex items-center space-x-3 py-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
@@ -259,7 +255,7 @@ const Students = () => {
                 type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
               >
                 <FiDelete size={20} className="" />
                 <span className="">{deleting ? "Deleting..." : "Delete"}</span>

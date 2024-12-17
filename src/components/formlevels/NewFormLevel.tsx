@@ -11,20 +11,31 @@ import "../style.css";
 import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { GoPlus } from "react-icons/go";
+import { BsChevronDown } from "react-icons/bs";
 interface CreateFormLevelsProps {
   refetchFormLevels: () => void;
 }
 
-export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) => {
+export const CreateFormLevel = ({
+  refetchFormLevels,
+}: CreateFormLevelsProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const [createFormLevel, { data, error, isSuccess }] =
-  useCreateFormLevelMutation();
-  
+    useCreateFormLevelMutation();
+
   const today = new Date();
   const schema = z.object({
-    name: z.string().min(1, "Form naame is required"),
-    level: z.string().min(1, "Level is required"),
+    name: z.string().min(1, "Form name is required"),
+    level: z
+    .string()
+    .refine((value) => value !== "", {
+      message: "Level is required",
+    })
+    .transform((value) => Number(value))
+    .refine((val) => !isNaN(val) && val > 0, {
+      message: "Level must be a valid number",
+    }),
   });
 
   const {
@@ -43,9 +54,8 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
       await createFormLevel(data).unwrap();
       toast.success("Form Level created successfully!");
       handleCloseModal();
-      refetchFormLevels()
-    } catch (error:any) {
-     
+      refetchFormLevels();
+    } catch (error: any) {
       if (error?.data?.error) {
         toast.error(error.data.error);
       } else {
@@ -53,7 +63,6 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
       }
     }
   };
-
 
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () => {
@@ -63,46 +72,52 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
 
   return (
     <>
-       <div
+      <div
         onClick={handleOpenModal}
         className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-3 md:px-3 px-2 bg-green-700 rounded-md  flex items-center space-x-2 "
       >
         <GoPlus size={18} className="text-white   " />
-        <span className=" lg:text-sm md:text-sm text-xs  text-white">Add Form Level</span>
+        <span className=" lg:text-sm md:text-sm text-xs  text-white">
+          Add Form Level
+        </span>
       </div>
 
       {isOpen && (
-       <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
- 
-       <div 
-       onClick={handleCloseModal}
-       className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
-     
-       <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
-         <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-          
-           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
-            {isSubmitting && <Spinner />}
-            
-              <div className="flex justify-between items-center pb-3">
-              <p className="text-sm md:text-lg lg:text-lg font-semibold text-black">
-                 Add New Form Level
-                </p>
-                <div className="flex justify-end cursor-pointer">
+        <div
+          className="relative z-9999 animate-fadeIn"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            onClick={handleCloseModal}
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn"
+            aria-hidden="true"
+          ></div>
+
+          <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
+                {isSubmitting && <Spinner />}
+
+                <div className="flex justify-between items-center pb-3">
+                  <p className="text-sm md:text-lg lg:text-lg font-semibold text-black">
+                    Add New Form Level
+                  </p>
+                  <div className="flex justify-end cursor-pointer">
                     <IoCloseOutline
                       size={35}
                       onClick={handleCloseModal}
                       className=" text-gray-500 "
                     />
                   </div>
-              </div>
+                </div>
 
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-            
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                   <div>
                     <label
                       htmlFor="Name"
-                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
                       Name
                     </label>
@@ -120,44 +135,59 @@ export const CreateFormLevel = ({ refetchFormLevels }: CreateFormLevelsProps) =>
                     )}
                   </div>
                   <div>
-                    <label
-                      htmlFor="Level"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                    >
-                     Level
-                    </label>
-                    <input
-                      type="number"
-                      id="Level"
-                      placeholder="Enter level e.g 1 for Form One "
-                      {...register("level")}
-                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    />
+                    <div className="relative">
+                      <label
+                        htmlFor="level"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Level
+                      </label>
+                      <select
+                        id="level"
+                        {...register("level")}
+                        className="w-full appearance-none p-2 text-sm md:text-lg lg:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      >
+                        <option value="">Level</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                      </select>
+                      <BsChevronDown
+                        color="gray"
+                        size={20}
+                        className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                      />
+                    </div>
                     {errors.level && (
                       <p className="text-red-500 text-sm">
                         {String(errors.level.message)}
                       </p>
                     )}
                   </div>
+
                 
-           
-              
-                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       {/* <LiaEdit className="text-white " size={18} /> */}
-                      <span>{isSubmitting ? "Saving..." : "Save Form Level"}</span>
+                      <span>
+                        {isSubmitting ? "Saving..." : "Save Form Level"}
+                      </span>
                     </button>
                   </div>
-              </form>
-            
-          </div>
-        </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}

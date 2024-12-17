@@ -31,7 +31,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
   } = useGetGraduatingClassesQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
     final_class_level: z.number().min(1, "Select  graduation class"),
-    graduation_year: z.number().min(4, "Enter a valid year"),
+    
   });
   const [promoteStudentsToAlumni, { data, error, isSuccess }] =
   usePromoteStudentsToAlumniMutation();
@@ -132,7 +132,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                           <option value="">Select graduating class</option>
                           {ClassLevelsData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
-                              {cl.form_level.name} {cl?.stream?.name || ""}
+                              {cl.form_level.name} {cl?.stream?.name || ""} ({cl.calendar_year})
                             </option>
                           ))}
                         </>
@@ -150,38 +150,14 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                     )}
                   </div>
                 
-                  <div className="relative ">
-                <label
-                  htmlFor="year"
-                  className="block  text-sm  font-normal  mb-2"
-                >
-                  YEAR(year the class is graduating)
-                </label>
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  showYearPicker
-                  dateFormat="yyyy"
-                  className="py-2 px-4 rounded-md  border border-1
-                   border-gray-400 focus:outline-none 
-                   focus:border-[#1E9FF2] focus:bg-white 
-                   placeholder:text-sm md:placeholder:text-sm 
-                  lg:placeholder:text-sm w-full"
-                />
-                {errors.graduation_year && (
-                    <p className="text-red-500 text-sm">
-                      {String(errors.graduation_year.message)}
-                    </p>
-                  )}
-                </div>
-                
+               
 
                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white flex inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-3
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-3
                        text-white rounded-md  px-4 py-2"
                     >
                       <PiGraduationCapThin className="text-white " size={18} />

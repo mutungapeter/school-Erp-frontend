@@ -34,3 +34,14 @@
     fill: currentColor;
   }
   
+  .react-datepicker-popper {
+    z-index: 1050; 
+  }
+  #root-portal {
+    z-index: 1050; 
+  }
+  
+  .react-datepicker {
+    z-index: 9999;
+  }
+  

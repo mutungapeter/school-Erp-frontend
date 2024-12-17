@@ -1,7 +1,6 @@
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useCreateStudentMutation } from "@/redux/queries/students/studentsApi";
 
-import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
@@ -25,17 +24,12 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
     data: ClassLevelsData,
     refetch,
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
-  const {
-    isLoading: loadingTerms,
-    data: termsData,
-    refetch: refetchTerms,
-  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
-  const [createStudent, { data, error, isSuccess }] =useCreateStudentMutation();
+ const [createStudent, { data, error, isSuccess }] =useCreateStudentMutation();
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const today = new Date();
   const schema = z.object({
-    current_term: z.number().min(1, "Term is required"),
+    
     first_name: z.string().min(1, "First name is required"),
     last_name: z.string().min(1, "Last name is required"),
     admission_number: z.string().min(1, "Admission number is required"),
@@ -80,9 +74,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
     setValue("class_level", e.target.value);
   };
 
-  const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue("current_term", e.target.value);
-  };
+  
 
   const handleOpenModal = () => setIsOpen(true);
   const handleCloseModal = () =>{
@@ -274,7 +266,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   </div>
                   </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
+                <div >
                   <div className="relative">
                     <label
                       htmlFor="class_level"
@@ -295,7 +287,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                           <option value="">Select class</option>
                           {ClassLevelsData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
-                              {cl.form_level.name} {cl?.stream?.name || ""}
+                              {cl.form_level.name} {cl?.stream?.name || ""} ({cl.calendar_year})
                             </option>
                           ))}
                         </>
@@ -306,49 +298,13 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.class_level && (
                       <p className="text-red-500 text-sm">
                         {String(errors.class_level.message)}
                       </p>
                     )}
-                  </div>
-                  <div className="relative">
-                      <label
-                        htmlFor="term"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Term
-                      </label>
-                      <select
-                        id="term"
-                        {...register("current_term", { valueAsNumber: true })}
-                        onChange={handleTermChange}
-                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      >
-                        {loadingTerms ? (
-                          <option value="">Loading...</option>
-                        ) : (
-                          <>
-                            <option value="">Term</option>
-                            {termsData?.map((term: any) => (
-                              <option key={term.id} value={term.id}>
-                                {term.term} {term?.calendar_year}
-                              </option>
-                            ))}
-                          </>
-                        )}
-                      </select>
-                      <BsChevronDown
-                        color="gray"
-                        size={16}
-                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                      />
-                      {errors.current_term && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.current_term.message)}
-                        </p>
-                      )}
-                    </div>
+    
                   
                 </div>
 
@@ -357,8 +313,8 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       <BiCheckCircle className="text-white " size={18} />

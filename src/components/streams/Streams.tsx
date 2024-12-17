@@ -117,12 +117,12 @@ const Streams = () => {
           <CreateStream refetchStreams={refetchStreams} />
 
         </div>
-        <div className=" relative overflow-x-auto p-2  shadow-md   bg-white ">
+        <div className=" relative overflow-x-auto   shadow-md   bg-white ">
         {selectedStreams.length > 0 && (
-            <div className="flex items-center space-x-3 py-3">
+            <div className="flex items-center space-x-3 py-3 px-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
@@ -131,7 +131,7 @@ const Streams = () => {
                 type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
               >
                 <FiDelete size={20} className="" />
                 <span className="">{deleting ? "Deleting..." : "Delete"}</span>
@@ -147,7 +147,7 @@ const Streams = () => {
           />
          
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
-            <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+            <thead className="text-black uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
               <th scope="col" className="px-4 py-3 border-r  text-center">
                     <input
@@ -175,11 +175,11 @@ const Streams = () => {
                                        dark:border-gray-600"
                     />
                   </th>
-                <th scope="col" className="px-4 border-r py-3 text-[10px]">
+                <th scope="col" className="p-2 border-r text-xs md:text-sm lg:text-sm">
                   Name
                 </th>
                
-                <th scope="col" className="px-4  py-3 text-[10px]">
+                <th scope="col" className="p-2  py-3 text-xs md:text-sm lg:text-sm">
                   Actions
                 </th>
               </tr>

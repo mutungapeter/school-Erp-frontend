@@ -74,7 +74,7 @@ const EditStream = ({ streamId, refetchStreams }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
+        className=" cursor-pointer  inline-flex text-white items-center space-x-2 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
         <BiSolidEdit   size={15} className="text-white" />
@@ -137,12 +137,12 @@ const EditStream = ({ streamId, refetchStreams }: Props) => {
                   <button
                       type="submit"
                       disabled={Updating}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-2
                        text-white rounded-md  px-5 py-2"
                     >
                       <LiaEdit className="text-white " size={18} />
-                      {Updating ? "Updating..." : "Update Stream"}
+                      <span>{Updating ? "Updating..." : "Update Stream"}</span>
                     </button>
                   </div>
               </form>
