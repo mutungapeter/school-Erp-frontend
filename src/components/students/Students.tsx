@@ -98,7 +98,7 @@ const Students = () => {
   const handleSearch = useDebouncedCallback((value: string) => {
     console.log(`Debounced Search Term: ${value}`);
     setFilters((prev) => ({ ...prev, admission_number: value }));
-  }, 200);
+  }, 100);
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -165,7 +165,7 @@ const Students = () => {
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
-  // console.log("students", studentsData);
+  console.log("students", studentsData);
   return (
     <>
       <div className=" space-y-5   ">
@@ -198,17 +198,17 @@ const Students = () => {
         <div className="bg-white shadow-md rounded-sm  p-2">
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
             <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
-              <div className="relative w-full lg:w-48 md:w-40 xl:w-40 ">
+              <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
                 <select
                   name="class_level_id"
                   value={filters.class_level_id || ""}
                   onChange={handleFilterChange}
-                  className="w-full lg:w-48 md:w-40 xl:w-40 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  className="w-full lg:w-56 md:w-56 xl:w-56 appearance-none p-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                 >
                   <option value="">Class</option>
                   {classesData?.map((classLevel: ClassLevel) => (
                     <option key={classLevel.id} value={classLevel.id}>
-                      {classLevel.form_level.name} {classLevel?.stream?.name}
+                      {classLevel.form_level.name} {classLevel?.stream?.name} - ({classLevel.calendar_year})
                     </option>
                   ))}
                 </select>
@@ -218,18 +218,20 @@ const Students = () => {
                   className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                 />
               </div>
-              <div className="relative w-full lg:w-48 md:w-48 xl:w-48 ">
+              <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
+                <div className="bg-blue-600">
                 <CiSearch
-                  size={20}
-                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  size={25}
+                  className="absolute text-[#1E9FF2] top-[50%] left-3 transform -translate-y-1/2  pointer-events-none"
                 />
+                </div>
                 <input
                   type="text"
                   name="admission_number"
                   value={filters.admission_number || ""}
                   onChange={handleFilterChange}
                   placeholder="admission number"
-                  className="w-full lg:w-48 md:w-48 xl:w-48  py-2  pl-8 pr-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  className="w-full lg:w-56 md:w-56 xl:w-56  py-2  pl-10 pr-4 rounded-full border border-1 border-blue-600 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
                 />
               </div>
 
@@ -339,7 +341,7 @@ const Students = () => {
                   </tr>
                 ) : error ? (
                   <tr className="">
-                    <td colSpan={4} className=" py-4">
+                    <td colSpan={8} className=" py-4">
                       <div className="flex items-center justify-center space-x-6 text-#1F4772">
                         <TbDatabaseOff size={25} />
                         <span>
@@ -374,8 +376,8 @@ const Students = () => {
                           {student.admission_number}
                         </td>
                         <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
-                          {student.class_level.form_level.name}
-                          {student.class_level.stream
+                          {student?.class_level?.form_level?.name}
+                          {student?.class_level?.stream
                             ? student.class_level.stream.name
                             : ""}
                         </td>

@@ -236,8 +236,8 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                       onChange={(date) => handleStartDateChange(date)}
                       placeholderText="YYYY-MM-DD"
                       dateFormat="yyyy/MM/dd"
-                      minDate={subMonths(new Date(), 3)}
-                      maxDate={addMonths(new Date(), 12)}
+                      minDate={subMonths(new Date(), 12)}
+                      maxDate={addMonths(new Date(), 24)}
                       showMonthYearDropdown
                       fixedHeight
                       isClearable
@@ -268,8 +268,8 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                       onChange={(date) => handleEndDateChange(date)}
                       placeholderText="YYYY-MM-DD"
                       dateFormat="yyyy/MM/dd"
-                      minDate={subMonths(new Date(), 3)}
-                      maxDate={addMonths(new Date(), 12)}
+                      minDate={subMonths(new Date(), 12)}
+                      maxDate={addMonths(new Date(), 24)}
                       withPortal
                       portalId="root-portal"
                       showMonthYearDropdown

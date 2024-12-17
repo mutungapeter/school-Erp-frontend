@@ -16,7 +16,23 @@ export const classesApi = apiSlice.injectEndpoints({
           method: "GET",
           params: queryParams,
         };
-      }
+      },
+    }),
+    getCurrentCompletedClassesWaitingPromotiong: builder.query({
+      query: () => {
+        return {
+          url: `current-class-levels/`,
+          method: "GET",
+        };
+      },
+    }),
+    getTargetCLassesReadyForStudentPromotion: builder.query({
+      query: () => {
+        return {
+          url: `target-class-levels/`,
+          method: "GET",
+        };
+      },
     }),
     getGraduatingClasses: builder.query({
       query: ({ page, page_size }: GetClassesInterface = {}) => {
@@ -29,7 +45,7 @@ export const classesApi = apiSlice.injectEndpoints({
           method: "GET",
           params: queryParams,
         };
-      }
+      },
     }),
     createClass: builder.mutation({
       query: (data) => ({
@@ -43,37 +59,38 @@ export const classesApi = apiSlice.injectEndpoints({
         url: `class-levels/${id}/`,
         method: "GET",
       }),
-    }), 
+    }),
     updateClassLevel: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `class-levels/${id}/`,
         method: "PUT",
         body: data,
       }),
-    }), 
+    }),
     deleteCLassLevel: builder.mutation({
       query: (id) => ({
         url: `class-levels/${id}/`,
         method: "DELETE",
       }),
-    }), 
+    }),
     deleteClassLevels: builder.mutation({
       query: (data) => ({
-      
         url: `class-levels/`,
         method: "DELETE",
-        body: data
+        body: data,
       }),
-    }), 
+    }),
   }),
 });
 
 export const {
-  useGetClassesQuery, 
+  useGetClassesQuery,
   useGetCLassLevelQuery,
   useUpdateClassLevelMutation,
   useDeleteCLassLevelMutation,
   useGetGraduatingClassesQuery,
   useCreateClassMutation,
-  useDeleteClassLevelsMutation
- } = classesApi;
+  useDeleteClassLevelsMutation,
+  useGetCurrentCompletedClassesWaitingPromotiongQuery,
+  useGetTargetCLassesReadyForStudentPromotionQuery
+} = classesApi;

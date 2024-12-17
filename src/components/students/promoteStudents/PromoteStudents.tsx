@@ -1,6 +1,6 @@
 "use client";
 import "react-datepicker/dist/react-datepicker.css";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetClassesQuery, useGetCurrentCompletedClassesWaitingPromotiongQuery, useGetTargetCLassesReadyForStudentPromotionQuery } from "@/redux/queries/classes/classesApi";
 import { usePromoteStudentsMutation } from "@/redux/queries/students/studentsApi";
 import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { formatYear } from "@/src/utils/dates";
@@ -25,10 +25,15 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const {
-    isLoading: loadingClassLevels,
-    data: ClassLevelsData,
-    refetch,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+    isLoading: loadingCurrentClassLevels,
+    data: currentClassesData,
+    refetch: refetchCurrentClassLevels,
+  } = useGetCurrentCompletedClassesWaitingPromotiongQuery({}, { refetchOnMountOrArgChange: true });
+  const {
+    isLoading: loadingTargetClassLevels,
+    data: targetClassesData,
+    refetch: refetchTargetClassLevels,
+  } = useGetTargetCLassesReadyForStudentPromotionQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
     source_class_level: z.number().min(1, "Select  current class"),
     target_class_level: z.number().min(1, "Select target class"),
@@ -145,12 +150,12 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                         onChange={handleCurrentClassChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
-                        {loadingClassLevels ? (
+                        {loadingCurrentClassLevels ? (
                           <option value="">Loading...</option>
                         ) : (
                           <>
                             <option value="">Select current class</option>
-                            {ClassLevelsData?.map((cl: any) => (
+                            {currentClassesData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
                                 {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
@@ -184,12 +189,12 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                         onChange={handleTargetClassChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
-                        {loadingClassLevels ? (
+                        {loadingTargetClassLevels ? (
                           <option value="">Loading...</option>
                         ) : (
                           <>
                             <option value="">Select target class</option>
-                            {ClassLevelsData?.map((cl: any) => (
+                            {targetClassesData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
                                 {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
