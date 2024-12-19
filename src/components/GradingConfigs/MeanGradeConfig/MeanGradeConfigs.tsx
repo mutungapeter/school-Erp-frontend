@@ -95,10 +95,10 @@ const MeanGradeConfigs = () => {
                   Mean Grade
                 </th>
                 <th scope="col" className="px-3 py-2 border-r  text-[10px]">
-                 Class Master's Remarks
+                 Class Master&apos;s Remarks
                 </th>
                 <th scope="col" className="px-3 py-2 border-r text-[10px]">
-                 Principal's Remarks
+                 Principal&apos;s Remarks
                 </th>
              
                 <th scope="col" className="px-3 py-2 text-[10px]">

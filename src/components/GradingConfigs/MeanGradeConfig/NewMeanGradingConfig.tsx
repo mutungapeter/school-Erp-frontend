@@ -253,7 +253,7 @@ export const CreateMeanGradeConfig = ({
                         htmlFor="principal-remarks"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Princial's Remarks
+                        Princial&apos;s Remarks
                       </label>
                       <input
                         type="text"
