@@ -3,5 +3,5 @@ id:number;
 created_at:string;
 term:string;
 class_level:number;
-
+calendar_year:string;
 }
