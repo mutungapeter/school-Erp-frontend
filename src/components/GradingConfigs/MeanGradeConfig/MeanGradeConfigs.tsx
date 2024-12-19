@@ -76,29 +76,32 @@ const MeanGradeConfigs = () => {
      
         <div className=" relative overflow-x-auto  ">
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
-            <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
+            <thead className=" text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="p-2 border-r  text-[10px] ">
                   #
                 </th>
                
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
-                Min Marks
+                <th scope="col" className="px-3 py-2 border-r    text-[10px]">
+                Min Mean Marks
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
-                  Max Marks
+                <th scope="col" className="px-3 py-2 border-r  text-[10px]">
+                  Max Mean Marks
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-3 py-2 border-r text-[10px]">
                   Points
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
-                  Grade
+                <th scope="col" className="px-3 py-2 border-r  text-[10px]">
+                  Mean Grade
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
-                  Remarks
+                <th scope="col" className="px-3 py-2 border-r  text-[10px]">
+                 Class Master's Remarks
+                </th>
+                <th scope="col" className="px-3 py-2 border-r text-[10px]">
+                 Principal's Remarks
                 </th>
              
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-3 py-2 text-[10px]">
                   Actions
                 </th>
               </tr>
@@ -113,14 +116,15 @@ const MeanGradeConfigs = () => {
               ) : meanGradeData?.results && meanGradeData?.results.length > 0 ? (
                 meanGradeData.results.map((config: any, index: number) => (
                   <tr key={config.id} className="bg-white border-b">
-                    <th className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{index + 1}</th>
+                    <th className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{index + 1}</th>
                    
-                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.min_mean_marks}</td>
-                 <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.max_mean_marks}</td>
-                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.grade}</td>
-                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.points}</td>
-                    <td className="px-4 py-2 text-center text-xs lg:text-sm md:text-sm">{config.remarks}</td>
-                    <td className="px-4 py-2 flex items-center space-x-5">
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.min_mean_marks}</td>
+                 <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.max_mean_marks}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.points}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.grade}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.remarks}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.principal_remarks}</td>
+                    <td className="px-3 py-2 flex items-center space-x-5">
                       <EditMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
                       <DeleteMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
                     

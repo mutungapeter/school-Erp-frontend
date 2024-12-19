@@ -10,13 +10,13 @@ import { Subject } from "@/src/definitions/subjects";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { TbDatabaseOff } from "react-icons/tb";
-
+import { IoMdSearch } from "react-icons/io";
 import DataSpinner from "../layouts/dataSpinner";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import { AddMark } from "./recordMarks";
 import { BsChevronDown, BsFiletypeCsv } from "react-icons/bs";
 import { useDebouncedCallback } from "use-debounce";
-
+import { FaSearch } from "react-icons/fa";
 import { UploadMarks } from "./uploadMarks";
 import { VscRefresh } from "react-icons/vsc";
 import { CiSearch } from "react-icons/ci";
@@ -113,7 +113,7 @@ const Marks = () => {
   return (
     <>
       <div className="space-y-5 shadow-md border py-2  bg-white  ">
-        <div className="p-2  flex lg:flex-row md:flex-row lg:justify-between md:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
+        <div className="py-2 px-3  flex lg:flex-row md:flex-row lg:justify-between md:justify-between flex-col space-y-3 lg:space-y-0 md:space-y-0">
           <h2 className="font-semibold text-black text-xl">Recording Marks</h2>
           <div className="flex justify-end lg:justify-none md:justify-none items-center mt-4">
             <UploadMarks />
@@ -128,7 +128,7 @@ const Marks = () => {
                 value={filters.subject_id || ""}
                 onChange={handleFilterChange}
                 className="w-34 lg:w-40 md:w-40 xl:w-40 
-                text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4  rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Subject</option>
                 {subjectsData?.map((subject: Subject) => (
@@ -148,12 +148,12 @@ const Marks = () => {
                 name="class_level_id"
                 value={filters.class_level_id || ""}
                 onChange={handleFilterChange}
-                className="w-34 lg:w-40 md:w-40 xl:w-40 text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                className="w-34 lg:w-40 md:w-40 xl:w-40 text-xs md:text-sm lg:text-sm font-semibold appearance-none py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
               >
                 <option value="">Class</option>
                 {classesData?.map((classLevel: ClassLevel) => (
                   <option key={classLevel.id} value={classLevel.id}>
-                    {classLevel.form_level.name} {classLevel?.stream?.name}
+                    {classLevel.form_level.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
                   </option>
                 ))}
               </select>
@@ -164,27 +164,30 @@ const Marks = () => {
               />
             </div>
           </div>
-          <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
-          <div className="relative w-full lg:w-64 md:w-64 xl:w-64  ">
-            <CiSearch
-                  size={20}
-                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+          <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
+          <div className="relative w-full lg:w-64 md:w-64 xl:w-64 transition-all ease-in-out duration-300 ">
+          
+                <IoMdSearch
+                  size={25}
+                  style={{ strokeWidth: 3 }} 
+                  className="absolute stroke-2 text-[#1E9FF2] top-[50%] left-3 transform -translate-y-1/2  pointer-events-none"
                 />
+               
               <input
                 type="text"
                 name="admission_number"
                 value={filters.admission_number || ""}
                 onChange={handleFilterChange}
                 placeholder="admission number"
-                className="w-full lg:w-64 md:w-64 xl:w-64 text-sm md:text-lg lg:text-lg font-normal py-2 pl-8 pr-4 rounded-md border border-1 border-gray-400 focus:outline-none  focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm placeholder:font-semibold lg:placeholder:text-sm"
-              />
+                className="w-full lg:w-56 md:w-56 xl:w-56  p-2 transition-all ease-in-out duration-300 pl-10 pr-4 rounded-full border border-1 border-[#1E9FF2] focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
+                />
             </div>
             <div
                 onClick={handleResetFilters}
-                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
+                className=" p-2 cursor-pointer max-w-max   inline-flex space-x-2 items-center text-[13px]  lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
               >
                 <VscRefresh className="text-white" />
-                <span>Reset Filters</span>
+                <span className="text-sm">Reset Filters</span>
               </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 "use client";
+import { IoMdSearch } from "react-icons/io";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useDeleteMarksMutation, useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
@@ -28,11 +29,12 @@ import { PAGE_SIZE } from "@/src/constants/constants";
 const MarksList = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const pageParam = searchParams.get("page");
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
   const [currentPage, setCurrentPage] = useState(initialPage)
   const [selectedMarks, setSelectedMarks] = useState<number[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(null);
+
   const initialFilters = useMemo(
     () => ({
       class_level: searchParams.get("class_level") || "",
@@ -46,7 +48,6 @@ const MarksList = () => {
   const pageSize = PAGE_SIZE;
   useEffect(() => {
     const params = new URLSearchParams();
-    // params.set("page", currentPage.toString());
     if (filters.class_level){
       params.set("class_level", filters.class_level)
     };
@@ -62,17 +63,14 @@ const MarksList = () => {
 
     router.replace(`?${params.toString()}`);
   }, [
-    // , currentPage
     filters
   ]);
   const queryParams = useMemo(
     () => ({
-      // page: currentPage,
-      // page_size: pageSize,
       ...filters,
     }),
     [
-      // currentPage,
+    
        filters]
   );
   console.log("queryParams",queryParams)
@@ -82,14 +80,7 @@ const MarksList = () => {
     error,
     refetch,
   } = useGetMarksDataQuery(
-    // {
-    //   class_level: filters.class_level || "",
-    //   term: filters.term || "",
-    //   admission_number: filters.admission_number || "",
-    //   subject: filters.subject || "",
-    //   page: currentPage || 1,
-    //   page_size: pageSize
-    // },
+   
     queryParams,
     { 
       skip: false,
@@ -129,11 +120,18 @@ const MarksList = () => {
     const { name, value } = e.target;
     if (name === "admission_number") {
       handleSearch(value);
-    } else {
+    } else if(name === "class_level") {
+      setSelectedClassLevel(value ? parseInt(value, 10) : null);
+      setFilters((prev) => ({ ...prev, class_level: value, term: "" }));
+    }else{
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
+     
   };
-
+ 
+  const filteredTerms = termsData?.filter(
+    (term: any) => term.class_level.id === selectedClassLevel
+  );
   const handleResetFilters = () => {
     setFilters({
       class_level: "",
@@ -185,16 +183,7 @@ const MarksList = () => {
     setIsDeleteModalOpen(false);
   };
   
-  // useEffect(() => {
-  //   const page = parseInt(pageParam || "1");
-  //   if (page !== currentPage) {
-  //     setCurrentPage(page);
-  //   }
-  // }, [pageParam, currentPage]);
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [currentPage, refetch]);
 
   const totalPages = Math.ceil((data?.count || 0) / pageSize);
   const handlePageChange = (page: number) => {
@@ -249,7 +238,7 @@ const MarksList = () => {
               <option value="">Class</option>
               {classesData?.map((classLevel: ClassLevel) => (
                 <option key={classLevel.id} value={classLevel.id}>
-                  {classLevel.form_level.name} {classLevel?.stream?.name}
+                  {classLevel.form_level.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
                 </option>
               ))}
             </select>
@@ -260,7 +249,7 @@ const MarksList = () => {
             />
           </div>
         </div>
-        <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
+        <div className="flex flex-col space-y-3  md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
           <div className="relative w-32 lg:w-40 md:w-40 xl:w-40">
             <select
               name="term"
@@ -269,9 +258,9 @@ const MarksList = () => {
               className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-sm lg:placeholder:text-sm"
             >
               <option value="">Term</option>
-              {termsData?.map((term: TermInterface) => (
+              {filteredTerms?.map((term: TermInterface) => (
                 <option key={term.id} value={term.id}>
-                  {term.term} {term.calendar_year}
+                  {term.term} 
                 </option>
               ))}
             </select>
@@ -284,24 +273,25 @@ const MarksList = () => {
         </div>
         
       </div>
-      <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4 px-4 lg:justify-end md:justify-end   lg:items-center md:items-center">
+      <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-4 px-4 lg:justify-end md:justify-end   lg:items-center md:items-center">
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64  ">
-            <CiSearch
-              size={20}
-              className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-            />
+          <IoMdSearch
+                  size={25}
+                  style={{ strokeWidth: 3 }} 
+                  className="absolute stroke-2 text-[#1E9FF2] top-[50%] left-3 transform -translate-y-1/2  pointer-events-none"
+                />
             <input
               type="text"
               name="admission_number"
               value={filters.admission_number || ""}
               onChange={handleFilterChange}
-              placeholder="Admission Number"
-              className="w-full lg:w-64 md:w-64 xl:w-64 text-sm md:text-lg lg:text-lg font-normal py-2 pl-8 pr-4 rounded-md border border-1 border-gray-400 focus:outline-none  focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm placeholder:font-semibold lg:placeholder:text-sm"
-            />
+              placeholder="admission no."
+              className="w-full lg:w-56 md:w-56 xl:w-56  p-2 transition-all ease-in-out duration-300 pl-10 pr-4 rounded-full border border-1 border-[#1E9FF2] focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-md md:placeholder:text-lg lg:placeholder:text-lg"
+              />
           </div>
           <div
             onClick={handleResetFilters}
-            className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
+            className="p-2 cursor-pointer max-w-max   inline-flex space-x-2 items-center text-[13px]  lg:text-sm md:text-xs  rounded-md border text-white bg-primary"
           >
             <VscRefresh className="text-white" />
             <span>Reset Filters</span>
@@ -312,7 +302,7 @@ const MarksList = () => {
             <div className="flex items-center space-x-3 py-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
@@ -321,7 +311,7 @@ const MarksList = () => {
                 type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
               >
                 <FiDelete size={20} className="" />
                 <span className="">{deleting ? "Deleting..." : "Delete"}</span>

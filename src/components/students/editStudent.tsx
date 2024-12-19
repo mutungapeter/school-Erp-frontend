@@ -295,7 +295,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
                           <option value="">Select Class</option>
                           {classesData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
-                              {cl.form_level.name}  {cl?.stream?.name}
+                              {cl.form_level.name}  {cl?.stream?.name} - {cl.calendar_year}
                             </option>
                           ))}
                         </>

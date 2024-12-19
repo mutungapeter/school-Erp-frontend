@@ -219,7 +219,7 @@ const Students = () => {
                 />
               </div>
               <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
-                <div className="bg-blue-600">
+                <div className="bg-[#1E9FF2]">
                 <CiSearch
                   size={25}
                   className="absolute text-[#1E9FF2] top-[50%] left-3 transform -translate-y-1/2  pointer-events-none"
@@ -231,7 +231,7 @@ const Students = () => {
                   value={filters.admission_number || ""}
                   onChange={handleFilterChange}
                   placeholder="admission number"
-                  className="w-full lg:w-56 md:w-56 xl:w-56  py-2  pl-10 pr-4 rounded-full border border-1 border-blue-600 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
+                  className="w-full lg:w-56 md:w-56 xl:w-56  py-2  pl-10 pr-4 rounded-full border border-1 border-[#1E9FF2] focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
                 />
               </div>
 
@@ -354,7 +354,7 @@ const Students = () => {
                 ) : studentsData?.results &&
                   studentsData?.results.length > 0 ? (
                   studentsData.results.map(
-                    (student: Student, index: number) => (
+                    (student: Student) => (
                       <tr key={student.id} className="bg-white border-b">
                         <th className="px-3 py-2 text-gray-900 text-center border-r">
                           <input
@@ -379,7 +379,7 @@ const Students = () => {
                           {student?.class_level?.form_level?.name}
                           {student?.class_level?.stream
                             ? student.class_level.stream.name
-                            : ""}
+                            : ""} - ({student.class_level.calendar_year})
                         </td>
                         <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                           {student.gender}

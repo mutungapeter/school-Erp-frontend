@@ -118,7 +118,7 @@ console.log(
             />
           </div>
           {(hasAdminPermissions() || hasClassMasterPermissions()) && (
-            <div className="flex inline-flex">
+            <div className=" inline-flex">
               {formLevel >= 3 && subjectCount > 5 ? (
                 <UpdateElectives
                   studentsData={data}

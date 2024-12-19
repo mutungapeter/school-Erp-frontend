@@ -82,29 +82,29 @@ const GradingConfigs = () => {
           <table className="w-full table-auto bg-white text-xs border text-left text-gray-500">
             <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 py-3 text-left border-r  text-[10px] ">
                   #
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold ">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]  ">
                  Category
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold ">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]  ">
                   Min Marks
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Max Marks
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 border-r py-3 text-[10px] ">
                   Points
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Grade
                 </th>
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Remarks
                 </th>
 
-                <th scope="col" className="lg:px-6 lg:py-3 md:px-6 md:py-3 px-3 py-2 text-[10px] font-semibold">
+                <th scope="col" className="px-4 py-3 text-[10px]">
                   Actions
                 </th>
               </tr>
@@ -112,7 +112,7 @@ const GradingConfigs = () => {
             <tbody>
               {loadingGradingConfigs ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-4">
+                  <td colSpan={8} className="text-center py-4">
                     Loading...
                   </td>
                 </tr>
@@ -120,15 +120,15 @@ const GradingConfigs = () => {
                 gradingConfigsData?.results.length > 0 ? (
                 gradingConfigsData.results.map((config: any, index: number) => (
                   <tr key={config.id} className="bg-white border-b">
-                    <th className="px-3 py-2 text-xs lg:text-sm md:text-sm text-center text-gray-900">{index + 1}</th>
-                    <td className="px-3 py-2 text-xs lg:text-sm md:text-sm font-normal  whitespace-nowrap">
+                    <th className="px-3 py-2 text-xs lg:text-sm border-r  md:text-sm text-center text-gray-900">{index + 1}</th>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
                       {config.subject_category.name}
                     </td>
-                    <td className="px-3 py-2 text-center text-xs lg:text-sm md:text-sm">{config.min_marks}</td>
-                    <td className="px-3 py-2 text-center text-xs lg:text-sm md:text-sm">{config.max_marks}</td>
-                    <td className="px-3 py-2 text-center text-xs lg:text-sm md:text-sm">{config.grade}</td>
-                    <td className="px-3 py-2 text-center text-xs lg:text-sm md:text-sm">{config.points}</td>
-                    <td className="px-3 py-2 text-center text-xs lg:text-sm md:text-sm">{config.remarks}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.min_marks}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.max_marks}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.grade}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.points}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.remarks}</td>
                     <td className="px-3 py-2 flex items-center space-x-5">
                       <EditGradingConfig
                         configId={config.id}

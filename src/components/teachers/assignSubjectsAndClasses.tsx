@@ -102,7 +102,7 @@ console.log("subjectsData", subjectsData)
     <>
       <div
         onClick={handleOpenModal}
-        className="p-1 flex items-center space-x-1 inline-flex rounded-sm bg-primary text-white text-sm cursor-pointer text-center"
+        className="p-1  items-center space-x-1 inline-flex rounded-sm bg-primary text-white text-sm cursor-pointer text-center"
       >
         <GoGear size={20} className="text-white" />
         <HiChevronDown size={20} className="text-white mt-2" />
@@ -180,7 +180,7 @@ console.log("subjectsData", subjectsData)
                                 className="ml-2"
                               >
                                 {classData?.form_level?.name}{" "}
-                                {classData?.stream?.name}
+                                {classData?.stream?.name} - {classData.calendar_year}
                               </label>
                             </div>
                           ))}

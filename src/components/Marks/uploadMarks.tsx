@@ -22,12 +22,13 @@ import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 export const UploadMarks = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [uploadMarks, { data, error, isSuccess }] = useUploadMarksMutation();
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(null);
 
   const {
     isLoading: loadingTerms,
     data: termsData,
     refetch: refetchTerms,
-  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
   const {
     isLoading: loadingClasses,
     data: classesData,
@@ -86,8 +87,14 @@ export const UploadMarks = () => {
     setValue("term", e.target.value);
   };
   const handleClassChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const classLevelId = parseInt(e.target.value, 10);
+  setSelectedClassLevel(classLevelId);
     setValue("class", e.target.value);
+    // const activeTerms = terms.filter(term => term.status === 'Active');
   };
+const filteredTerms = termsData?.filter(
+  (term: any) => term.class_level.id === selectedClassLevel
+);
 
   const onSubmit = async (data: FieldValues) => {
     const { term, class_level, marks_file } = data;
@@ -168,8 +175,8 @@ export const UploadMarks = () => {
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
-                  <p className="lg:text-2xl md:text-2xl text-sm font-bold text-[#1F4772]">
-                    Upload Marks s
+                  <p className="lg:text-2xl md:text-2xl text-sm font-bold text-black">
+                    Upload Marks
                   </p>
                   <div className="flex justify-end cursor-pointer">
                     <IoCloseOutline
@@ -226,7 +233,7 @@ export const UploadMarks = () => {
                             {classesData?.map((classLevel: ClassLevel) => (
                               <option key={classLevel.id} value={classLevel.id}>
                                 {classLevel.form_level.name}{" "}
-                                {classLevel?.stream?.name}
+                                {classLevel?.stream?.name} - {classLevel.calendar_year}
                               </option>
                             ))}
                           </>
@@ -261,9 +268,9 @@ export const UploadMarks = () => {
                         ) : (
                           <>
                             <option value="">Term</option>
-                            {termsData?.map((term: any) => (
+                            {filteredTerms?.map((term: any) => (
                               <option key={term.id} value={term.id}>
-                                {term.term} {term?.calendar_year}
+                                {term.term} 
                               </option>
                             ))}
                           </>
@@ -288,8 +295,8 @@ export const UploadMarks = () => {
                       className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
                        focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-4 rounded-md  px-5 py-2"
                     >
-                      {/* <LiaEdit className="text-white " size={18} /> */}
-                      <span>{isSubmitting ? "Submitting..." : "Upload"}</span>
+                      
+                      <span>{isSubmitting ? "Uploading..." : "Upload"}</span>
                     </button>
                   </div>
                 </form>

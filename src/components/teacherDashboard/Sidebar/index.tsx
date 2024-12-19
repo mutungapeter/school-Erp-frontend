@@ -59,7 +59,7 @@ const menuGroups: MenuGroup[] = [
      
       {
         icon: <LiaSchoolSolid  />,
-        label: "Subjects And Classes",
+        label: "Subjects",
         route: "/teachers/teacher-subjects",
       },
       {

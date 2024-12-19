@@ -4,6 +4,7 @@ import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
+import { FiPlus } from "react-icons/fi";
 
 import { useCreateGradingConfigMutation } from "@/redux/queries/gradingConfig/gradingConfigApi";
 import { useGetSubjectCategoriesQuery } from "@/redux/queries/subjects/subjectCategoriesApi";
@@ -12,6 +13,7 @@ import { BsChevronDown } from "react-icons/bs";
 import { FaPlusCircle } from "react-icons/fa";
 import Spinner from "../layouts/spinner";
 import "../style.css";
+import { IoCloseOutline } from "react-icons/io5";
 
 interface CreateConfigProps {
   refetchConfigs: () => void;
@@ -32,11 +34,11 @@ export const CreateNewGradingConfig = ({
 
   const today = new Date();
   const schema = z.object({
-    subject_category: z.number().min(1, "Category is required"),
-    min_marks: z.number().min(0, "Minimum marks is required"),
-    max_marks: z.number().min(1, "Maximum marks is required"),
+    subject_category: z.coerce.number().min(1, "Category is required"),
+    min_marks: z.coerce.number().min(0, "Minimum marks is required"),
+    max_marks: z.coerce.number().min(1, "Maximum marks is required"),
     grade: z.string().min(1, "Grade is required"),
-    points: z.number().min(1, "Points required"),
+    points: z.coerce.number().min(1, "Points required"),
     remarks: z.string().min(1, "Remarks  required"),
   });
 
@@ -44,6 +46,7 @@ export const CreateNewGradingConfig = ({
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -55,8 +58,10 @@ export const CreateNewGradingConfig = ({
     try {
       await createGradingConfig(data).unwrap();
       toast.success("Grade configuration added successfully!");
+      reset();
       handleCloseModal();
       refetchConfigs();
+
     } catch (error: any) {
       if (error?.data?.error) {
         console.log("error", error);
@@ -79,9 +84,9 @@ export const CreateNewGradingConfig = ({
     <>
      <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-sm  flex items-center space-x-2 "
+        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-md  flex items-center space-x-2 "
       >
-        <FaPlusCircle size={17} className="text-white   " />
+        <FiPlus  size={17} className="text-white   " />
         <span className="font-bold text-white text-xs md:text-sm lg:text-sm ">Add New</span>
       </div>
 
@@ -95,16 +100,25 @@ export const CreateNewGradingConfig = ({
         <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
           <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
            
-            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
                  {isSubmitting && <Spinner />}
             
               <div className="flex justify-between items-center pb-3">
                 <p className="font-semibold text-black  md:text-lg text-md lg:text-lg">
                   Add New Grading Config
                 </p>
+                <div className="flex justify-end cursor-pointer">
+                    <IoCloseOutline
+                      size={30}
+                      onClick={handleCloseModal}
+                      className=" text-gray-500 "
+                    />
+                  </div>
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                <div>
+
                 <div className="relative">
                   <label
                     htmlFor="Category"
@@ -114,7 +128,7 @@ export const CreateNewGradingConfig = ({
                   </label>
                   <select
                     id="Category"
-                    {...register("subject_category", { valueAsNumber: true })}
+                    {...register("subject_category")}
                     onChange={handleSubjectCategoryChange}
                     className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                   >
@@ -136,6 +150,7 @@ export const CreateNewGradingConfig = ({
                       size={20}
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
+                </div>
                   {errors.subject_category && (
                     <p className="text-red-500 text-sm">
                       {String(errors.subject_category.message)}
@@ -155,7 +170,7 @@ export const CreateNewGradingConfig = ({
                       type="number"
                       id="Min marks"
                       placeholder="Enter Min Marks "
-                      {...register("min_marks", { valueAsNumber: true })}
+                      {...register("min_marks")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.min_marks && (
@@ -175,7 +190,7 @@ export const CreateNewGradingConfig = ({
                       type="number"
                       id="max marks"
                       placeholder="Enter max marks "
-                      {...register("max_marks", { valueAsNumber: true })}
+                      {...register("max_marks")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.max_marks && (
@@ -186,6 +201,8 @@ export const CreateNewGradingConfig = ({
                   </div>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
+                  <div>
+
                   <div className="relative">
                     <label
                       htmlFor="Grade"
@@ -198,7 +215,7 @@ export const CreateNewGradingConfig = ({
                       {...register("grade")}
                       className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
-                      <option value="">select Grade</option>
+                      <option value="">---Select grade---</option>
                       <option value="A">A</option>
                       <option value="A-">A-</option>
                       <option value="B+">B+</option>
@@ -217,6 +234,7 @@ export const CreateNewGradingConfig = ({
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.grade && (
                       <p className="text-red-500 text-sm">
                         {String(errors.grade.message)}
@@ -235,7 +253,7 @@ export const CreateNewGradingConfig = ({
                       type="number"
                       id="Points"
                       placeholder="Enter points "
-                      {...register("points", { valueAsNumber: true })}
+                      {...register("points")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.points && (
@@ -266,22 +284,17 @@ export const CreateNewGradingConfig = ({
                   )}
                 </div>
 
-                <div className="flex justify-between mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={ isSubmitting}
-                    className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
-                  >
-                    { isSubmitting ? "Creating..." : "Submit"}
-                  </button>
-                </div>
+                <div className="flex justify-start lg:justify-end md:justify-end mt-3 ">
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-4 rounded-md  px-5 py-2"
+                    >
+                      
+                      <span>{isSubmitting ? "Saving..." : "Save"}</span>
+                    </button>
+                  </div>
               </form>
            
           </div>

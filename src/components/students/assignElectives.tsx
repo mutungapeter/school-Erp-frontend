@@ -31,6 +31,8 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
           classLevel.form_level.level === 3 || classLevel.form_level.level === 4
       )
   );
+  console.log("subjectsData", subjectsData)
+  console.log("electives", electives)
   const handleElectiveChange = (subjectId: number) => {
     setSelectedElectives((prevSelected) => {
       if (prevSelected.includes(subjectId)) {
@@ -74,10 +76,10 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center  px-2 py-2 md:py-2 md:px-3 lg:py-2 lg:px-3 bg-green-700 rounded-md  flex items-center md:space-x-2 space-x-2 lg:space-x-2 "
+        className=" cursor-pointer text-center   p-2 bg-green-700 rounded-md  flex items-center space-x-2 "
       >
         <FaPlusCircle size={15} className="text-white" />
-        <span className="text-sm text-white">Register Electives</span>
+        <span className="md:text-sm lg:text-sm text-xs text-white">Register Electives</span>
       </div>
       {isOpen && (
        <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -136,8 +138,8 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
                     <button
                       type="submit"
                       disabled={isLoading}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className="inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       

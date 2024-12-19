@@ -18,6 +18,7 @@ export interface Student {
         level: number;
         streams_count: number;
       }
+      calendar_year:number;
     },
     created_at:string;
   }
