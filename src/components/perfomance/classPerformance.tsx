@@ -1,5 +1,5 @@
 "use client";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { useGetClassPerformanceQuery } from "@/redux/queries/perfomance/classPerformaceApi";
 import React from "react";
@@ -26,6 +26,7 @@ type DataItem = {
 const ClassPerformance: React.FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(null);
 
   const initialFilters = useMemo(
     () => ({
@@ -65,7 +66,7 @@ const ClassPerformance: React.FC = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch: refetchClasses,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
   const {
     isLoading: loadingTerms,
     data: termsData,
@@ -75,9 +76,17 @@ const ClassPerformance: React.FC = () => {
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
+    if(name === "class_level_id"){
+      setSelectedClassLevel(value ? parseInt(value, 10) : null);
+      setFilters((prev) => ({ ...prev, class_level_id: value, term_id: "" }));
+    }else{
 
-    setFilters((prev) => ({ ...prev, [name]: value }));
+      setFilters((prev) => ({ ...prev, [name]: value }));
+    }
   };
+  const filteredTerms = termsData?.filter(
+    (term: any) => term.class_level.id === selectedClassLevel
+  );
   console.log("perfomance", classPerformanceData);
 
   const filteredPerformanceData: DataItem[] =
@@ -110,18 +119,18 @@ const ClassPerformance: React.FC = () => {
   return (
     <div className="space-y-1">
       <div
-        className="flex   
-      md:justify-end lg:justify-end mt-2 lg:p-0 flex-row  
-      items-center md:space-x-2 space-x-2  md:px-3
+        className="flex flex-col   space-y-3 md:space-y-0 lg:space-y-0
+      md:justify-end lg:justify-end mt-2 lg:p-0 lg:flex-row md:flex-row
+      md:items-center lg:items-center md:space-x-2 space-x-0  md:px-3
        px-1 lg:px-3  lg:space-x-5"
       >
-        <div className="relative w-[130px] lg:w-40 md:w-32 xl:w-48 ">
+        <div className="relative w-full lg:w-40 md:w-32 xl:w-48 ">
           <select
             name="class_level_id"
             value={filters.class_level_id || ""}
             onChange={handleFilterChange}
-            className="w-[130px] lg:w-40 md:w-40 xl:w-48 
-             appearance-none py-1 px-2 text-sm lg:text-sm md:text-sm
+            className="w-full  lg:w-40 md:w-40 xl:w-48 
+             appearance-none p-2 text-md lg:text-md md:text-md
              rounded-md border border-1 border-gray-400
               focus:outline-none focus:border-[#1E9FF2] 
               focus:bg-white placeholder:text-sm 
@@ -130,7 +139,7 @@ const ClassPerformance: React.FC = () => {
             <option value="">Class</option>
             {classesData?.map((classLevel: ClassLevel) => (
               <option key={classLevel.id} value={classLevel.id}>
-                {classLevel.form_level.name} {classLevel?.stream?.name}
+                {classLevel.form_level.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
               </option>
             ))}
           </select>
@@ -141,22 +150,22 @@ const ClassPerformance: React.FC = () => {
             -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
-        <div className="relative w-[120px] lg:w-32 md:w-32 xl:w-32  ">
+        <div className="relative w-full lg:w-32 md:w-32 xl:w-32  ">
           <select
             name="term_id"
             value={filters.term_id || ""}
             onChange={handleFilterChange}
-            className="w-[120px] lg:w-32 md:w-32 xl:w-32
-              py-1 px-2 text-sm lg:text-sm md:text-sm  
-               appearance-none py-1 px-2 text-lg rounded-md border border-1
+            className="w-full lg:w-32 md:w-32 xl:w-32
+              p-2 text-md lg:text-md md:text-md  
+               appearance-none   rounded-md border border-1
                 border-gray-400 focus:outline-none focus:border-[#1E9FF2] 
                 focus:bg-white placeholder:text-sm 
               md:placeholder:text-sm lg:placeholder:text-sm"
           >
             <option value="">Term</option>
-            {termsData?.map((term: any) => (
+            {filteredTerms?.map((term: any) => (
               <option key={term.id} value={term.id}>
-                {term.term}-{term.calendar_year}
+                {term.term}
               </option>
             ))}
           </select>
@@ -170,7 +179,7 @@ const ClassPerformance: React.FC = () => {
       {loadingClassPerformance ? (
         <ContentSpinner />
       ) : error ? (
-        <div>
+        <div className="min-h-[20vh] flex items-center justify-center">
           <span>{(error as any)?.data?.error || "Internal Server Error"}</span>
         </div>
       ) : filteredPerformanceData.length > 0 ? (
