@@ -205,15 +205,15 @@ const MarksList = () => {
       </div>
 
       <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end md:justify-end  lg:space-x-5 px-2 ">
-        <div className="flex lg:space-x-4 space-x-2 md:space-x-4 items-center">
-          <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
+      <div className="relative w-full lg:w-55 md:w-55 xl:w-55 ">
             <select
               name="subject"
               value={filters.subject || ""}
               onChange={handleFilterChange}
-              className="w-34 lg:w-40 md:w-40 xl:w-40   appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm  font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+              className="w-full lg:w-55 md:w-55 xl:w-55 
+              text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
             >
-              <option value="">Subject</option>
+              <option value="">--- Select subject ---</option>
               {subjectsData?.map((subject: Subject) => (
                 <option key={subject.id} value={subject.id}>
                   {subject.subject_name}
@@ -226,16 +226,15 @@ const MarksList = () => {
               className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-          <div className="relative w-34 lg:w-40 md:w-40 xl:w-40  ">
+          <div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
             <select
               name="class_level"
               value={filters.class_level || ""}
               onChange={handleFilterChange}
-              className="w-34 lg:w-40 md:w-40 xl:w-40
-             appearance-none py-2 px-4
-               text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-            >
-              <option value="">Class</option>
+              className="w-full lg:w-55 md:w-55 xl:w-55 
+                text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+             >
+              <option value="">--- Select class ---</option>
               {classesData?.map((classLevel: ClassLevel) => (
                 <option key={classLevel.id} value={classLevel.id}>
                   {classLevel.form_level.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
@@ -248,16 +247,15 @@ const MarksList = () => {
               className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-        </div>
-        <div className="flex flex-col space-y-3  md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
-          <div className="relative w-32 lg:w-40 md:w-40 xl:w-40">
+        <div className="relative w-full lg:w-55 md:w-55 xl:w-55 ">
             <select
               name="term"
               value={filters.term || ""}
               onChange={handleFilterChange}
-              className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-sm lg:placeholder:text-sm"
-            >
-              <option value="">Term</option>
+              className="w-full lg:w-55 md:w-55 xl:w-55 
+              text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+           >
+              <option value="">-- Select term ---</option>
               {filteredTerms?.map((term: TermInterface) => (
                 <option key={term.id} value={term.id}>
                   {term.term} 
@@ -270,7 +268,7 @@ const MarksList = () => {
               className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-        </div>
+       
         
       </div>
       <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-4 px-4 lg:justify-end md:justify-end   lg:items-center md:items-center">

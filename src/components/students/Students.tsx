@@ -198,14 +198,15 @@ const Students = () => {
         <div className="bg-white shadow-md rounded-sm  p-2">
           <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
             <div className="flex flex-col gap-3 px-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
-              <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
+              <div className="relative w-full lg:w-56 md:w-56 xl:w-55 ">
                 <select
                   name="class_level_id"
                   value={filters.class_level_id || ""}
                   onChange={handleFilterChange}
-                  className="w-full lg:w-56 md:w-56 xl:w-56 appearance-none p-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  className="w-full lg:w-56 md:w-56 xl:w-56 
+                  text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                 >
-                  <option value="">Class</option>
+                  <option value="">-- Select class ---</option>
                   {classesData?.map((classLevel: ClassLevel) => (
                     <option key={classLevel.id} value={classLevel.id}>
                       {classLevel.form_level.name} {classLevel?.stream?.name} - ({classLevel.calendar_year})
