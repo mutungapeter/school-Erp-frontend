@@ -139,7 +139,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
   
             <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
               <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-                <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-xl p-4 md:p-6 lg:p-6 md:max-w-xl">
+                <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-2xl p-4 md:p-4 lg:p-4 md:max-w-2xl">
                   {isSubmitting && <Spinner />}
   
                   <div className="flex justify-between items-center pb-3">
@@ -199,7 +199,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                             <option value="">Loading...</option>
                           ) : (
                             <>
-                              <option value="">class</option>
+                              <option value="">-- Select class ---</option>
                               {classesData?.map((classLevel: ClassLevel) => (
                                 <option key={classLevel.id} value={classLevel.id}>
                                   {classLevel.form_level.name}{" "}
@@ -236,7 +236,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                       {...register("admission_type")}
                       className="w-full appearance-none py-2 px-4 text-sm lg:text-lg md:text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
-                      <option value="">Admission Type</option>
+                      <option value="">--- Select admission type ---</option>
                       <option value="New Admission">New Admission</option>
                       <option value="Transfer">Transfer</option>
                     </select>

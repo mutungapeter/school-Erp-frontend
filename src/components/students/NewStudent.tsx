@@ -102,7 +102,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
         <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
           <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
            
-            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-xl p-4 md:p-6 lg:p-6 md:max-w-xl">
+            <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-xl p-4 md:p-4 lg:p-4 md:max-w-xl">
              
               {isSubmitting && <Spinner />}
               <div className="flex justify-between items-center pb-3">
@@ -220,9 +220,9 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   <select
                     id="gender"
                     {...register("gender")}
-                    className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    className="w-full appearance-none py-2 px-4 text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                   >
-                    <option value="">Gender</option>
+                    <option value="">--- Select Gender ---</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </select>
@@ -247,9 +247,9 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                     <select
                       id="admission_type"
                       {...register("admission_type")}
-                      className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                      className="w-full appearance-none py-2 px-4 text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
-                      <option value="">Admission Type</option>
+                      <option value="">---Select admission type---</option>
                       <option value="New Admission">New Admission</option>
                       <option value="Transfer">Transfer</option>
                     </select>
@@ -270,7 +270,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   <div className="relative">
                     <label
                       htmlFor="class_level"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      className="block text-gray-900 md:text-md text-sm lg:text-md  font-normal  mb-2"
                     >
                       Class
                     </label>
@@ -284,7 +284,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                         <option value="">Loading...</option>
                       ) : (
                         <>
-                          <option value="">Select class</option>
+                          <option value="">--- Select class ---</option>
                           {ClassLevelsData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
                               {cl.form_level.name} {cl?.stream?.name || ""} - ({cl.calendar_year})

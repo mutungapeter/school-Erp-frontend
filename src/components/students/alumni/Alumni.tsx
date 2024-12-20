@@ -129,7 +129,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                         <option value="">Loading...</option>
                       ) : (
                         <>
-                          <option value="">Select graduating class</option>
+                          <option value="">--- Select graduating class ---</option>
                           {ClassLevelsData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
                               {cl.form_level.name} {cl?.stream?.name || ""} ({cl.calendar_year})
