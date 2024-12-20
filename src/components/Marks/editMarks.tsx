@@ -14,13 +14,19 @@ import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import { BsChevronDown } from "react-icons/bs";
 import { IoCloseOutline } from "react-icons/io5";
+import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { TermInterface } from "@/src/definitions/terms";
 interface Props {
   marksId: number;
   refetchMarks: () => void;
+  terms: TermInterface[] | undefined;
 }
-const EditMarks = ({ marksId, refetchMarks }: Props) => {
+const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
   console.log("marksId", marksId);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(null);
+
   const [updateMarksData, { isLoading: Updating }] =
     useUpdateMarksDataMutation();
   const { data: markData, isLoading: isFetching } =
@@ -29,7 +35,12 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
     isLoading: loadingTerms,
     data: termsData,
     refetch: refetchTerms,
-  } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
+ const {
+    isLoading: loadingClasses,
+    data: classesData,
+    refetch: refetchClasses,
+  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const schema = z.object({
     cat_mark: z
@@ -71,6 +82,8 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
   const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("term", e.target.value);
   };
+  
+
   const totalMark = Number(catMark) + Number(examMark);
   const onSubmit = async (data: FieldValues) => {
     const id = marksId;
@@ -101,7 +114,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
   return (
     <>
       <div
-        className=" cursor-pointer flex inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
+        className=" cursor-pointer  inline-flex text-white items-center space-x-1 py-1 px-2 rounded-sm bg-primary"
         onClick={handleOpenModal}
       >
         <BiSolidEdit   size={15} className="text-white" />
@@ -118,7 +131,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
        <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
          <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
           
-           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
+           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
                {isSubmitting && <Spinner />}
             
               <div className="flex justify-between items-center pb-3">
@@ -135,6 +148,10 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+              
+          
+            <div>
+
               <div className="relative">
                     <label
                       htmlFor="term"
@@ -144,35 +161,35 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
                     </label>
                     <select
                       id="term"
-                      {...register("term", { valueAsNumber: true })}
+                      {...register("term")}
                       onChange={handleTermChange}
                       value={watch("term") || ""}
                       className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
-                      {loadingTerms ? (
-                        <option value="">Loading...</option>
-                      ) : (
+                    
                         <>
                           <option value="">Select Term</option>
-                          {termsData?.map((term: any) => (
+                          {terms?.map((term: TermInterface) => (
                             <option key={term.id} value={term.id}>
-                              {term.term} - {term.calendar_year}
+                              {term.term}
                             </option>
                           ))}
                         </>
-                      )}
+                     
                     </select>
                     <BsChevronDown 
                       color="gray" 
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.term && (
                       <p className="text-red-500 text-sm">
                         {String(errors.term.message)}
                       </p>
                     )}
-                  </div>
+            </div>
+                 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
                   <div>
                     <label
@@ -185,7 +202,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
                       type="number"
                       id="cat"
                       placeholder="Enter cart mark"
-                      {...register("cat_mark", { valueAsNumber: true })}
+                      {...register("cat_mark")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.cat_mark && (
@@ -205,7 +222,7 @@ const EditMarks = ({ marksId, refetchMarks }: Props) => {
                       type="number"
                       id="exam"
                       placeholder="Enter exam mark"
-                      {...register("exam_mark", { valueAsNumber: true })}
+                      {...register("exam_mark")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.exam_mark && (

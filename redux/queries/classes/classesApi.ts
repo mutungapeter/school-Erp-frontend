@@ -18,6 +18,16 @@ export const classesApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getAllClasses: builder.query({
+      query: () => {
+      
+        return {
+          url: `all-class-levels/`,
+          method: "GET",
+          
+        };
+      },
+    }),
     getCurrentCompletedClassesWaitingPromotiong: builder.query({
       query: () => {
         return {
@@ -85,6 +95,7 @@ export const classesApi = apiSlice.injectEndpoints({
 
 export const {
   useGetClassesQuery,
+  useGetAllClassesQuery,
   useGetCLassLevelQuery,
   useUpdateClassLevelMutation,
   useDeleteCLassLevelMutation,
@@ -92,5 +103,5 @@ export const {
   useCreateClassMutation,
   useDeleteClassLevelsMutation,
   useGetCurrentCompletedClassesWaitingPromotiongQuery,
-  useGetTargetCLassesReadyForStudentPromotionQuery
+  useGetTargetCLassesReadyForStudentPromotionQuery,
 } = classesApi;

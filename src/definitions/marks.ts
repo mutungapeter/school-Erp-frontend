@@ -121,6 +121,7 @@ export interface Report {
         name: string;
         level: number;
       };
+      calendar_year:number;
     };
     admission_type: string;
     created_at: string;

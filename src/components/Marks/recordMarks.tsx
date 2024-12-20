@@ -1,5 +1,8 @@
 import { useRecorMarkMutation } from "@/redux/queries/marks/marksApi";
-import { useGetActiveTermsQuery, useGetTermsQuery } from "@/redux/queries/terms/termsApi";
+import {
+  useGetActiveTermsQuery,
+  useGetTermsQuery,
+} from "@/redux/queries/terms/termsApi";
 import { StudentSubject } from "@/src/definitions/students";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
@@ -12,15 +15,15 @@ import Spinner from "../layouts/spinner";
 import "../style.css";
 import { BsChevronDown } from "react-icons/bs";
 import { IoCloseOutline } from "react-icons/io5";
+import { TermInterface } from "@/src/definitions/terms";
 
-interface CreateStudentProps {
-  refetchStudents: () => void;
-}
 interface Addmarkprops {
   studentSubject: StudentSubject;
+  terms: TermInterface[] | [];
+  term:TermInterface;
 }
 
-export const AddMark = ({ studentSubject }: Addmarkprops) => {
+export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
   // console.log("studentSubject", studentSubject);
   const [isOpen, setIsOpen] = useState(false);
   const [recorMark, { data, error, isSuccess }] = useRecorMarkMutation();
@@ -32,15 +35,15 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
     refetch: refetchTerms,
   } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
-    cat_mark: z
+    cat_mark: z.coerce
       .number()
       .min(0, "Cat mark must be a positive number")
       .max(30, "Cat mark must be less than or equal to 30"),
-    exam_mark: z
+    exam_mark: z.coerce
       .number()
       .min(0, "Exam mark must be a positive number")
       .max(70, "Exam mark must be less than or equal to 70"),
-    term: z.number().min(1, "Term is required"),
+    // term: z.coerce.number().min(1, "Term is required"),
   });
 
   const {
@@ -48,6 +51,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
     handleSubmit,
     watch,
     setValue,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -60,9 +64,10 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
   };
   const totalMark = Number(catMark) + Number(examMark);
   const onSubmit = async (data: FieldValues) => {
-    const { cat_mark, exam_mark, term } = data;
+    const { cat_mark, exam_mark } = data;
     const studentId = studentSubject.student.id;
     const subjectId = studentSubject.id;
+    const term_id = term?.id;
 
     try {
       const payload = {
@@ -70,7 +75,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
         student_subject: subjectId,
         cat_mark: parseFloat(cat_mark),
         exam_mark: parseFloat(exam_mark),
-        term,
+        term:term_id
       };
       console.log(payload);
       await recorMark(payload).unwrap();
@@ -87,7 +92,10 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
   };
 
   const handleOpenModal = () => setIsOpen(true);
-  const handleCloseModal = () => setIsOpen(false);
+  const handleCloseModal = () => {
+    reset();
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -120,7 +128,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
-                  <p className="lg:text-2xl md:text-2xl text-md font-bold text-[#1F4772]">
+                  <p className="lg:text-2xl md:text-2xl text-md font-bold text-black">
                     Record Marks
                   </p>
                   <div className="flex justify-end cursor-pointer">
@@ -176,7 +184,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                         type="number"
                         id="cat"
                         placeholder="Enter cart mark"
-                        {...register("cat_mark", { valueAsNumber: true })}
+                        {...register("cat_mark")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
                       {errors.cat_mark && (
@@ -196,7 +204,7 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                         type="number"
                         id="exam"
                         placeholder="Enter exam mark"
-                        {...register("exam_mark", { valueAsNumber: true })}
+                        {...register("exam_mark")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
                       {errors.exam_mark && (
@@ -207,43 +215,55 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                     </div>
                   </div>
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                    <div className="relative">
-                      <label
-                        htmlFor="term"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Term
-                      </label>
-                      <select
-                        id="term"
-                        {...register("term", { valueAsNumber: true })}
-                        onChange={handleTermChange}
-                        className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      >
-                        {loadingTerms ? (
-                          <option value="">Loading...</option>
-                        ) : (
+                    {/* <div>
+                      <div className="relative">
+                        <label
+                          htmlFor="term"
+                          className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                        >
+                          Term
+                        </label>
+                        <select
+                          id="term"
+                          {...register("term")}
+                          onChange={handleTermChange}
+                          className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                        >
                           <>
                             <option value="">Select Term</option>
-                            {termsData?.map((term: any) => (
+                            {terms?.map((term: any) => (
                               <option key={term.id} value={term.id}>
-                                {term.term} - {term.calendar_year}
+                                {term.term}
                               </option>
                             ))}
                           </>
-                        )}
-                      </select>
-                      <BsChevronDown
-                        color="gray"
-                        size={16}
-                        className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                      />
+                        </select>
+                        <BsChevronDown
+                          color="gray"
+                          size={16}
+                          className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                        />
+                      </div>
                       {errors.term && (
                         <p className="text-red-500 text-sm">
                           {String(errors.term.message)}
                         </p>
                       )}
+                    </div> */}
+                    <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2"
+                    >
+                      Term
+                    </label>
+                    <div
+                      id="subject"
+                      className="w-full py-2 px-4 rounded-md font-semibold border border-gray-400  shadow-sm bg-gray-100"
+                    >
+                      {term.term}
                     </div>
+                  </div>
                     <div>
                       <label
                         htmlFor="total"
@@ -264,12 +284,14 @@ export const AddMark = ({ studentSubject }: Addmarkprops) => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
                        text-white rounded-md  px-5 py-2"
                     >
                       {/* <LiaEdit className="text-white " size={18} /> */}
-                      <span>{isSubmitting ? "Submitting..." : "Save Marks"}</span>
+                      <span>
+                        {isSubmitting ? "Submitting..." : "Save Marks"}
+                      </span>
                     </button>
                   </div>
                 </form>

@@ -1,6 +1,6 @@
 "use client";
 import { IoMdSearch } from "react-icons/io";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useDeleteMarksMutation, useGetMarksDataQuery } from "@/redux/queries/marks/marksApi";
 import { useGetSubjectsQuery } from "@/redux/queries/subjects/subjectsApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
@@ -94,7 +94,7 @@ const MarksList = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch: refetchClasses,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const {
     isLoading: loadingSubjects,
@@ -436,6 +436,7 @@ const MarksList = () => {
                     <EditMarks
                       marksId={marksData.id}
                       refetchMarks={refetchMarks}
+                      terms={filteredTerms}
                     />
                     {/* <DeleteMarkRecord
                       marksId={marksData.id}
@@ -456,45 +457,7 @@ const MarksList = () => {
           </tbody>
         </table>
       </div>
-      {/* <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6">
-          <nav className="flex items-center space-x-2">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              className={`px-4 py-2  lg:text-sm md:text-sm text-xs border rounded ${
-                currentPage === 1
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  : "bg-white text-black border-gray-300 hover:bg-gray-100"
-              }`}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            {pages.map((page) => (
-              <button
-                key={page}
-                onClick={() => handlePageChange(page)}
-                className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
-                  page === currentPage
-                    ? "bg-primary text-white"
-                    : "bg-white text-black border-gray-300 hover:bg-gray-100"
-                }`}
-              >
-                {page}
-              </button>
-            ))}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              className={`px-4 py-2 lg:text-sm md:text-sm text-xs border rounded ${
-                currentPage === totalPages
-                  ? "bg-[gray-300] text-gray-500 cursor-not-allowed"
-                  : "bg-primary text-white border-gray-300 "
-              }`}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </nav>
-        </div> */}
+      
     </div>
   );
 };

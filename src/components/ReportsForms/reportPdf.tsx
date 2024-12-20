@@ -283,13 +283,13 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                 <Text style={styles.text}>
                   TERM:{" "}
                   <Text style={styles.innerText}>
-                    {report.marks[0]?.term.term || "N/A"}
+                    {report.marks[0]?.term.term || "-"}
                   </Text>
                 </Text>
                 <Text style={styles.text}>
                   YEAR:{" "}
                   <Text style={styles.innerText}>
-                    {report.marks[0]?.term.calendar_year || "N/A"}
+                    {report.student.class_level.calendar_year || "-"}
                   </Text>
                 </Text>
                 <Text style={styles.text}>
@@ -419,7 +419,10 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                           {termData.term}
                         </Text>
                         <Text style={styles.smallTableCell}>
-                          {parseFloat(termData.mean_marks).toFixed(2)}
+                          {/* {parseFloat(termData.mean_marks).toFixed(2)} */}
+                          {isNaN(parseFloat(termData.mean_marks)) || termData.mean_marks === null
+        ? "-"
+        : parseFloat(termData.mean_marks).toFixed(2)}
                         </Text>
                       </View>
                     ))}
@@ -436,7 +439,7 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                       <Text style={styles.smallTableCell}>
                         {report.overall_grading.kcpe_average
                           ? report.overall_grading.kcpe_average.toFixed(2)
-                          : "N/A"}
+                          : "-"}
                       </Text>
                     </View>
                   </View>

@@ -179,15 +179,18 @@ export const studentsApi = apiSlice.injectEndpoints({
       query: (params: {
         subject_id: any;
         class_level_id: any;
+        term_id: any;
         admission_number?: any;
       }) => {
         const queryParams: {
           subject_id: any;
           class_level_id: any;
+          term_id: any;
           admission_number?: any;
         } = {
           subject_id: params.subject_id,
           class_level_id: params.class_level_id,
+          term_id: params.term_id,
         };
         if (params.admission_number) {
           queryParams.admission_number = params.admission_number;

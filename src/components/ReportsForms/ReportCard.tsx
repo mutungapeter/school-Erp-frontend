@@ -1,5 +1,5 @@
 "use client";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { useGetReportFormsQuery } from "@/redux/queries/marks/reportsApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,6 +27,7 @@ import { ImFilePdf } from "react-icons/im";
 import ContentSpinner from "../layouts/contentSpinner";
 import dynamic from "next/dynamic";
 import ReportPDF from "./reportPdf";
+import { IoMdSearch } from "react-icons/io";
 const Reports = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -40,6 +41,9 @@ const Reports = () => {
   );
 
   const [filters, setFilters] = useState(initialFilters);
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(
+    null
+  );
   const { user, loading: loadingUser } = useAppSelector(
     (state: RootState) => state.auth
   );
@@ -81,7 +85,7 @@ const Reports = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch: refetchClasses,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
   const {
     isLoading: loadingTerms,
     data: termsData,
@@ -106,10 +110,21 @@ const Reports = () => {
     const { name, value } = e.target;
     if (name === "admission_number") {
       handleSearch(value);
-    } else {
+    }else if (name === "class_level") {
+      const parsedValue = value ? parseInt(value, 10) : null;
+      setSelectedClassLevel(parsedValue);
+      setFilters((prev) => ({
+        ...prev,
+        class_level: value,
+        term: "",
+      }));
+    }else {
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
   };
+  const filteredTerms = termsData?.filter(
+    (term: any) => term.class_level.id === selectedClassLevel
+  );
   const handleResetFilters = () => {
     setFilters({
       class_level: "",
@@ -135,18 +150,18 @@ const Reports = () => {
         </div>
 
         <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
-          <div className="flex lg:space-x-4 space-x-2 md:space-x-4 items-center">
-            <div className="relative w-34 lg:w-40 md:w-40 xl:w-40 ">
+          
+            <div className="relative lg:w-55 md:w-55 xl:w-55 ">
               <select
                 name="class_level"
                 value={filters.class_level || ""}
                 onChange={handleFilterChange}
-                className="w-34 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-              >
-                <option value="">Class</option>
+                className="w-full lg:w-55 md:w-55 xl:w-55 font-normal text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+           >
+                 <option value="">--- Select class ---</option>
                 {classesData?.map((classLevel: ClassLevel) => (
                   <option key={classLevel.id} value={classLevel.id}>
-                    {classLevel.form_level.name} {classLevel?.stream?.name}
+                    {classLevel.form_level.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
                   </option>
                 ))}
               </select>
@@ -156,15 +171,16 @@ const Reports = () => {
                 className="absolute top-[50%] right-1 md:right-4 lg:right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
               />
             </div>
-            <div className="relative w-32 lg:w-40 md:w-40 xl:w-40">
+            <div className="relative lg:w-55 md:w-55 xl:w-55">
               <select
                 name="term"
                 value={filters.term || ""}
                 onChange={handleFilterChange}
-                className="w-32 lg:w-40 md:w-40 xl:w-40 appearance-none py-2 px-4 text-xs md:text-sm lg:text-sm font-semibold rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-sm lg:placeholder:text-sm"
-              >
-                <option value="">Term</option>
-                {termsData?.map((term: TermInterface) => (
+                className="w-full lg:w-55 md:w-55 xl:w-55 font-normal text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+           >
+          
+                <option value="">--- Select term ---</option>
+                {filteredTerms?.map((term: TermInterface) => (
                   <option key={term.id} value={term.id}>
                     {term.term} {term.calendar_year}
                   </option>
@@ -176,30 +192,34 @@ const Reports = () => {
                 className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
               />
             </div>
-          </div>
-          <div className="flex flex-col space-y-3 md:space-y-0 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
+         
+
+        </div>
+        <div className="flex flex-col gap-3 lg:gap-0 lg:flex-row lg:items-center lg:justify-end  lg:space-x-5 px-2 ">
+        <div className="flex flex-col space-y-3 md:space-y-0 lg:flex-row md:flex-row lg:space-x-4 md:space-x-4  lg:items-center md:items-center">
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64 ">
-                <CiSearch
-                  size={20}
-                  className="absolute text-gray-500 top-[50%] left-3 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                />
+                            <IoMdSearch
+                              size={25}
+                              style={{ strokeWidth: 3 }}
+                              className="absolute stroke-2 text-[#1E9FF2] top-[50%] left-3 transform -translate-y-1/2  pointer-events-none"
+                            />
                 <input
                   type="text"
                   name="admission_number"
                   value={filters.admission_number || ""}
                   onChange={handleFilterChange}
                   placeholder="admission number"
-                  className="w-full lg:w-64 md:w-64 xl:w-64  py-2  pl-8 pr-4  rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-xs md:placeholder:text-lg lg:placeholder:text-lg placeholder:font-semibold"
-                />
+                  className="w-full lg:w-56 md:w-56 xl:w-56  p-2 transition-all ease-in-out duration-300 pl-10 pr-4 rounded-full border border-1 border-[#1E9FF2] focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
+             />
               </div>
 
               <div
-                onClick={handleResetFilters}
-                className="lg:py-2 lg:px-4 p-2 cursor-pointer max-w-max flex  inline-flex space-x-2 items-center text-[13px] md:py-2 md:px-2 lg:text-lg md:text-xs  rounded-md border text-white bg-primary"
-              >
-                <VscRefresh className="text-white" />
-                <span>Reset Filters</span>
-              </div>
+              onClick={handleResetFilters}
+              className=" p-2 cursor-pointer max-w-max   inline-flex space-x-2 items-center text-[13px]  lg:text-lg md:text-xs  rounded-lg border text-white bg-primary"
+            >
+              <VscRefresh className="text-white" />
+              <span className="text-sm">Reset Filters</span>
+            </div>
           </div>
         </div>
       </div>
@@ -209,7 +229,7 @@ const Reports = () => {
           <ContentSpinner />
         </div>
       ) : error ? (
-        <div className="w-full mx-2 md:mx-auto lg:mx-auto flex justify-center lg:w-11/12 md:w-11/12   items-center space-x-2 py-5 text-red-600">
+        <div className="w-full mx-2 md:mx-auto lg:mx-auto flex justify-center lg:w-11/12 md:w-11/12   items-center space-x-2 py-5 text-black">
           <p className="text-sm lg:text-lg md:text-lg font-bold">
             {(error as any)?.data?.error || "An error occurred."}
           </p>
@@ -230,7 +250,7 @@ const Reports = () => {
                         <span>Preparing PDF...</span>
                       </span>
                     ) : (
-                      <div className="flex inline-flex items-center space-x-2  max-w-max px-4 py-2 rounded-md bg-primary text-white">
+                      <div className=" inline-flex items-center space-x-2  max-w-max px-4 py-2 rounded-md bg-primary text-white">
                         <BsFiletypePdf size={20} className="text-white" />
                         <span className="text-sm lg:text-md md:text-md">
                           Download ReportForms
