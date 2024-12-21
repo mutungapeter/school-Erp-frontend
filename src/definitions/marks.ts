@@ -114,13 +114,8 @@ export interface Report {
         id: number;
         name: string;
       };
-      form_level: {
-        id: number;
-        created_at: string;
-        updated_at: string;
-        name: string;
-        level: number;
-      };
+      name: string;
+      level: number;
       calendar_year:number;
     };
     admission_type: string;

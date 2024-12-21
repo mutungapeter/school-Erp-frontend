@@ -12,6 +12,8 @@ import { useCreateUserMutation } from "@/redux/queries/users/usersApi";
 import { BsChevronDown } from "react-icons/bs";
 import { FaPlusCircle } from "react-icons/fa";
 import "../style.css";
+import { AiOutlinePlus } from "react-icons/ai";
+import { IoCloseOutline } from "react-icons/io5";
 
 interface CreateAccountProps {
   refetchUsers: () => void;
@@ -87,12 +89,10 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center md:py-2 md:px-4 py-1 px-2  lg:py-2 lg:px-4  bg-green-700 rounded-sm  flex items-center md:space-x-2 space-x-1 lg:space-x-2 "
+        className=" cursor-pointer text-center p-2    bg-green-700 rounded-full     "
       >
-        <FaPlusCircle size={20} className="text-white   " />
-        <span className=" lg:text-lg md:text-lg text-xs text-white">
-          Add Admin Account
-        </span>
+        <AiOutlinePlus  size={25} className="text-white   " />
+        
       </div>
 
       {isOpen && (
@@ -110,13 +110,20 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4 md:p-6 lg:p-6 md:max-w-lg">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
                   <p className="font-semibold text-black  md:text-lg text-md lg:text-lg">
                     Create Admin/Principal Account
                   </p>
+                   <div className="flex justify-end cursor-pointer">
+                                      <IoCloseOutline
+                                        size={35}
+                                        onClick={handleCloseModal}
+                                        className=" text-gray-500 "
+                                      />
+                                    </div>
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
@@ -225,6 +232,8 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
                         </p>
                       )}
                     </div>
+                    <div>
+
                     <div className="relative">
                       <label
                         htmlFor="role"
@@ -246,6 +255,7 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
                       size={20}
                         className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.role && (
                         <p className="text-red-500 text-sm">
                           {String(errors.role.message)}
@@ -282,20 +292,16 @@ export const CreateAccount = ({ refetchUsers }: CreateAccountProps) => {
                     />
                     <span className="text-gray-700">Show Password</span>
                   </div>
-                  <div className="flex justify-between mt-6">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-gray-500 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
+             
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-3 ">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 text-xs lg:text-sm md:text-sm hover:bg-[#36A000] focus:outline-none"
+                      className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-4
+                       text-white rounded-md  px-5 py-2"
                     >
-                      {isSubmitting ? "Creating..." : "Submit"}
+                      <span>{isSubmitting ? "Creating..." : "Create"}</span>
                     </button>
                   </div>
                 </form>

@@ -107,7 +107,7 @@ console.log(
               <option value="">Filter by class</option>
               {classesData?.map((classLevel: ClassLevel) => (
                 <option key={classLevel.id} value={classLevel.id}>
-                  {classLevel.form_level.name} {classLevel?.stream?.name}
+                  {classLevel.name} {classLevel?.stream?.name}
                 </option>
               ))}
             </select>
@@ -176,7 +176,7 @@ console.log(
                 Class:
               </h4>
               <h2 className="font-normal  text-xs md:text-sm lg:tex-sm">
-                {data?.class_level.form_level.name}{" "}
+                {data?.class_level.name}{" "}
                 {data?.class_level?.stream?.name}
               </h2>
             </div>

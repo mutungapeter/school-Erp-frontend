@@ -45,8 +45,7 @@ const config: Config = {
         bodydark1: "#DEE4EE",
         bodydark2: "#8A99AF",
         primary: "#1566FF",
-        // primary: "#0077B6",
-
+       
         secondary: "#80CAEE",
         stroke: "#E2E8F0",
         gray: {
@@ -58,6 +57,12 @@ const config: Config = {
         graydark: "#333A48",
         whiten: "#F1F5F9",
         whiter: "#F5F7FD",
+        lamaSky: "#C3EBFA",
+        lamaSkyLight: "#EDF9FD",
+        lamaPurple: "#CFCEFF",
+        lamaPurpleLight: "#F1F0FF",
+        lamaYellow: "#FAE27C",
+        lamaYellowLight: "#FEFCE8",
         boxdark: "#24303F",
         "boxdark-2": "#1A222C",
         strokedark: "#2E3A47",

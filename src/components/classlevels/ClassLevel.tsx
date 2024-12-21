@@ -1,5 +1,5 @@
 "use client";
-import { useDeleteClassLevelsMutation, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useDeleteClassLevelsMutation, useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ const Classes = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch,
-  } = useGetClassesQuery(
+  } = useGetAllClassesQuery(
     { page: currentPage || 1, page_size: pageSize },
     { refetchOnMountOrArgChange: true }
   );
@@ -150,7 +150,7 @@ const handleCloseDeleteModal = () => {
                       id="checkbox-all"
                       type="checkbox"
                       checked={
-                        selectedClassLevels.length === classesData?.results.length
+                        selectedClassLevels.length === classesData?.results?.length
                       }
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -173,6 +173,9 @@ const handleCloseDeleteModal = () => {
                   </th>
                 <th scope="col" className="p-2 border-r  text-xs md:text-sm lg:text-sm">
                  Class
+                </th>
+                <th scope="col" className="p-2 border-r  text-xs md:text-sm lg:text-sm">
+                 Grade
                 </th>
               
                 <th scope="col" className="p-2 border-r text-xs md:text-sm lg:text-sm">
@@ -207,7 +210,10 @@ const handleCloseDeleteModal = () => {
                           />
                         </th>
                     <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg  whitespace-nowrap">
-                      {cl.form_level.name}  {cl.stream?.name}
+                      {cl.name}  {cl.stream?.name}
+                    </td>
+                    <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg  whitespace-nowrap">
+                      {cl.level}  
                     </td>
                   
                     <td className="p-2 font-normal border-r text-sm lg:text-lg md:text-lg  ">
@@ -224,7 +230,7 @@ const handleCloseDeleteModal = () => {
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-4">
-                    No subjects found.
+                    No Classes to show.
                   </td>
                 </tr>
               )}

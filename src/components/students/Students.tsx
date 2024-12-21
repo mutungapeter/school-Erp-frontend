@@ -209,7 +209,7 @@ const Students = () => {
                   <option value="">-- Select class ---</option>
                   {classesData?.map((classLevel: ClassLevel) => (
                     <option key={classLevel.id} value={classLevel.id}>
-                      {classLevel.form_level.name} {classLevel?.stream?.name} - ({classLevel.calendar_year})
+                      {classLevel.name} {classLevel?.stream?.name} - ({classLevel.calendar_year})
                     </option>
                   ))}
                 </select>
@@ -377,7 +377,7 @@ const Students = () => {
                           {student.admission_number}
                         </td>
                         <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">
-                          {student?.class_level?.form_level?.name}
+                          {student?.class_level?.name}
                           {student?.class_level?.stream
                             ? student.class_level.stream.name
                             : ""} - ({student.class_level.calendar_year})

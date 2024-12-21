@@ -12,12 +12,8 @@ export interface Student {
         id:number;
         name: string;
       }
-      form_level:{
-        id:number;
-        name:string;
-        level: number;
-        streams_count: number;
-      }
+      name: string;
+      level:number;
       calendar_year:number;
     },
     created_at:string;

@@ -241,3 +241,50 @@ input[type="search"]::-webkit-search-cancel-button {
 [x-cloak] {
     display: none !important;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+    height: auto !important;
+  }
+  
+  
+  .react-datepicker__input-container {
+    width: 100%;
+    height: auto !important;
+    position: relative;
+    position: relative;
+  }
+  
+
+  .react-datepicker__input-container input {
+    width: 100%;
+    height: 2.5rem; 
+    line-height: 2.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 2.5rem;
+    padding-right: 1rem; 
+   
+    box-sizing: border-box; 
+  }
+
+
+  .react-datepicker__calendar-icon {
+    position: absolute;
+    left: 0.75rem; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    fill: currentColor;
+  }
+  
+  .react-datepicker-popper {
+    z-index: 1050; 
+  }
+  #root-portal {
+    z-index: 1050; 
+  }
+  
+  .react-datepicker {
+    z-index: 9999;
+  }
+  

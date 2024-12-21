@@ -28,7 +28,7 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
       subject.subject_type === "Elective" &&
       subject.class_levels.some(
         (classLevel) =>
-          classLevel.form_level.level === 3 || classLevel.form_level.level === 4
+          classLevel.level === 3 || classLevel.level === 4
       )
   );
   console.log("subjectsData", subjectsData)

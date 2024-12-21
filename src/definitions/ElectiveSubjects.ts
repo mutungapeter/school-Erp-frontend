@@ -5,13 +5,15 @@ export interface ClassLevel {
     stream?: {
       name: string;
     } | null;
-    form_level: {
-      id: number;
-      created_at: string;
-      updated_at: string;
-      name: string;
-      level: number;
-    };
+    // form_level: {
+    //   id: number;
+    //   created_at: string;
+    //   updated_at: string;
+    //   name: string;
+    //   level: number;
+    // };
+    name:string;
+    level:number;
   }
   
   export interface Subject {

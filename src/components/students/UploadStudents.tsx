@@ -202,7 +202,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                               <option value="">-- Select class ---</option>
                               {classesData?.map((classLevel: ClassLevel) => (
                                 <option key={classLevel.id} value={classLevel.id}>
-                                  {classLevel.form_level.name}{" "}
+                                  {classLevel.name}{" "}
                                   {classLevel?.stream?.name} ({classLevel.calendar_year})
                                 </option>
                               ))}

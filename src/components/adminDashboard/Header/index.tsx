@@ -8,8 +8,8 @@ import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
 import { RiMenuFill } from "react-icons/ri";
 import { useMediaQuery } from "react-responsive";
 import dynamic from "next/dynamic";
-import { TfiAlignLeft } from "react-icons/tfi";
-
+import { TfiAlignJustify, TfiAlignLeft, TfiAlignRight } from "react-icons/tfi";
+import { CiMenuBurger } from "react-icons/ci";
 interface Props {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
@@ -99,7 +99,7 @@ const Header: React.FC<Props> = ({
             {desktopSidebarOpen ? (
               <TfiAlignLeft size={30} />
             ) : (
-              <RiMenuFill size={30} />
+              <TfiAlignRight   size={30} />
             )}
           </button>
         </div>
@@ -109,9 +109,9 @@ const Header: React.FC<Props> = ({
             {/* Dark Mode Toggler */}
             {/* <DarkModeSwitcher /> */}
             {/* Notification Menu Area */}
-            {/* <DropdownNotification /> */}
+            <DropdownNotification />
             {/* Chat Notification Area */}
-            {/* <DropdownMessage /> */}
+            <DropdownMessage />
           </ul>
 
           {/* User Area */}

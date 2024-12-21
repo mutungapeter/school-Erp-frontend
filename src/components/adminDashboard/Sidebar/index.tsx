@@ -5,17 +5,17 @@ import useLocalStorage from "@/hooks/useLocalStorage";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 // import AdminPermissions from "@/src/hooks/AdminProtected";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BiLayer } from "react-icons/bi";
-import { BsBarChart, BsShop } from "react-icons/bs";
 import {
-  HiOutlineClipboardDocument,
-  HiOutlineClipboardDocumentList,
+  HiOutlineClipboardDocument
 } from "react-icons/hi2";
 import { IoHomeOutline } from "react-icons/io5";
 import { LiaChalkboardTeacherSolid, LiaSchoolSolid } from "react-icons/lia";
+import { MdOutlineDashboard } from "react-icons/md";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import {
   PiStudentDuotone,
   PiStudentLight,
@@ -24,12 +24,10 @@ import {
 import { SlSettings } from "react-icons/sl";
 import { TfiAlignLeft } from "react-icons/tfi";
 import { TiDocumentText } from "react-icons/ti";
-import SidebarItem from "./SidebarItem";
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
-import dynamic from "next/dynamic";
-import { MdOutlineDashboard } from "react-icons/md";
-import { RiHomeGearLine } from "react-icons/ri";
-
+import SidebarItem from "./SidebarItem";
+import { PiChalkboardTeacherThin } from "react-icons/pi";
+import { PiChalkboardThin } from "react-icons/pi";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -66,45 +64,31 @@ const menuGroups: MenuGroup[] = [
         route: "/students",
       },
       {
-        icon: <LiaChalkboardTeacherSolid />,
+        icon: <LiaChalkboardTeacherSolid size={20}  />,
         label: "Teachers",
         route: "/teachers",
       },
       {
-        icon: <LiaSchoolSolid />,
+        icon: <LiaSchoolSolid size={20}  />,
         label: "Subjects",
         route: "/subjects",
       },
       {
-        icon: <MdOutlineDashboard />,
+        icon: <MdOutlineDashboard size={20}  />,
         label: "Terms",
         route: "/terms",
       },
       {
-        icon: <RiHomeGearLine />,
-        label: "Class Settings",
-        route: "#",
-        children: [
-          { label: "Classes", route: "/classes" },
-          { label: "Form Levels", route: "/form-levels" },
-          { label: "Streams", route: "/streams" },
-        ],
+        icon: <PiChalkboardTeacherThin size={20}  />,
+        label: "Classes",
+        route: "/classes",
       },
-      // {
-      //   icon: <BsShop />,
-      //   label: "Classes",
-      //   route: "/classes",
-      // },
-      // {
-      //   icon: <BsBarChart />,
-      //   label: "Form Levels",
-      //   route: "/form-levels",
-      // },
-      // {
-      //   icon: <BiLayer />,
-      //   label: "Streams",
-      //   route: "/streams",
-      // },
+      {
+        icon: <PiChalkboardThin size={20}  />,
+        label: "Streams",
+        route: "/streams",
+      },
+   
     
 
      
@@ -114,32 +98,17 @@ const menuGroups: MenuGroup[] = [
     // name: "OTHERS",
     menuItems: [
       {
-        icon: <TiDocumentText />,
-        label: "Marks",
+        icon: <HiOutlineClipboardDocumentList size={20} />,
+        label: "Results",
         route: "#",
         children: [
-          { label: "Record Marks", route: "/marks" },
+          { label: "Upload Marks", route: "/marks" },
           { label: "View Marks", route: "/marks/list" },
+          { label: "Report Forms", route: "/reports/reportcard" },
         ],
-      },
+      },  
       {
-        icon: <HiOutlineClipboardDocumentList  />,
-        label: "Reports",
-        route: "#",
-        children: [{ label: "Report Forms", route: "/reports/reportcard" }],
-      },
-      {
-        icon: <PiStudentDuotone />,
-        label: "Alumni",
-        route: "/alumni",
-      },
-      {
-        icon: <HiOutlineClipboardDocument />,
-        label: "Promotion Records",
-        route: "/promotions",
-      },
-      {
-        icon: <SlSettings />,
+        icon: <SlSettings size={20} />,
         label: "Settings",
         route: "#",
         children: [
@@ -148,30 +117,24 @@ const menuGroups: MenuGroup[] = [
         ],
       },
       {
-        icon: <PiUsersThreeLight />,
+        icon: <HiOutlineClipboardDocument size={20}  />,
+        label: "Promotion Records",
+        route: "/promotions",
+      },
+      {
+        icon: <PiStudentDuotone size={20} />,
+        label: "Alumni",
+        route: "/alumni",
+      },
+      {
+        icon: <PiUsersThreeLight size={20} />,
         label: "Admins",
         route: "/accounts",
       },
     ],
   },
 ];
-const adminOrPrincipalOnlyItems = [
-  "Dashboard",
-  "Accounts",
-  "Reports",
-  "Teachers",
-  "Classes",
-  "Form Levels",
-  "Streams",
-  "Settings",
-  "Alumni",
-  "Promotion Records",
-  "Subjects",
-  "Admins"
-];
-const teacherOnlyItems=[
-  "Subjects And Classes"
-]
+
 const Sidebar = ({
   sidebarOpen,
   setSidebarOpen,
@@ -191,9 +154,9 @@ const Sidebar = ({
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
         className={`fixed left-0 top-0 z-9999 transition-all duration-300 ease-linear flex h-screen ${
-          desktopSidebarOpen ? "lg:w-72.5" : "w-0 lg:w-0"
+          desktopSidebarOpen ? "lg:w-62.5" : "w-0 lg:w-0"
         } flex-col overflow-y-hidden bg-white  dark:bg-boxdark lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0 w-72.5" : "-translate-x-full"
+          sidebarOpen ? "translate-x-0 w-62.5" : "-translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between gap-2 px-6 py-3 lg:py-4">
@@ -227,34 +190,7 @@ const Sidebar = ({
 
                 <ul className="mb-6 flex flex-col gap-4">
                   {group.menuItems.map((menuItem, menuIndex) => {
-                    // if (adminOrPrincipalOnlyItems.includes(menuItem.label)) {
-                    //   return (
-                    //     <AdminPermissions
-                    //       key={menuIndex}
-                    //       rolesAllowed={["Admin", "Principal"]}
-                    //     >
-                    //       <SidebarItem
-                    //         item={menuItem}
-                    //         pageName={pageName}
-                    //         setPageName={setPageName}
-                    //       />
-                    //     </AdminPermissions>
-                    //   );
-                    // }
-                    // if (teacherOnlyItems.includes(menuItem.label)) {
-                    //   return (
-                    //     <AdminPermissions
-                    //       key={menuIndex}
-                    //       rolesAllowed={["Teacher"]}
-                    //     >
-                    //       <SidebarItem
-                    //         item={menuItem}
-                    //         pageName={pageName}
-                    //         setPageName={setPageName}
-                    //       />
-                    //     </AdminPermissions>
-                    //   );
-                    // }
+                   
                     return (
                       <SidebarItem
                         key={menuIndex}

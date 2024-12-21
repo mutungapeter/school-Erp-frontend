@@ -26,6 +26,8 @@ import { TiDocumentText } from "react-icons/ti";
 import SidebarItem from "./SidebarItem";
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import dynamic from "next/dynamic";
+import { RiHomeGearLine } from "react-icons/ri";
+import { MdOutlineDashboard } from "react-icons/md";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -67,26 +69,57 @@ const menuGroups: MenuGroup[] = [
         label: "Students",
         route: "/students",
       },
+      {
+              icon: <RiHomeGearLine />,
+              label: "Class Settings",
+              route: "#",
+              children: [
+                { label: "Classes", route: "/classes" },
+                // { label: "Form Levels", route: "/form-levels" },
+                { label: "Streams", route: "/streams" },
+              ],
+            },
+            {
+                    icon: <MdOutlineDashboard />,
+                    label: "Terms",
+                    route: "/terms",
+                  },
+                
       
     ],
   },
   {
     // name: "OTHERS",
     menuItems: [
+      // {
+      //   icon: <TiDocumentText />,
+      //   label: "Marks",
+      //   route: "#",
+      //   children: [
+      //     { label: "Record Marks", route: "/marks" },
+      //     { label: "View Marks", route: "/marks/list" },
+      //   ],
+      // },
+      // {
+      //   icon: <HiOutlineClipboardDocumentList  />,
+      //   label: "Reports",
+      //   route: "#",
+      //   children: [{ label: "Report Forms", route: "/reports/reportcard" }],
+      // },
       {
         icon: <TiDocumentText />,
-        label: "Marks",
+        label: "Results",
         route: "#",
         children: [
-          { label: "Record Marks", route: "/marks" },
+          { label: "Upload Marks", route: "/marks" },
           { label: "View Marks", route: "/marks/list" },
+          { label: "Report Forms", route: "/reports/reportcard" },
         ],
       },
       {
-        icon: <HiOutlineClipboardDocumentList  />,
-        label: "Reports",
-        route: "#",
-        children: [{ label: "Report Forms", route: "/reports/reportcard" }],
+        icon: <PiStudentDuotone />,
+        label: "Alumni",
+        route: "/alumni",
       },
     ],
   },

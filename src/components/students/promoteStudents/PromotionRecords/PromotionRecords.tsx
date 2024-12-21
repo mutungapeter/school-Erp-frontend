@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";
 import { TbDatabaseOff } from "react-icons/tb";
-
+import "../../../style.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
@@ -14,15 +14,18 @@ import { useGetFormLevelsQuery } from "@/redux/queries/formlevels/formlevelsApi"
 import { FormLevel } from "@/src/definitions/formlevels";
 import { BsChevronDown } from "react-icons/bs";
 import { PAGE_SIZE } from "@/src/constants/constants";
+import { useGetAllClassesQuery } from "@/redux/queries/classes/classesApi";
+import { ClassLevel } from "@/src/definitions/classlevels";
 
-
+import { addMonths, subMonths } from "date-fns";
+import { PiCalendarDotsLight } from "react-icons/pi";
 const PromotionRecords = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialFilters = useMemo(
     () => ({
-        source_form_level: searchParams.get("source_form_level") || "",
+      source_class_level: searchParams.get("source_class_level") || "",
         year: searchParams.get("year") || "",
       
     }),
@@ -36,8 +39,8 @@ const PromotionRecords = () => {
   useEffect(() => {
     const params = new URLSearchParams();
     params.set("page", currentPage.toString());
-    if (filters.source_form_level)
-        params.set("source_form_level", filters.source_form_level);
+    if (filters.source_class_level)
+        params.set("source_class_level", filters.source_class_level);
      
     if (filters.year)
       params.set("year", filters.year);
@@ -55,12 +58,11 @@ const PromotionRecords = () => {
     }),
     [currentPage, filters]
   );
-  const {
-    isLoading: loadingFormLevels,
-    data: formLevelsData,
-    refetch: refetchFormLevels,
-  } = useGetFormLevelsQuery({}, { refetchOnMountOrArgChange: true });
-
+ const {
+    isLoading: loadingClasses,
+    data: classesData,
+    refetch: refetchClasses,
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
   const {
     isLoading: loadingPromotionRecords,
     data: promotionRecordsData,
@@ -81,7 +83,7 @@ const PromotionRecords = () => {
   };
 
   const handleResetFilters = () => {
-    setFilters({ year: "", source_form_level: "" });
+    setFilters({ year: "", source_class_level: "" });
     setCurrentPage(1);
     router.push("?");
   };
@@ -110,63 +112,60 @@ const PromotionRecords = () => {
   return (
     <>
       
-      <div className=" space-y-5  py-2  ">
-        <div className="flex items-center justify-between lg:px-3 md:px-3 lg:p-3 md:p-3 px-1 p-1  lg:mt-6  ">
+      <div className=" space-y-5 bg-white  py-2  ">
+        <div className="flex flex-col lg:gap-0 md:gap-0 gap-3 lg:flex-row md:flex-row lg:items-center md:items-center md:justify-between lg:justify-between lg:px-3 md:px-3 lg:p-3 md:p-3 px-1 p-1    ">
           <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
-          Class Promotion Records
+          Promotion Records
           </h2>
-        </div>
-        <div className="bg-white shadow-md rounded-sm  p-2">
-          <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
-            <div className="flex flex-col gap-3 p-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
+          <div className="flex flex-col gap-3  md:flex-row lg:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5 lg:justify-end">
           
-                <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="class"
-                  className=" text-sm lg:text-lg md:text-lg  font-normal mb-3"
-                >
-                  Form Level
-                </label>
-                <select
-                  name="source_form_level"
-                  id="source_form_level"
-                  value={filters.source_form_level || ""}
-                  onChange={handleFilterChange}
-                  className="w-full lg:w-64 md:w-full xl:w-64 appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                >
-                  <option value="">Select Class</option>
-                  {formLevelsData?.map((form_level: FormLevel) => (
-                    <option key={form_level.id} value={form_level.id}>
-                      {form_level.name} 
-                    </option>
-                  ))}
-                </select>
-                <BsChevronDown
-                  color="gray"
-                  size={20}
-                  className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                />
-              </div>
-              <div className="relative w-full lg:w-64 md:w-full xl:w-64 ">
-                <label
-                  htmlFor="year"
-                  className="text-sm lg:text-lg md:text-lg font-normal  mb-3"
-                >
-                  Graduation Year
-                </label>
+<div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
+
+            <select
+              name="source_class_level"
+              value={filters.source_class_level || ""}
+              onChange={handleFilterChange}
+              className="w-full lg:w-55 md:w-55 xl:w-55 
+                text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+             >
+              <option value="">--- Select class ---</option>
+              {classesData?.map((classLevel: ClassLevel) => (
+                <option key={classLevel.id} value={classLevel.id}>
+                  {classLevel.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
+                </option>
+              ))}
+            </select>
+            <BsChevronDown
+              color="gray"
+              size={20}
+              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            />
+          </div>
+              
+              <div className="relative ">
+
                 <DatePicker
-                name="year"
+               
                 selected={filters.year ? new Date(parseInt(filters.year), 0) : null}
                 onChange={handleYearChange}
-                  showYearPicker
-                  dateFormat="yyyy"
-                  className="py-2 px-4 w-full lg:w-64 md:w-full xl:w-64  rounded-md  border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
-                />
+               showYearPicker
+                      dateFormat="yyyy"
+                      // showIcon
+                      // icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+                      yearDropdownItemNumber={5}
+                      placeholderText="Promotion Year"
+                      isClearable
+                      className="w-full appearance-none py-2 px-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    />
+              </div>
                
-                </div>
+             
                 
             </div>
-          </div>
+        
+        </div>
+        <div className="  rounded-sm  p-2">
+          
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className=" text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">

@@ -13,8 +13,8 @@ const SidebarDropdown = ({ item }: any) => {
             <Link
               href={item.route}
               className={`group relative flex items-center gap-2.5 
-                 text-lg rounded-md px-4  text-[#585882ff] 
-                 hover:text-[#771BCC] 
+                 text-md rounded-md px-2   text-[#585882ff] 
+                 hover:text-[#771BCC] hover:bg-[#F3EEF6]
                  duration-300 ease-in-out
                  transform transition-transform 
                     hover:translate-x-3 ${

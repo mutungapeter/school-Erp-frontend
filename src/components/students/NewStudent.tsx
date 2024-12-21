@@ -287,7 +287,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                           <option value="">--- Select class ---</option>
                           {ClassLevelsData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
-                              {cl.form_level.name} {cl?.stream?.name || ""} - ({cl.calendar_year})
+                              {cl.name} {cl?.stream?.name || ""} - ({cl.calendar_year})
                             </option>
                           ))}
                         </>

@@ -19,11 +19,15 @@ export const classesApi = apiSlice.injectEndpoints({
       },
     }),
     getAllClasses: builder.query({
-      query: () => {
-      
+      query: ({ page, page_size }: GetClassesInterface = {}) => {
+        const queryParams: Record<string, any> = {};
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+
         return {
           url: `all-class-levels/`,
           method: "GET",
+          params: queryParams,
           
         };
       },

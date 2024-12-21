@@ -25,7 +25,7 @@ export default function DefaultLayout({
         // relative
           className={`
             
-             flex flex-1 flex-col transition-all duration-300 ease-linear ${desktopSidebarOpen ? "lg:ml-72.5" : "lg:ml-0"}`}
+             flex flex-1 flex-col transition-all duration-300 ease-linear ${desktopSidebarOpen ? "lg:ml-62.5" : "lg:ml-0"}`}
         >
           <Header
             sidebarOpen={sidebarOpen}

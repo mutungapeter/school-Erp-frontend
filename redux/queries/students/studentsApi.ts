@@ -18,7 +18,7 @@ interface GetPromotionRecords {
   page?: number;
   page_size?: number;
   year: any;
-  source_form_level: any;
+  source_class_level: any;
 }
 interface GetStudentPerformance {
   id: number;
@@ -114,12 +114,12 @@ export const studentsApi = apiSlice.injectEndpoints({
       },
     }),
     getPromotionRecords: builder.query({
-      query: ({ page, page_size, year, source_form_level }: GetPromotionRecords) => {
+      query: ({ page, page_size, year, source_class_level }: GetPromotionRecords) => {
         const queryParams: Record<string, any> = {};
 
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
-        if (source_form_level) queryParams.source_form_level = source_form_level;
+        if (source_class_level) queryParams.source_form_level = source_class_level;
         if (year) queryParams.year = year;
 
         return {

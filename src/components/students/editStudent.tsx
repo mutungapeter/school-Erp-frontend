@@ -133,7 +133,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-2 gap-2 lg:gap-3">
                   <div>
                     <label
                       htmlFor="firstName"
@@ -295,7 +295,7 @@ const EditStudent = ({ studentId, refetchStudents }: Props) => {
                           <option value="">Select Class</option>
                           {classesData?.map((cl: any) => (
                             <option key={cl.id} value={cl.id}>
-                              {cl.form_level.name}  {cl?.stream?.name} - {cl.calendar_year}
+                              {cl.name}  {cl?.stream?.name} - {cl.calendar_year}
                             </option>
                           ))}
                         </>

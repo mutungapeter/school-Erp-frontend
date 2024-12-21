@@ -36,7 +36,8 @@ const EditClassLevel = ({ classLevelId, refetchClassLevels }: Props) => {
   );
 
   const schema = z.object({
-    form_level: z.number().min(1, "Select Form level"),
+    name: z.string().min(1, "Name is required"),
+    level: z.coerce.number().min(1, "Level is required"),
     stream: z.string().nullable().optional(),
     calendar_year: z.number().min(4, "Enter a valid year"),
   });
@@ -55,7 +56,8 @@ const EditClassLevel = ({ classLevelId, refetchClassLevels }: Props) => {
   useEffect(() => {
     if (classData) {
       reset({
-        form_level: classData.form_level.id,
+        name: classData.name,
+        level: classData.level,
         stream: classData?.stream?.id || null,
         calendar_year: classData?.calendar_year
       })
@@ -80,9 +82,7 @@ const EditClassLevel = ({ classLevelId, refetchClassLevels }: Props) => {
       }
     }
   };
-  const handleFormLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setValue("form_level", e.target.value);
-  };
+ 
   const handleStreamChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("stream", e.target.value);
   };
@@ -137,45 +137,47 @@ const EditClassLevel = ({ classLevelId, refetchClassLevels }: Props) => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2  lg:gap-5">
                   <div>
-                    <div className="relative">
-                      <label
-                        htmlFor="form_level"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Form Level
-                      </label>
-                      <select
-                        id="form_level"
-                        {...register("form_level", { valueAsNumber: true })}
-                        onChange={handleFormLevelChange}
-                        value={watch("form_level") || ""}
-                        className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      >
-                        {isLoadingFormLevels ? (
-                          <option value="">Loading...</option>
-                        ) : (
-                          <>
-                            <option value="">Select Class</option>
-                            {formLevelsData?.map((cl: any) => (
-                              <option key={cl.id} value={cl.id}>
-                                {cl.name}
-                              </option>
-                            ))}
-                          </>
-                        )}
-                      </select>
-                      <BsChevronDown
-                        color="gray"
-                        size={20}
-                        className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                      />
-                    </div>
-                    {errors.form_level && (
+                    <label
+                      htmlFor="Name"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      id="Name"
+                      placeholder="name e.g Form One , Form Two"
+                      {...register("name")}
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    />
+                    {errors.name && (
                       <p className="text-red-500 text-sm">
-                        {String(errors.form_level.message)}
+                        {String(errors.name.message)}
                       </p>
                     )}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="Name"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Grade/Level
+                    </label>
+                    <input
+                      type="text"
+                      id="level"
+                      placeholder="name e.g Form One , Form Two"
+                      {...register("level")}
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    />
+                    {errors.level && (
+                      <p className="text-red-500 text-sm">
+                        {String(errors.level.message)}
+                      </p>
+                    )}
+                  </div>
                   </div>
                   <div>
                     <div className="relative">

@@ -276,7 +276,7 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                 <Text style={styles.text}>
                   Class:{" "}
                   <Text style={styles.innerText}>
-                    {report.student.class_level.form_level.name}{" "}
+                    {report.student.class_level.name}{" "}
                     {report.student.class_level?.stream?.name}
                   </Text>
                 </Text>

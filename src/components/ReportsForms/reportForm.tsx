@@ -54,7 +54,7 @@ const ReportComponent = ({ data }: ReportComponentProps) => {
               <p>
                 <span className="font-semibold text-sm uppercase">Class:</span>{" "}
                 <span className="uppercase">
-                  {report.student.class_level.form_level.name}{" "}
+                  {report.student.class_level.name}{" "}
                   {report.student.class_level.stream?.name || ""}
                 </span>
               </p>

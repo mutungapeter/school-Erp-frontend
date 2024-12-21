@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import { PAGE_SIZE } from "@/src/constants/constants";
+import { PiCalendarDotsLight } from "react-icons/pi";
 
 const AlumniRecords = () => {
   const pageSize = PAGE_SIZE;
@@ -91,35 +92,32 @@ const AlumniRecords = () => {
   return (
     <>
       
-      <div className=" space-y-5  py-2  ">
-        <div className="flex items-center justify-between lg:px-3 md:px-3 lg:p-3 md:p-3 px-1 p-1  lg:mt-6  ">
-          <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
+      <div className=" space-y-5 bg-white  py-2  ">
+      <div className="flex flex-col lg:gap-0 md:gap-0 gap-3 lg:flex-row md:flex-row lg:items-center md:items-center md:justify-between lg:justify-between lg:px-3 md:px-3 lg:p-3 md:p-3 px-1 p-1    ">
+      <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
           Alumni Records
           </h2>
-        </div>
-        <div className="bg-white shadow-md rounded-sm  p-2">
-          <div className="flex flex-col gap-3 lg:gap-0 md:gap-0 lg:flex-row md:flex-row  md:items-center p-2 md:justify-end lg:items-center lg:justify-end">
-            <div className="flex flex-col gap-3 p-2 lg:p-0 lg:flex-row md:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5">
-            <div className="relative ">
-                <label
-                  htmlFor="year"
-                  className="block  text-sm  font-normal  mb-2"
-                >
-                  Graduation Year
-                </label>
+         <div className="relative ">
+               
                 <DatePicker
                 name="graduation_year"
                 selected={filters.graduation_year ? new Date(parseInt(filters.graduation_year), 0) : null}
                 onChange={handleYearChange}
-                  showYearPicker
-                  dateFormat="yyyy"
-                  className="py-2 px-4 rounded-md  border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
-                />
+                showYearPicker
+                dateFormat="yyyy"
+                // showIcon
+                // icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+                yearDropdownItemNumber={5}
+                placeholderText="Graduation Year"
+                isClearable
+                className="w-full appearance-none py-2 px-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+               />
                
                 </div>
-            
-            </div>
-          </div>
+        
+        </div>
+        <div className=" rounded-sm  p-2">
+         
           <div className=" relative overflow-x-auto p-2  ">
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className=" text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">

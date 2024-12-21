@@ -145,7 +145,7 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                             <option value="">Select  class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""}
+                                {cl.name} {cl?.stream?.name || ""}
                               </option>
                             ))}
                           </>

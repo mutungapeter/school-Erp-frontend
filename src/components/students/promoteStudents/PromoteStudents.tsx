@@ -157,7 +157,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                             <option value="">--- Select current class ---</option>
                             {currentClassesData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
+                                {cl.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
@@ -196,7 +196,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                             <option value="">--- Select target class ---</option>
                             {targetClassesData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
+                                {cl.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
