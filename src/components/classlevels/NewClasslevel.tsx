@@ -101,12 +101,16 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
     <>
       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-3 md:px-3 px-2 bg-green-700 rounded-md  flex items-center space-x-2 "
+        className=" cursor-pointer text-center 
+        p-1
+         bg-yellow-500 hover:bg-yellow-700  rounded-full  
+         
+         "
       >
-        <GoPlus size={18} className="text-white   " />
-        <span className=" text-xs md:text-sm lg:text-sm text-white">
+        <GoPlus size={25} className="text-white stroke-2   " />
+        {/* <span className=" text-xs md:text-sm lg:text-sm text-white">
           Add Class
-        </span>
+        </span> */}
       </div>
 
       {isOpen && (
@@ -172,7 +176,7 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                     <input
                       type="number"
                       id="level"
-                      placeholder="name e.g Form One , Form Two"
+                      placeholder="Grade e.g 1, 2, 3 "
                       {...register("level")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />

@@ -116,14 +116,16 @@ const Teachers = () => {
     <div className="space-y-5  py-3  ">
       <div className=" p-3 flex justify-between">
       <h2 className="font-semibold text-black text-xl">Teachers</h2>
-        <CreateTeacher refetchTeachers={refetchTeachers} />
+       <div>
+       <CreateTeacher refetchTeachers={refetchTeachers} />
+       </div>
       </div>
       <div className=" relative overflow-x-auto p-2 bg-white shadow-md border  ">
       {selectedTeachers.length > 0 && (
             <div className="flex items-center space-x-3 py-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>
@@ -132,7 +134,7 @@ const Teachers = () => {
                 type="button"
                 onClick={handleOpenDeleteModal}
                 disabled={deleting}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-red-700 rounded-full hover:bg-red-700 hover:text-white cursor-pointer"
               >
                 <FiDelete size={20} className="" />
                 <span className="">{deleting ? "Deleting..." : "Delete"}</span>

@@ -133,7 +133,9 @@ const Subjects = () => {
       
         <div className=" p-3  flex justify-between">
           <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Subjects</h2>
+          <div>
           <AddSubject refetchSubjects={refetchSubjects} />
+          </div>
            </div>
      
         <div className=" relative overflow-x-auto p-2 bg-white shadow-md border ">
@@ -141,7 +143,7 @@ const Subjects = () => {
             <div className="flex items-center space-x-3 py-3">
               <button
                 onClick={cancelSelection}
-                className=" text-sm flex items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
+                className=" text-sm  items-center inline-flex space-x-3 px-3 py-1 shadow-sm border border-1 text-gray-700 rounded-full hover:bg-gray-700 hover:text-white cursor-pointer"
               >
                 <IoIosClose size={20} className="" />
                 <span>Cancel</span>

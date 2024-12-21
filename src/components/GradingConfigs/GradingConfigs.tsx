@@ -75,7 +75,9 @@ const GradingConfigs = () => {
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
             Grading Scales
           </h2>
+          <div>
           <CreateNewGradingConfig refetchConfigs={refetchConfigs} />
+          </div>
         </div>
 
         <div className="relative overflow-x-auto p-2">

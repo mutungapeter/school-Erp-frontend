@@ -70,7 +70,9 @@ const MeanGradeConfigs = () => {
       <div className="space-y-5 shadow-md border py-2  bg-white ">
         <div className="p-3  flex justify-between">
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm">Mean Grade Scales</h2>
-          <CreateMeanGradeConfig refetchMeanGradeConfigs={refetchMeanGradeConfigs} />
+         <div>
+         <CreateMeanGradeConfig refetchMeanGradeConfigs={refetchMeanGradeConfigs} />
+         </div>
         </div>
       
      

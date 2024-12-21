@@ -108,13 +108,15 @@ const handleCloseDeleteModal = () => {
   console.log("classesData", classesData?.results);
   return (
  
-    <div className=" space-y-5  py-2  ">
+    <div className=" space-y-5 bg-white  py-2  ">
        
         <div className="p-3 flex justify-between">
-        <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">Classes</h2>
+        <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">All Classes</h2>
+        <div>
         <CreateClassLevel  refetchClasses={refetchClasses} />
+        </div>
       </div>
-      <div className=" relative overflow-x-auto shadow-md  bg-white  ">
+      <div className=" relative overflow-x-auto px-1  ">
       {selectedClassLevels.length > 0 && (
             <div className="flex items-center space-x-3 py-3 px-3">
               <button

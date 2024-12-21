@@ -114,7 +114,9 @@ const Streams = () => {
           <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
             Streams
           </h2>
+          <div>
           <CreateStream refetchStreams={refetchStreams} />
+          </div>
 
         </div>
         <div className=" relative overflow-x-auto   shadow-md   bg-white ">

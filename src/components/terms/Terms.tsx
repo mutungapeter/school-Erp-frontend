@@ -120,7 +120,9 @@ const Terms = () => {
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
           Terms
         </h2>
+        <div>
         <CreateTerm refetchTerms={refetchTerms} />
+        </div>
       </div>
       <div className=" relative mx-auto bg-white shadow-md   w-full overflow-x-auto  p-3 md:p-4 2xl:p-5">
         {selectedTerms.length > 0 && (

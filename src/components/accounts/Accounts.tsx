@@ -81,7 +81,9 @@ const Accounts = () => {
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
             Accounts
           </h2>
+          <div>
           <CreateAccount refetchUsers={refetchUsers} />
+          </div>
 
         </div>
         <div className=" relative overflow-x-auto p-2  ">
