@@ -8,7 +8,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -99,19 +99,14 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
   console.log("formlevesdata", formLevelsData);
   return (
     <>
-      <div
-        onClick={handleOpenModal}
-        className=" cursor-pointer text-center 
-        p-1
-         bg-yellow-500 hover:bg-yellow-700  rounded-full  
-         
-         "
-      >
-        <GoPlus size={25} className="text-white stroke-2   " />
-        {/* <span className=" text-xs md:text-sm lg:text-sm text-white">
-          Add Class
-        </span> */}
-      </div>
+       <div
+                   onClick={handleOpenModal}
+                   className=" cursor-pointer text-center p-2
+                    bg-green-700 rounded-full   "
+                 >
+                   <FaPlus size={18} className="text-white   " />
+                 
+                 </div>
 
       {isOpen && (
         <div

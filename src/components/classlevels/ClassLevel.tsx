@@ -108,7 +108,7 @@ const handleCloseDeleteModal = () => {
   console.log("classesData", classesData?.results);
   return (
  
-    <div className=" space-y-5 bg-white  py-2  ">
+    <div className=" space-y-5 bg-white  px-3 py-4   ">
        
         <div className="p-3 flex justify-between">
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">All Classes</h2>

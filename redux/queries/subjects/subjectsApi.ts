@@ -2,14 +2,16 @@ import { apiSlice } from "@/redux/api/apiSlice";
 interface GetSubjectsQueryArgs {
   page?: number;
   page_size?: number;
+  subject_name?: string;
 }
 export const subjectsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSubjects: builder.query({
-      query: ({ page, page_size }: GetSubjectsQueryArgs = {}) => {
+      query: ({ page, page_size, subject_name }: GetSubjectsQueryArgs = {}) => {
         const queryParams: Record<string, any> = {};
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
+        if (subject_name) queryParams.subject_name = subject_name;
 
         return {
           url: `subjects/`,

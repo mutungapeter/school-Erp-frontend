@@ -13,7 +13,7 @@ import Spinner from "../layouts/spinner";
 import "../style.css";
 import { addMonths, subMonths } from "date-fns";
 import { PiCalendarDotsLight } from "react-icons/pi";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { formattDate } from "@/src/utils/dates";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
@@ -105,14 +105,13 @@ const CreateTerm = ({ refetchTerms }: Props) => {
   return (
     <>
       <div
-        onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-md  flex items-center space-x-2 "
-      >
-        <FaPlusCircle size={17} className="text-white   " />
-        <span className=" lg:text-sm md:text-sm text-xs text-white">
-          New Term
-        </span>
-      </div>
+             onClick={handleOpenModal}
+             className=" cursor-pointer text-center p-2
+              bg-green-700 rounded-full   "
+           >
+             <FaPlus size={18} className="text-white   " />
+           
+           </div>
 
       {isOpen && (
         <div

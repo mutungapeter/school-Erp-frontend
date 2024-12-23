@@ -1,8 +1,8 @@
 "use client";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 
 import { IoRefresh } from "react-icons/io5";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
@@ -31,33 +31,60 @@ const Terms = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const pathname = usePathname();
-  const pageParam = searchParams.get("page");
-  const [currentPage, setCurrentPage] = useState<number>(
-    parseInt(pageParam || "1")
-  );
+   const initialFilters = useMemo(
+      () => ({
+        class_level: searchParams.get("class_level") || "",
+      }),
+      [searchParams]
+    );
+    const initialPage = parseInt(searchParams.get("page") || "1", 10);
+  const [filters, setFilters] = useState(initialFilters);
+  const [currentPage, setCurrentPage] = useState(initialPage);
   const [selectedTerms, setSelectedTerms] = useState<number[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", currentPage.toString());
+    if (filters.class_level)
+      params.set("class_level", filters.class_level);
+    
+    router.push(`?${params.toString()}`);
+  }, [filters, currentPage]);
+
+  const queryParams = useMemo(
+    () => ({
+      page: currentPage,
+      page_size: pageSize,
+      ...filters,
+    }),
+    [currentPage, filters]
+  );
   const {
-    isLoading: loadingClasses,
+    isLoading: loadingTerms,
     data: termsData,
     refetch,
   } = useGetTermsQuery(
-    { page: currentPage || 1, page_size: pageSize },
+    queryParams,
     { refetchOnMountOrArgChange: true }
   );
+  const {
+    isLoading: loadingClasses,
+    data: classesData,
+    refetch: refetchClasses,
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
   const [deleteTerms, { isLoading: deleting }] = useDeleteTermsMutation();
 
-  useEffect(() => {
-    const page = parseInt(pageParam || "1");
-    if (page !== currentPage) {
-      setCurrentPage(page);
-    }
-  }, [pageParam, currentPage]);
-
-  useEffect(() => {
-    refetch();
-  }, [currentPage, refetch]);
+  const handleFilterChange = (
+     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+   ) => {
+     const { name, value } = e.target;
+    
+       setFilters((prev) => ({ ...prev, [name]: value }));
+     
+   };
+ 
 
   const totalPages = Math.ceil((termsData?.count || 0) / pageSize);
 
@@ -115,16 +142,41 @@ const Terms = () => {
 
   console.log("termsData", termsData?.results);
   return (
-    <div className="space-y-5  ">
-      <div className="p-3 flex justify-between ">
+    <div className="space-y-5 bg-white shadow-md  px-3 py-4  ">
+      <div className="p-3 flex flex-col gap-4 md:gap-0 lg:gap-0 lg:justify-between md:justify-between md:flex-row lg:flex-row  ">
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
-          Terms
+          All Terms
         </h2>
-        <div>
+
+        <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+        <div className="relative w-full lg:w-56 md:w-56 xl:w-55 ">
+                <select
+                  name="class_level"
+                  value={filters.class_level || ""}
+                  onChange={handleFilterChange}
+                  className="w-full lg:w-56 md:w-56 xl:w-56 
+                  text-sm md:text-md lg:text-md appearance-none p-2 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                >
+                  <option value="">-- Select class ---</option>
+                  {classesData?.map((classLevel: ClassLevel) => (
+                    <option key={classLevel.id} value={classLevel.id}>
+                      {classLevel.name} {classLevel?.stream?.name} - ({classLevel.calendar_year})
+                    </option>
+                  ))}
+                </select>
+                <BsChevronDown
+                  color="gray"
+                  size={18}
+                  className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                />
+              </div>
+              <div className="flex items-center self-end gap-4 ">
+
         <CreateTerm refetchTerms={refetchTerms} />
+              </div>
         </div>
       </div>
-      <div className=" relative mx-auto bg-white shadow-md   w-full overflow-x-auto  p-3 md:p-4 2xl:p-5">
+      <div className=" relative mx-auto   w-full overflow-x-auto  p-2">
         {selectedTerms.length > 0 && (
           <div className="flex items-center space-x-3 py-3">
             <button
@@ -155,7 +207,7 @@ const Terms = () => {
         <table className="  table-auto   bg-white   w-full md:w-2xl lg:w-2xl  text-xs border text-gray-500 p-3 md:p-4 2xl:p-5">
           <thead className=" uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-              <th scope="col" className="p-2 border-r  text-center">
+              <th scope="col" className="px-3 py-2 border-r  text-center">
                 <input
                   id="checkbox-all"
                   type="checkbox"
@@ -177,27 +229,27 @@ const Terms = () => {
                                        dark:border-gray-600"
                 />
               </th>
-              <th scope="col" className="p-2 border-r text-black-2 ">
+              <th scope="col" className="px-3 py-2 border-r text-left text-black ">
                 Name
               </th>
 
-              <th scope="col" className="p-2 border-r text-black-2">
+              <th scope="col" className="px-3 py-2  border-r text-left text-black">
                 Status
               </th>
-              <th scope="col" className="p-2 text-center border  text-black-2">
+              <th scope="col" className="px-3 py-2 text-left border  text-black">
                 Actions
               </th>
             </tr>
           </thead>
           <tbody>
-            {loadingClasses ? (
+            {loadingTerms ? (
               <tr>
                 <td colSpan={8} className="text-center py-4">
                   <ContentSpinner />
                 </td>
               </tr>
             ) : termsData?.results && termsData?.results.length > 0 ? (
-              termsData?.results.map((term: any, index: number) => (
+              termsData?.results.map((term: any) => (
                 <tr key={term.id} className="bg-white border-b">
                   <th className="p-2 text-gray-900 text-center border-r">
                     <input
@@ -211,13 +263,13 @@ const Terms = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                     />
                   </th>
-                  <td className="p-2 border text-center font-normal text-sm lg:text-sm md:text-sm  whitespace-nowrap">
-                    {term.term} - ({term.class_level.form_level.name}{" "}
+                  <td className="px-3 py-2 border-r  font-normal text-sm lg:text-lg md:text-lg  whitespace-nowrap">
+                    {term.term} - ({term.class_level.name}{" "}
                     {term.class_level?.stream?.name} -
                     {term.class_level.calendar_year} )
                   </td>
 
-                  <td className="border text-center p-2 ">
+                  <td className="px-3 py-2 border-r ">
                     <div
                       className={`p-1  items-center inline-flex rounded-md text-xs lg:text-sm md:text-sm ${
                         getStatusColor(term.status).bgColor
@@ -227,7 +279,7 @@ const Terms = () => {
                     </div>
                   </td>
 
-                  <td className="p-2 flex  text-center justify-center ">
+                  <td className="px-3 py-2   text-left  ">
                     <div className="flex items-center space-x-3">
                       <EditTerm termId={term.id} refetchTerms={refetchTerms} />
                     </div>

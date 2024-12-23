@@ -2,14 +2,22 @@ import { apiSlice } from "@/redux/api/apiSlice";
 interface GetStreamsInterface {
   page?: number;
   page_size?: number;
+  
+}
+interface GetTermsInterface {
+  page?: number;
+  page_size?: number;
+  class_level?:any;
 }
 export const termsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTerms: builder.query({
-      query: ({ page, page_size }: GetStreamsInterface = {}) => {
+      query: ({ page, page_size, class_level }: GetTermsInterface = {}) => {
         const queryParams: Record<string, any> = {};
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
+        if (page_size) queryParams.page_size = page_size;
+        if (class_level) queryParams.class_level = class_level;
 
         return {
           url: `terms/`,
