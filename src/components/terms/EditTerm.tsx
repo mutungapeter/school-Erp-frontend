@@ -138,7 +138,7 @@ const handleStartDateChange = (date: Date | null) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-16 w-full sm:max-w-lg p-4  md:p-6 lg:p-6 md:max-w-lg">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4  md:p-4 lg:p-4 md:max-w-lg">
                 {isSubmitting && <Spinner />}
                 {isFetching && <Spinner />}
 
@@ -213,7 +213,7 @@ const handleStartDateChange = (date: Date | null) => {
                             <option value="">Select current class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""} -{" "}
+                                {cl.name} {cl?.stream?.name || ""} -{" "}
                                 {cl.calendar_year}
                               </option>
                             ))}
@@ -298,7 +298,7 @@ const handleStartDateChange = (date: Date | null) => {
                     )}
                   </div>
 
-                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-3">
                     <button
                       type="submit"
                       disabled={Updating}

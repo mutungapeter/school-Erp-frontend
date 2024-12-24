@@ -42,10 +42,11 @@ const CreateTerm = ({ refetchTerms }: Props) => {
  
 
   const schema = z.object({
-    term: z.enum(["Term 1", "Term 2", "Term 3"], {
-      required_error: "Term is required",
-    }),
-    class_level: z.number().min(1, "Select   class "),
+    term: z.string().min(1,  "Term is required" ),
+    // term: z.enum(["Term 1", "Term 2", "Term 3"], {
+    //   required_error: "Term is required",
+    // }),
+    class_level: z.coerce.number().min(1, "Class is required "),
     start_date: z.string().date(),
     end_date: z.string().date(),
   });
@@ -128,7 +129,7 @@ const CreateTerm = ({ refetchTerms }: Props) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-lg p-4  md:p-6 lg:p-6 md:max-w-lg">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4  md:p-4 lg:p-4 md:max-w-lg">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
@@ -144,7 +145,7 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
                   <div>
 
                  
@@ -187,9 +188,7 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                       </label>
                       <select
                         id="class_level"
-                        {...register("class_level", {
-                          valueAsNumber: true,
-                        })}
+                        {...register("class_level")}
                         onChange={handleClassChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
@@ -197,10 +196,10 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                           <option value="">Loading...</option>
                         ) : (
                           <>
-                            <option value="">Select current class</option>
+                            <option value="">Select  class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.form_level.name} {cl?.stream?.name || ""} - {cl.calendar_year}
+                                {cl.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
@@ -283,7 +282,7 @@ const CreateTerm = ({ refetchTerms }: Props) => {
                     )}
                   </div>
 
-                  <div className="flex justify-start lg:justify-end md:justify-end mt-2 py-3">
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-3">
                     <button
                       type="submit"
                       disabled={isCreating}
