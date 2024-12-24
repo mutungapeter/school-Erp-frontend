@@ -31,7 +31,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
     refetch,
   } = useGetGraduatingClassesQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
-    final_class_level: z.number().min(1, "Select  graduation class"),
+    final_class_level: z.coerce.number().min(1, "Graduating class is required"),
     
   });
   const [promoteStudentsToAlumni, { data, error, isSuccess }] =
@@ -111,6 +111,8 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
               </div>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 md:space-y-5 lg:space-y-5">
+               <div>
+
                 <div className="relative">
                     <label
                       htmlFor="class_level"
@@ -120,9 +122,7 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                     </label>
                     <select
                       id="class_level"
-                      {...register("final_class_level", {
-                        valueAsNumber: true,
-                      })}
+                      {...register("final_class_level")}
                       onChange={handleGraduationClassClassChange}
                       className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     >
@@ -144,13 +144,14 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.final_class_level && (
                       <p className="text-red-500 text-sm">
                         {String(errors.final_class_level.message)}
                       </p>
                     )}
-                  </div>
                 
+               </div>
                
 
                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">

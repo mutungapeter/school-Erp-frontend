@@ -35,8 +35,8 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
     refetch: refetchTargetClassLevels,
   } = useGetTargetCLassesReadyForStudentPromotionQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
-    source_class_level: z.number().min(1, "Select  current class"),
-    target_class_level: z.number().min(1, "Select target class"),
+    source_class_level: z.coerce.number().min(1, "Select  current class"),
+    target_class_level: z.coerce.number().min(1, "Select target class"),
     // year: z.number().min(4, "Enter a valid year"),
   });
   const [promoteStudents, { data, error, isSuccess }] =
@@ -140,8 +140,9 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                  
-                    <div className="relative">
+                 <div>
+                   
+                 <div className="relative">
                       <label
                         htmlFor="class_level"
                         className="block  text-sm  font-normal mb-2 uppercase"
@@ -150,9 +151,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                       </label>
                       <select
                         id="class_level"
-                        {...register("source_class_level", {
-                          valueAsNumber: true,
-                        })}
+                        {...register("source_class_level")}
                         onChange={handleCurrentClassChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
@@ -174,12 +173,14 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                         size={20}
                         className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.source_class_level && (
                         <p className="text-red-500 text-sm">
                           {String(errors.source_class_level.message)}
                         </p>
                       )}
-                    </div>
+                 </div>
+                    <div>
                     <div className="relative">
                       <label
                         htmlFor="class_level"
@@ -189,9 +190,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                       </label>
                       <select
                         id="class_level"
-                        {...register("target_class_level", {
-                          valueAsNumber: true,
-                        })}
+                        {...register("target_class_level")}
                         onChange={handleTargetClassChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
@@ -213,34 +212,17 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
                         size={20}
                         className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.target_class_level && (
                         <p className="text-red-500 text-sm">
                           {String(errors.target_class_level.message)}
                         </p>
                       )}
                     </div>
+                 
                
                  
-                    {/* <div className="relative ">
-                      <label
-                        htmlFor="year"
-                        className="block  text-sm  font-normal  mb-2"
-                      >
-                        YEAR(year the student is getting promoted to)
-                      </label>
-                      <DatePicker
-                        selected={selectedDate}
-                        onChange={handleDateChange}
-                        showYearPicker
-                        dateFormat="yyyy"
-                        className="py-2 px-4 rounded-md  mt-2 border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm w-full"
-                      />
-                      {errors.year && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.year.message)}
-                        </p>
-                      )}
-                    </div> */}
+                  
                  
                   <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button

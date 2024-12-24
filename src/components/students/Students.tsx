@@ -241,7 +241,7 @@ const Students = () => {
                 value={filters.admission_number || ""}
                 onChange={handleFilterChange}
                 placeholder="admission number"
-                className=" w-full md:w-auto  lg:w-[200px] text-sm p-2 bg-transparent outline-none  "
+                className=" w-full md:w-auto text-gray-900 lg:w-[200px] text-sm p-2 bg-transparent outline-none  "
               />
             </div>
           </div>
