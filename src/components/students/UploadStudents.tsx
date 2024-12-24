@@ -11,6 +11,8 @@ import { PiMicrosoftExcelLogoFill } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
+import { AiOutlineCloudUpload } from "react-icons/ai";
+import { IoCloudUpload } from "react-icons/io5";
 import "../style.css";
   interface UploadProps {
     refetchStudents: () => void;
@@ -120,10 +122,17 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
     
         <div 
         onClick={handleOpenModal}
+        className=" inline-flex  bg-white p-2 cursor-pointer border hover:text-white hover:bg-green-700 text-green-700 border-green-700  rounded-full text-center">
+             <IoCloudUpload size={20} className=""  />
+              
+             
+            </div>
+        {/* <div 
+        onClick={handleOpenModal}
         className=" py-2 px-3 bg-green-700 cursor-pointer text-sm text-white rounded-md inline-flex items-center space-x-2 max-w-max">
               <PiMicrosoftExcelLogoFill size={20} className="text-white" />
               <span>Upload students</span>
-            </div>
+            </div> */}
         {isOpen && (
           <div
             className="relative z-9999 animate-fadeIn"
@@ -139,7 +148,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
   
             <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
               <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-                <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-2xl p-4 md:p-4 lg:p-4 md:max-w-2xl">
+                <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-lg p-4 md:p-4 lg:p-4 md:max-w-lg">
                   {isSubmitting && <Spinner />}
   
                   <div className="flex justify-between items-center pb-3">
@@ -179,7 +188,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                       </div>
                   
                   {/* </div> */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                   
                       <div>
 
                       <div className="relative">
@@ -252,7 +261,7 @@ const AdmitStudents = ({refetchStudents}: UploadProps) => {
                       </p>
                     )}
                     </div>
-                    </div>
+                  
                   <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button
                       type="submit"

@@ -14,5 +14,5 @@ export const usePermissions = () => {
     return user?.role === "Class Master";
   };
 
-  return { hasAdminPermissions, hasClassMasterPermissions };
+  return { hasAdminPermissions, hasClassMasterPermissions,loading  };
 };

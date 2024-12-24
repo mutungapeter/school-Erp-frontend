@@ -9,6 +9,7 @@ import { BiCheckCircle } from "react-icons/bi";
 import { BsChevronDown } from "react-icons/bs";
 import { FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
@@ -34,12 +35,12 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
     last_name: z.string().min(1, "Last name is required"),
     admission_number: z.string().min(1, "Admission number is required"),
     gender: z.enum(["Male", "Female"], {
-      errorMap: () => ({ message: "Select gender" }),
+      errorMap: () => ({ message: "Gender is required" }),
     }),
     admission_type: z.enum(["New Admission", "Transfer"], {
-      errorMap: () => ({ message: "Select admission type" }),
+      errorMap: () => ({ message: "Admissiontype is required" }),
     }),
-    class_level: z.string().min(1, "Select a class"),
+    class_level: z.string().min(1, "Class is required"),
     kcpe_marks: z.number().min(0, "KCPE marks required!").default(0)
   });
 
@@ -84,12 +85,13 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
 // console.log("termsData", termsData)
   return (
     <>
-       <div
+          <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center px-2 py-2 md:py-2 md:px-4 lg:py-2 lg:px-4 bg-green-700 rounded-md shadow-sm  flex items-center space-x-2 "
+        className=" cursor-pointer text-center p-2
+         bg-green-700 rounded-full   "
       >
-        <FaPlusCircle size={17} className="text-white   " />
-        <span className=" lg:text-sm md:text-sm text-xs text-white">Add Student</span>
+        <FaPlus size={18} className="text-white   " />
+      
       </div>
 
       {isOpen && (
@@ -116,7 +118,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                 />
                 </div>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-1">
                 <div className="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-2 gap-2 lg:gap-3">
                   <div>
                     <label
@@ -209,7 +211,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 md:gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
-                
+                <div>
                 <div className="relative">
                   <label
                     htmlFor="gender"
@@ -231,12 +233,14 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                       size={20}
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
+                </div>
                   {errors.gender && (
                     <p className="text-red-500 text-sm">
                       {String(errors.gender.message)}
                     </p>
                   )}
                 </div>
+                <div>
                 <div className="relative">
                     <label
                       htmlFor="admission_type"
@@ -258,19 +262,20 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                       size={20}
                       className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
+                  </div>
                     {errors.admission_type && (
                       <p className="text-red-500 text-sm">
                         {String(errors.admission_type.message)}
                       </p>
                     )}
-                  </div>
+                </div>
                   </div>
 
                 <div >
                   <div className="relative">
                     <label
                       htmlFor="class_level"
-                      className="block text-gray-900 md:text-md text-sm lg:text-md  font-normal  mb-2"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
                       Class
                     </label>
@@ -309,7 +314,7 @@ export const CreateStudent = ({ refetchStudents }: CreateStudentProps) => {
                 </div>
 
                
-                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                <div className="flex justify-start lg:justify-end md:justify-end mt-3">
                     <button
                       type="submit"
                       disabled={isSubmitting}

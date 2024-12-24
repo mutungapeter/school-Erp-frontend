@@ -79,7 +79,7 @@ const Accounts = () => {
         
         <div className="p-3   flex justify-between">
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
-            Accounts
+            All Admin Accounts
           </h2>
           <div>
           <CreateAccount refetchUsers={refetchUsers} />

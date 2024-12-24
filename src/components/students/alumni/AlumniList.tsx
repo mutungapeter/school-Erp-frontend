@@ -9,7 +9,7 @@ import { TbDatabaseOff } from "react-icons/tb";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import "../../style.css";
 
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import { PAGE_SIZE } from "@/src/constants/constants";
@@ -105,13 +105,13 @@ const AlumniRecords = () => {
                 onChange={handleYearChange}
                 showYearPicker
                 dateFormat="yyyy"
-                // showIcon
-                // icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+                showIcon
+                icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
                 yearDropdownItemNumber={5}
-                placeholderText="Graduation Year"
+                placeholderText="YYYY"
                 isClearable
-                className="w-full appearance-none py-2 px-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-               />
+                className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+             />
                
                 </div>
         

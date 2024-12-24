@@ -5,20 +5,18 @@ import { useGetFormLevelsQuery } from "@/redux/queries/formlevels/formlevelsApi"
 import { useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { formatYear } from "@/src/utils/dates";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { FaPlus, FaPlusCircle } from "react-icons/fa";
+import { BsChevronDown } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import { PiCalendarDotsLight } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
 import "../style.css";
-import { BsChevronDown } from "react-icons/bs";
-import { GoPlus } from "react-icons/go";
-import { formatYear, formattDate } from "@/src/utils/dates";
-import { addMonths, subMonths } from "date-fns";
-import { PiCalendarDotsLight } from "react-icons/pi";
 interface CreateClassProps {
   refetchClasses: () => void;
 }
@@ -99,14 +97,14 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
   console.log("formlevesdata", formLevelsData);
   return (
     <>
-       <div
-                   onClick={handleOpenModal}
-                   className=" cursor-pointer text-center p-2
-                    bg-green-700 rounded-full   "
-                 >
-                   <FaPlus size={18} className="text-white   " />
-                 
-                 </div>
+          <button
+       onClick={handleOpenModal}
+       className="cursor-pointer inline-flex text-center p-2 bg-green-700 rounded-full"
+     
+     >
+       <FaPlus size={18} className="text-white" />
+     </button>
+     
 
       {isOpen && (
         <div

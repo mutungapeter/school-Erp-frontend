@@ -3,6 +3,11 @@ interface GetClassesInterface {
   page?: number;
   page_size?: number;
 }
+interface GetAllClassesInterface {
+  page?: number;
+  page_size?: number;
+  calendar_year?: any;
+}
 export const classesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getClasses: builder.query({
@@ -19,10 +24,11 @@ export const classesApi = apiSlice.injectEndpoints({
       },
     }),
     getAllClasses: builder.query({
-      query: ({ page, page_size }: GetClassesInterface = {}) => {
+      query: ({ page, page_size,calendar_year }: GetAllClassesInterface = {}) => {
         const queryParams: Record<string, any> = {};
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
+        if (calendar_year) queryParams.calendar_year = calendar_year;
 
         return {
           url: `all-class-levels/`,

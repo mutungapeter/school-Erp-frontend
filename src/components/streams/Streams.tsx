@@ -5,20 +5,18 @@ import { useEffect, useState } from "react";
 
 
 import { useDeleteStreamsMutation, useGetStreamsQuery } from "@/redux/queries/streams/streamsApi";
+import { PAGE_SIZE } from "@/src/constants/constants";
 import { Stream } from "@/src/definitions/streams";
 import { CreateStream } from "./NewStream";
-import DeleteStream from "./deleteStream";
 import EditStream from "./editStream";
-import { DefaultLayout } from "../layouts/DefaultLayout";
-import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
-import { PAGE_SIZE } from "@/src/constants/constants";
 
-import { toast } from "react-toastify";
 import { FiDelete } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
-import DeleteConfirmationModal from "../students/DeleteModal";
+import { toast } from "react-toastify";
 import ContentSpinner from "../perfomance/contentSpinner";
-
+import DeleteConfirmationModal from "../students/DeleteModal";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 const Streams = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -27,6 +25,7 @@ const Streams = () => {
   const [currentPage, setCurrentPage] = useState<number>(
     parseInt(pageParam || "1")
   );
+  const { hasAdminPermissions ,loading:loadingPermissions} = usePermissions();
   const [selectedStreams, setSelectedStreams] = useState<number[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const router = useRouter();
@@ -105,21 +104,27 @@ const Streams = () => {
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
+  if (loadingPermissions) {
+    return <PageLoadingSpinner />;
+  }
   console.log("streamsData", streamsData);
   return (
     <>
-       <div className=" space-y-5  py-2   ">
+       <div className=" space-y-5  py-2 shadow-md   bg-white  px-3   ">
        
         <div className="p-3 flex justify-between">
           <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
-            Streams
+            All Streams
           </h2>
+          {hasAdminPermissions() && (
           <div>
+            
           <CreateStream refetchStreams={refetchStreams} />
           </div>
+          )}
 
         </div>
-        <div className=" relative overflow-x-auto   shadow-md   bg-white ">
+        <div className=" relative overflow-x-auto   ">
         {selectedStreams.length > 0 && (
             <div className="flex items-center space-x-3 py-3 px-3">
               <button
@@ -151,6 +156,7 @@ const Streams = () => {
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-black uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
+              {hasAdminPermissions() && (
               <th scope="col" className="px-4 py-3 border-r  text-center">
                     <input
                       id="checkbox-all"
@@ -177,13 +183,15 @@ const Streams = () => {
                                        dark:border-gray-600"
                     />
                   </th>
+              )}
                 <th scope="col" className="p-2 border-r text-xs md:text-sm lg:text-sm">
                   Name
                 </th>
-               
+                {hasAdminPermissions() && (
                 <th scope="col" className="p-2  py-3 text-xs md:text-sm lg:text-sm">
                   Actions
                 </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -196,6 +204,7 @@ const Streams = () => {
               ) : streamsData?.results && streamsData?.results.length > 0 ? (
                 streamsData.results.map((stream: Stream, index: number) => (
                   <tr key={stream.id} className="bg-white border-b">
+                    {hasAdminPermissions() && (
                     <th className="px-3 py-2 text-gray-900 text-center border-r">
                           <input
                             id="checkbox-table-search-1"
@@ -208,14 +217,17 @@ const Streams = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                           />
                         </th>
+                    )}
                     <td className="px-3 py-2 font-normal border-r text-sm lg:text-sm md:text-sm text-gray-900 whitespace-nowrap">
                       {stream.name} 
                     </td>
                    
+                    {hasAdminPermissions() && (
                     <td className="px-3 py-2 flex items-center space-x-5">
                      <EditStream  streamId={stream.id} refetchStreams={refetchStreams} />
                        {/* <DeleteStream streamId={stream.id} refetchStreams={refetchStreams} /> */}
                     </td>
+                    )}
                   </tr>
                 ))
               ) : (

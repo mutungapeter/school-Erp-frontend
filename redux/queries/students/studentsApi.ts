@@ -119,7 +119,7 @@ export const studentsApi = apiSlice.injectEndpoints({
 
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
-        if (source_class_level) queryParams.source_form_level = source_class_level;
+        if (source_class_level) queryParams.source_class_level = source_class_level;
         if (year) queryParams.year = year;
 
         return {

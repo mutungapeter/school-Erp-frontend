@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -60,15 +60,14 @@ export const CreateStream = ({ refetchStreams }: CreateStreamProps) => {
 
   return (
     <>
-      <div
-        onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-md  flex items-center space-x-2 "
-      >
-        <GoPlus size={18} className="text-white   " />
-        <span className=" lg:text-sm md:text-sm text-xs text-white">
-          Add Stream
-        </span>
-      </div>
+      <button
+       onClick={handleOpenModal}
+       className="cursor-pointer inline-flex text-center p-2 bg-green-700 rounded-full"
+     
+     >
+       <FaPlus size={18} className="text-white" />
+     </button>
+     
 
       {isOpen && (
         <div

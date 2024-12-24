@@ -17,6 +17,7 @@ import "../../style.css";
 import { HiChevronDown } from "react-icons/hi2";
 import { BsChevronDown } from "react-icons/bs";
 import { PiGraduationCapThin } from "react-icons/pi";
+import { FiDivide } from "react-icons/fi";
 interface Props {
   refetchStudents: () => void;
 }
@@ -77,12 +78,12 @@ const PromoteStudentsToAlumni = ({ refetchStudents }: Props) => {
   
   return (
     <>
-      <button
-        className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-md border bg-green-900  text-white"
+      <div
+        className="inline-flex p-2 cursor-pointer rounded-full border bg-yellow-500  text-white"
         onClick={handleOpenModal}
       >
-        Promote To Alumni
-      </button>
+        <PiGraduationCapThin size={20} className="text-white" />
+      </div>
       {isOpen && (
          <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
  

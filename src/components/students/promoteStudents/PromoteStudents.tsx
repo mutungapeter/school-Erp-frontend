@@ -6,7 +6,7 @@ import { useGetActiveTermsQuery } from "@/redux/queries/terms/termsApi";
 import { formatYear } from "@/src/utils/dates";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-
+import { BiRocket } from "react-icons/bi";
 import DatePicker from "react-datepicker";
 
 import { FieldValues, useForm } from "react-hook-form";
@@ -97,11 +97,17 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
   return (
     <>
       <button
+        className="inline-flex items-center space-x-2 p-2  rounded-md border bg-[#1566FF]  text-white"
+        onClick={handleOpenModal}
+      >
+       <BiRocket size={20} />
+      </button>
+      {/* <button
         className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-md border bg-[#1566FF]  text-white"
         onClick={handleOpenModal}
       >
         Promote Students
-      </button>
+      </button> */}
       {isOpen && (
         <div
           className="relative z-9999 animate-fadeIn"

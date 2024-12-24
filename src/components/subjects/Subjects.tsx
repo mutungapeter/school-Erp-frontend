@@ -1,35 +1,23 @@
 "use client";
-import { DefaultLayout } from "@/src/components/layouts/DefaultLayout";
-import { GoPlus } from "react-icons/go";
-import { FaPlus } from "react-icons/fa6";
-import { useGetStudentsQuery } from "@/redux/queries/students/studentsApi";
-import { FiPrinter } from "react-icons/fi";
 import {
   useDeleteSubjectsMutation,
   useGetSubjectsQuery,
 } from "@/redux/queries/subjects/subjectsApi";
-import { useState, useEffect, useMemo, ChangeEvent } from "react";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { FaEdit } from "react-icons/fa";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { AddSubject } from "./NewSubject";
-import { TbAdjustmentsHorizontal } from "react-icons/tb";
-import Spinner from "../layouts/spinner";
-import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
-import { SerializedError } from "@reduxjs/toolkit";
-import EditSubject from "./editSubject";
-import DeleteSubject from "./deleteSubject";
 import { PAGE_SIZE } from "@/src/constants/constants";
-import ContentSpinner from "../perfomance/contentSpinner";
+import { ClassLevel } from "@/src/definitions/classlevels";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { FiDelete } from "react-icons/fi";
+import { GoSearch } from "react-icons/go";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "react-toastify";
-import DeleteConfirmationModal from "../students/DeleteModal";
-import { GoSearch } from "react-icons/go";
-import Image from "next/image";
 import { useDebouncedCallback } from "use-debounce";
-import { ClassLevel } from "@/src/definitions/classlevels";
-
+import ContentSpinner from "../perfomance/contentSpinner";
+import DeleteConfirmationModal from "../students/DeleteModal";
+import EditSubject from "./editSubject";
+import { AddSubject } from "./NewSubject";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 interface Subject {
   id: number;
   subject_name: string;
@@ -50,10 +38,7 @@ const Subjects = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  // const pageParam = searchParams.get("page");
-  // const [currentPage, setCurrentPage] = useState<number>(
-  //   parseInt(pageParam || "1")
-  // );
+  const { hasAdminPermissions ,loading:loadingPermissions} = usePermissions();
   const initialFilters = useMemo(
       () => ({
 
@@ -167,7 +152,9 @@ const Subjects = () => {
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
-
+  if (loadingPermissions) {
+    return <PageLoadingSpinner />;
+  }
 
 
   return (
@@ -230,6 +217,7 @@ const Subjects = () => {
           <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
             <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
               <tr>
+              {hasAdminPermissions() && (
                 <th scope="col" className="px-4 py-3 border-r  text-center">
                   <input
                     id="checkbox-all"
@@ -256,6 +244,7 @@ const Subjects = () => {
                                        dark:border-gray-600"
                   />
                 </th>
+              )}
                 <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Name
                 </th>
@@ -268,9 +257,11 @@ const Subjects = () => {
                 <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Class 
                 </th>
+                {hasAdminPermissions() && (
                 <th scope="col" className="px-4  py-3 text-[10px]">
                   Actions
                 </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -295,6 +286,7 @@ const Subjects = () => {
                     ): subjectsData?.results && subjectsData?.results.length > 0 ? (
                 subjectsData?.results.map((subject: Subject, index: number) => (
                   <tr key={subject.id} className="bg-white border-b ">
+                   {hasAdminPermissions() && (
                     <th className="px-3 py-2 text-gray-900 text-center border-r">
                       <input
                         id="checkbox-table-search-1"
@@ -307,6 +299,7 @@ const Subjects = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                       />
                     </th>
+                   )}
                     <td className="px-3 py-2 font-normal border-r text-sm lg:text-lg md:text-lg  whitespace-nowrap">
                       {subject.subject_name}
                     </td>
@@ -319,7 +312,7 @@ const Subjects = () => {
                     <td className="px-3 py-2  border-r text-sm lg:text-lg md:text-lg">
                     {subject.class_levels.map((classLevel) => `${classLevel.name} - ${classLevel.calendar_year}`).join(", ")}
                     </td>
-
+                    {hasAdminPermissions() && (
                     <td className="px-3 py-2 flex items-center space-x-5">
                       <EditSubject
                         subjectId={subject.id}
@@ -327,6 +320,7 @@ const Subjects = () => {
                       />
                       {/* <DeleteSubject subjectId={subject.id} refetchSubjects={refetchSubjects} /> */}
                     </td>
+                    )}
                   </tr>
                 ))
               ) : (

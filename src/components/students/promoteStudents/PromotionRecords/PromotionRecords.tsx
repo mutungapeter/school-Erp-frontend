@@ -1,23 +1,17 @@
 "use client";
-import { useGetAlumniRecordsQuery, useGetPromotionRecordsQuery } from "@/redux/queries/students/studentsApi";
-import { Student } from "@/src/definitions/students";
-import { formattedDate } from "@/src/utils/dates";
+import { useGetAllClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetPromotionRecordsQuery } from "@/redux/queries/students/studentsApi";
+import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import { PAGE_SIZE } from "@/src/constants/constants";
+import { ClassLevel } from "@/src/definitions/classlevels";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { IoEyeSharp } from "react-icons/io5";
-import { TbDatabaseOff } from "react-icons/tb";
-import "../../../style.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
-import { useGetFormLevelsQuery } from "@/redux/queries/formlevels/formlevelsApi";
-import { FormLevel } from "@/src/definitions/formlevels";
 import { BsChevronDown } from "react-icons/bs";
-import { PAGE_SIZE } from "@/src/constants/constants";
-import { useGetAllClassesQuery } from "@/redux/queries/classes/classesApi";
-import { ClassLevel } from "@/src/definitions/classlevels";
+import { TbDatabaseOff } from "react-icons/tb";
+import "../../../style.css";
 
-import { addMonths, subMonths } from "date-fns";
 import { PiCalendarDotsLight } from "react-icons/pi";
 const PromotionRecords = () => {
   const pageSize = PAGE_SIZE;
@@ -82,18 +76,14 @@ const PromotionRecords = () => {
     setFilters((prev) => ({ ...prev, year: year }));
   };
 
-  const handleResetFilters = () => {
-    setFilters({ year: "", source_class_level: "" });
-    setCurrentPage(1);
-    router.push("?");
-  };
+
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-
+   
       setFilters((prev) => ({ ...prev, [name]: value }));
-
+    
   };
   const pages = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -115,7 +105,7 @@ const PromotionRecords = () => {
       <div className=" space-y-5 bg-white  py-2  ">
         <div className="flex flex-col lg:gap-0 md:gap-0 gap-3 lg:flex-row md:flex-row lg:items-center md:items-center md:justify-between lg:justify-between lg:px-3 md:px-3 lg:p-3 md:p-3 px-1 p-1    ">
           <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
-          Promotion Records
+         All Promotion Records
           </h2>
           <div className="flex flex-col gap-3  md:flex-row lg:flex-row md:items-center md:space-x-2 lg:items-center lg:space-x-5 lg:justify-end">
           
@@ -146,17 +136,21 @@ const PromotionRecords = () => {
 
                 <DatePicker
                
-                selected={filters.year ? new Date(parseInt(filters.year), 0) : null}
+               selected={
+                filters.year
+                  ? new Date(Number(filters.year), 0, 1)
+                  : null
+              }
                 onChange={handleYearChange}
-               showYearPicker
-                      dateFormat="yyyy"
-                      // showIcon
-                      // icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
-                      yearDropdownItemNumber={5}
-                      placeholderText="Promotion Year"
-                      isClearable
-                      className="w-full appearance-none py-2 px-2 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    />
+                showYearPicker
+            dateFormat="yyyy"
+            showIcon
+            icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+            yearDropdownItemNumber={5}
+            placeholderText="YYYY"
+            isClearable
+            className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+          />
               </div>
                
              
@@ -200,11 +194,11 @@ const PromotionRecords = () => {
                   </tr>
                 ) : error ? (
                   <tr className="">
-                    <td colSpan={4} className=" py-4">
+                    <td colSpan={8} className=" py-4">
                       <div className="flex items-center justify-center space-x-6 text-#1F4772">
-                        <TbDatabaseOff size={25} />
+                        {/* <TbDatabaseOff size={25} /> */}
                         <span>
-                          {(error as any).data.message || "No records found!"}
+                          {(error as any)?.data?.error || "Internal Server Error"}
                         </span>
                       </div>
                     </td>

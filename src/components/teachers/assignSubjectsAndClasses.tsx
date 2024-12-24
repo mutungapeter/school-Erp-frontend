@@ -102,10 +102,10 @@ console.log("subjectsData", subjectsData)
     <>
       <div
         onClick={handleOpenModal}
-        className="p-1  items-center space-x-1 inline-flex rounded-sm bg-primary text-white text-sm cursor-pointer text-center"
+        className="p-1  items-center space-x-1 inline-flex rounded-md bg-primary text-white text-sm cursor-pointer text-center"
       >
+        <HiChevronDown size={15} className="text-white mt-2" />
         <GoGear size={20} className="text-white" />
-        <HiChevronDown size={20} className="text-white mt-2" />
       </div>
       {isOpen && (
          <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">

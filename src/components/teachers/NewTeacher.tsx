@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../layouts/spinner";
@@ -77,13 +77,14 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
 
   return (
     <>
-      <div
-        onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center py-2 px-4 bg-green-700 rounded-sm  flex items-center space-x-2 "
-      >
-        <FaPlusCircle size={20} className="text-white   " />
-        <span className=" lg:text-lg text-sm text-white">Add Teacher</span>
-      </div>
+       <button
+  onClick={handleOpenModal}
+  className="cursor-pointer inline-flex text-center p-2 bg-green-700 rounded-full"
+
+>
+  <FaPlus size={18} className="text-white" />
+</button>
+
 
       {isOpen && (
         <div

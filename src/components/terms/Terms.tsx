@@ -3,6 +3,7 @@ import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/class
 import { ClassLevel } from "@/src/definitions/classlevels";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 
 import { IoRefresh } from "react-icons/io5";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
@@ -29,7 +30,7 @@ const Terms = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);
-
+  const { hasAdminPermissions ,loading:loadingPermissions} = usePermissions();
   const pathname = usePathname();
    const initialFilters = useMemo(
       () => ({
@@ -139,6 +140,9 @@ const Terms = () => {
   const handleCloseDeleteModal = () => {
     setIsDeleteModalOpen(false);
   };
+  if (loadingPermissions) {
+    return <PageLoadingSpinner />;
+  }
 
   console.log("termsData", termsData?.results);
   return (
@@ -171,8 +175,11 @@ const Terms = () => {
                 />
               </div>
               <div className="flex items-center self-end gap-4 ">
-
-        <CreateTerm refetchTerms={refetchTerms} />
+              {hasAdminPermissions() && (
+                <div>
+                  <CreateTerm refetchTerms={refetchTerms} />
+                </div>
+              )}
               </div>
         </div>
       </div>
@@ -207,6 +214,7 @@ const Terms = () => {
         <table className="  table-auto   bg-white   w-full md:w-2xl lg:w-2xl  text-xs border text-gray-500 p-3 md:p-4 2xl:p-5">
           <thead className=" uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
+            {hasAdminPermissions() && (
               <th scope="col" className="px-3 py-2 border-r  text-center">
                 <input
                   id="checkbox-all"
@@ -229,6 +237,7 @@ const Terms = () => {
                                        dark:border-gray-600"
                 />
               </th>
+            )}
               <th scope="col" className="px-3 py-2 border-r text-left text-black ">
                 Name
               </th>
@@ -251,6 +260,7 @@ const Terms = () => {
             ) : termsData?.results && termsData?.results.length > 0 ? (
               termsData?.results.map((term: any) => (
                 <tr key={term.id} className="bg-white border-b">
+                  {hasAdminPermissions() && (
                   <th className="p-2 text-gray-900 text-center border-r">
                     <input
                       id="checkbox-table-search-1"
@@ -263,6 +273,7 @@ const Terms = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                     />
                   </th>
+                  )}
                   <td className="px-3 py-2 border-r  font-normal text-sm lg:text-lg md:text-lg  whitespace-nowrap">
                     {term.term} - ({term.class_level.name}{" "}
                     {term.class_level?.stream?.name} -
@@ -278,12 +289,13 @@ const Terms = () => {
                       {term.status}
                     </div>
                   </td>
-
+                  {hasAdminPermissions() && (
                   <td className="px-3 py-2   text-left  ">
                     <div className="flex items-center space-x-3">
                       <EditTerm termId={term.id} refetchTerms={refetchTerms} />
                     </div>
                   </td>
+                  )}
                 </tr>
               ))
             ) : (

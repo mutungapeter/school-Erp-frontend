@@ -2,14 +2,16 @@ import { apiSlice } from "@/redux/api/apiSlice";
 interface GetTeachersQueryArgs {
   page?: number;
   page_size?: number;
+  staff_no?: string;
 }
 export const teachersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getTeachers: builder.query({
-      query: ({ page, page_size }: GetTeachersQueryArgs = {}) => {
+      query: ({ page, page_size,staff_no }: GetTeachersQueryArgs = {}) => {
         const queryParams: Record<string, any> = {};
         if (page) queryParams.page = page;
         if (page_size) queryParams.page_size = page_size;
+        if (staff_no) queryParams.staff_no = staff_no;
 
         return {
           url: `teachers/`,
