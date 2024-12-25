@@ -138,38 +138,41 @@ const Classes = () => {
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
           All Classes
         </h2>
+        <div className="flex flex-col md:flex-row lg:flex-row lg:items-center md:items-center gap-4 md:gap-4 lg:gap-4 w-full md:w-auto">
         <div className="flex items-center self-end gap-4 ">
           
-        {hasAdminPermissions() && (
-          <div>
-            <CreateClassLevel refetchClasses={refetchClasses} />
+          {hasAdminPermissions() && (
+            <div>
+              <CreateClassLevel refetchClasses={refetchClasses} />
+            </div>
+          )}
+            </div>
+          <div className="relative ">
+            <label
+              htmlFor="year"
+              className="block  text-sm  md:text-lg lg:text-lg font-normal  mb-2"
+            >
+              Calendar Year
+            </label>
+            <DatePicker
+              selected={
+                filters.calendar_year
+                  ? new Date(Number(filters.calendar_year), 0, 1)
+                  : null
+              }
+              onChange={handleFilterChange}
+              showYearPicker
+              dateFormat="yyyy"
+              showIcon
+              icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+              yearDropdownItemNumber={5}
+              placeholderText="YYYY"
+              isClearable
+              className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+            />
           </div>
-        )}
-          </div>
-        <div className="relative ">
-          <label
-            htmlFor="year"
-            className="block  text-sm  md:text-lg lg:text-lg font-normal  mb-2"
-          >
-            Calendar Year
-          </label>
-          <DatePicker
-            selected={
-              filters.calendar_year
-                ? new Date(Number(filters.calendar_year), 0, 1)
-                : null
-            }
-            onChange={handleFilterChange}
-            showYearPicker
-            dateFormat="yyyy"
-            showIcon
-            icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
-            yearDropdownItemNumber={5}
-            placeholderText="YYYY"
-            isClearable
-            className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-          />
         </div>
+       
       </div>
       <div className=" relative overflow-x-auto px-1  ">
         {selectedClassLevels.length > 0 && (

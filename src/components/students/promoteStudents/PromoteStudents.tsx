@@ -81,7 +81,7 @@ const PromoteStudentsToNextClass = ({ refetchStudents }: Props) => {
       if (error?.data?.error) {
         toast.error(error.data.error);
       } else {
-        toast.error("Failed to Promote Students. Please try again.");
+        toast.error("Internal Server error.");
       }
     }
   };

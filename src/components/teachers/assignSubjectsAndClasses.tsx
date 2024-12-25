@@ -179,7 +179,7 @@ console.log("subjectsData", subjectsData)
                                 htmlFor={`class-${subject.id}-${classData.id}`}
                                 className="ml-2"
                               >
-                                {classData?.form_level?.name}{" "}
+                                {classData?.name}{" "}
                                 {classData?.stream?.name} - {classData.calendar_year}
                               </label>
                             </div>

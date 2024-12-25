@@ -42,7 +42,7 @@ const Students = () => {
     loading,
     error: loadingUserError,
   } = useAppSelector((state: RootState) => state.auth);
-  const { hasAdminPermissions, loading:loadingPermissions } = usePermissions();
+  const { hasAdminPermissions, loading: loadingPermissions } = usePermissions();
   const initialFilters = useMemo(
     () => ({
       class_level_id: searchParams.get("class_level_id") || "",
@@ -181,23 +181,22 @@ const Students = () => {
             <div className="flex items-center self-end gap-4 ">
               {hasAdminPermissions() && (
                 <>
-                <div>
-                  <PromoteStudentsToAlumni refetchStudents={refetchStudents} />
-                </div>
-<div>
-
-                  <PromoteStudentsToNextClass
-                    refetchStudents={refetchStudents}
-                  />
-</div>
-<div>
-
-                  <AdmitStudents refetchStudents={refetchStudents} />
-</div>
-<div>
-
-                  <CreateStudent refetchStudents={refetchStudents} />
-</div>
+                  <div>
+                    <PromoteStudentsToAlumni
+                      refetchStudents={refetchStudents}
+                    />
+                  </div>
+                  <div>
+                    <PromoteStudentsToNextClass
+                      refetchStudents={refetchStudents}
+                    />
+                  </div>
+                  <div>
+                    <AdmitStudents refetchStudents={refetchStudents} />
+                  </div>
+                  <div>
+                    <CreateStudent refetchStudents={refetchStudents} />
+                  </div>
                 </>
               )}
             </div>
@@ -230,10 +229,7 @@ const Students = () => {
             </div>
 
             <div className=" relative w-full md:w-auto flex items-center gap-2 text-xs rounded-full  ring-[1.5px] ring-gray-300 px-2 focus-within:ring-1 focus-within:ring-blue-600 text-gray-500 focus-within:text-blue-600">
-              <CiSearch
-                size={20}
-                className=""
-              />
+              <CiSearch size={20} className="" />
 
               <input
                 type="text"
@@ -398,9 +394,9 @@ const Students = () => {
                         {student.admission_type}
                       </td>
                       <td className="px-3 py-2 flex items-center space-x-5">
-                        <div className="p-1 rounded-sm bg-blue-100">
+                        <div className="p-2 rounded-full text-center cursor-pointer bg-purple-600">
                           <IoEyeSharp
-                            className=" text-blue-500 hover:text-primary cursor-pointer"
+                            className=" text-white cursor-pointer"
                             size={17}
                             onClick={() => handleViewDetails(student.id)}
                           />

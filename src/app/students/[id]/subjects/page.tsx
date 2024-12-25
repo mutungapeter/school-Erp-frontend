@@ -7,13 +7,15 @@ import { RootState } from "@/redux/store";
 import StudentDetails from "@/src/components/students/studentDetails";
 import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
 import { Suspense } from "react";
+import StudentSubjects from "@/src/components/students/promoteStudents/StudentSubjects";
+
 interface DetailProps {
   params: {
     id: number;
   };
 }
 
-const StudentDetailsPage = ({ params: { id } }: DetailProps) => {
+const StudentSubjectsPage = ({ params: { id } }: DetailProps) => {
   const { user, loading } = useAppSelector((state: RootState) => state.auth);
   const Layout = user?.role === "Teacher" ? TeacherLayout : DefaultLayout;
 
@@ -21,11 +23,10 @@ const StudentDetailsPage = ({ params: { id } }: DetailProps) => {
     <Layout>
       <>
         <Suspense fallback={<PageLoadingSpinner />}>
-          {/* {isSuccess && data && <StudentDetails data={data} refetchDetails={refetchDetails} />} */}
-          <StudentDetails student_id={id} />
+          <StudentSubjects student_id={id} />
         </Suspense>
       </>
     </Layout>
   );
 };
-export default StudentDetailsPage;
+export default StudentSubjectsPage;

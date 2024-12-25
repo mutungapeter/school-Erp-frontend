@@ -25,6 +25,11 @@ interface GetStudentPerformance {
   term_id?:any;
   
 }
+interface GetStudentSubjects {
+  student_id: any;
+  class_level?:any;
+  
+}
 export const studentsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStudents: builder.query({
@@ -58,6 +63,23 @@ export const studentsApi = apiSlice.injectEndpoints({
           url: `students/${id}/performance/`,
           method: "GET",
           params: term_id ? { term_id } : {},
+        };
+      },
+    }),
+    getStudentSubjects: builder.query({
+      query: ({
+        student_id,
+        class_level
+      }: GetStudentSubjects) => {
+        const queryParams: Record<string, any> = {};
+
+       
+        if (student_id) queryParams.student_id = student_id;
+        if (class_level) queryParams.class_level = class_level;
+        return {
+          url: `student-subjects-list/`,
+          method: "GET",
+          params: queryParams,
         };
       },
     }),
@@ -238,4 +260,5 @@ export const {
   useDeleteStudentsMutation,
   usePromoteStudentsToNextTermMutation,
   useEditStudentQuery,
+  useGetStudentSubjectsQuery
 } = studentsApi;

@@ -6,6 +6,7 @@ interface CardDataStatsProps {
   total: string;
   children: ReactNode;
   bgColor: string;
+  icon: JSX.Element;
 }
 
 const CardDataStats = ({
@@ -13,32 +14,24 @@ const CardDataStats = ({
   total,
   children,
   bgColor,
+  icon
 }: CardDataStatsProps) => {
   return (
     <div
-      className={`rounded-md border border-stroke cursor-pointer  px-7.5 py-3 shadow-md duration-300 ease-in-out
+      className={`rounded-2xl border-stroke cursor-pointer  p-3 shadow-md flex-1 min-w-[130px] 
                      transition-all duration-300 ease-in-out hover:scale-105  bg-white border border-1 `}
     >
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium">{title}</span>
+        <span className="text-md md:text-lg lg:text-lg font-medium text-gray-500">{title}</span>
         <div className="flex h-11.5 w-11.5 p-2 items-center justify-center rounded-full dark:bg-meta-4">
+       {icon}
+        </div>
+      </div>
+      <div className="text-2xl font-semibold my-4">
           {children}
         </div>
-      </div>
-      <div className="mt-3 ">
-        <div>
-          <h4 className="text-title-md font-bold text-black dark:text-white">
-            {total}
-          </h4>
-        </div>
-      </div>
-      {/* <div className="flex justify-between items-center">
-        <div className="text-sm bg-green-900  text-green-500 flex space-x-2  items-center ">
-          <span className="">↑</span>
-          <span> 12%</span>
-        </div>
-        <p className="text-xs bg-red-500 text-gray-500 ">Compared to last month</p>
-      </div> */}
+    
+     
     </div>
   );
 };

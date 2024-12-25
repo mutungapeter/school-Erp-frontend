@@ -107,15 +107,15 @@ const AssignElectives = ({ studentId, refetchDetails }: Props) => {
                   </div>
               </div>
 
-              <form className="space-y-2" onSubmit={handleSubmit}>
-                <div>
+              <form className="space-y-5" onSubmit={handleSubmit}>
+                <div className="space-y-4">
                   {loadingSubjects ? (
                     <Spinner />
                   ) : (
                     electives?.map((subject: Subject) => (
                       <div
                         key={subject.id}
-                        className="flex items-center space-x-5 space-y-4"
+                        className="flex items-center space-x-5 "
                       >
                         <input
                           type="checkbox"

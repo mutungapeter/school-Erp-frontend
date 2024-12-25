@@ -83,6 +83,7 @@ const menuGroups: MenuGroup[] = [
         label: "Classes",
         route: "/classes",
       },
+      
       {
         icon: <PiChalkboardThin size={20}  />,
         label: "Streams",
@@ -97,6 +98,11 @@ const menuGroups: MenuGroup[] = [
   {
     // name: "OTHERS",
     menuItems: [
+      {
+        icon: <PiChalkboardTeacherThin size={20}  />,
+        label: "Perfomance",
+        route: "#",
+      },
       {
         icon: <HiOutlineClipboardDocumentList size={20} />,
         label: "Results",

@@ -138,10 +138,10 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
     <>
       <div
         onClick={handleOpenModal}
-        className="py-1 px-2 lg:py-2 lg:px-4 md:px-4 md:py-2 flex items-center space-x-1 rounded-sm bg-green-800 text-white text-sm lg:text-sm md:text-sm cursor-pointer text-center"
+        className="flex items-center  cursor-pointer text-center"
       >
-        <BiSolidEdit   size={15} className="text-white" /> 
-        <span>{buttonText}</span>
+        <BiSolidEdit   size={25} className="text-green-700" /> 
+        
       </div>
       {isOpen && (
        <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -214,7 +214,7 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
                                   htmlFor={`class-${subject.id}-${classData.id}`}
                                   className="ml-2 text-xs lg:text-md md:text-md"
                                 >
-                                  {classData.form_level.name}{" "}
+                                  {classData.name}{" "}
                                   {classData?.stream?.name}
                                 </label>
                               </div>
