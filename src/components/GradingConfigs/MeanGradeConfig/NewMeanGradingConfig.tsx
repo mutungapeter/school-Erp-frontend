@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { FaPlus } from "react-icons/fa6";
+
 import { IoMdArrowDropdown } from "react-icons/io";
 import { toast } from "react-toastify";
 import { z } from "zod";
@@ -15,7 +15,7 @@ import { FiPlus } from "react-icons/fi";
 interface CreateConfigProps {
   refetchMeanGradeConfigs: () => void;
 }
-
+import { FaPlus } from "react-icons/fa6";
 export const CreateMeanGradeConfig = ({
   refetchMeanGradeConfigs,
 }: CreateConfigProps) => {
@@ -25,10 +25,9 @@ export const CreateMeanGradeConfig = ({
     useCreateMeanGradeConfigMutation();
 
   const schema = z.object({
-    min_mean_marks: z.coerce.number().min(0, "Minimum mean marks is required"),
-    max_mean_marks: z.coerce.number().min(1, "Maximum mean marks is required"),
+    min_mean_points: z.coerce.number().min(0, "Minimum mean points is required"),
+    max_mean_points: z.coerce.number().min(0, "Maximum mean points is required"),
     grade: z.string().min(1, "Grade is required"),
-    points: z.coerce.number().min(1, "Points required"),
     remarks: z.string().min(1, "Remarks  required"),
     principal_remarks: z.string().min(1, "Principal's remarks  required"),
   });
@@ -46,9 +45,9 @@ export const CreateMeanGradeConfig = ({
   const onSubmit = async (data: FieldValues) => {
     const {
       grade,
-      min_mean_marks,
-      max_mean_marks,
-      points,
+      max_mean_points,
+      min_mean_points,
+   
       remarks,
       principal_remarks,
     } = data;
@@ -80,14 +79,13 @@ export const CreateMeanGradeConfig = ({
 
   return (
     <>
-      <div
+       <div
         onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center p-2 bg-green-700 rounded-md  flex items-center space-x-2 "
+        className=" cursor-pointer text-center p-2
+         bg-green-700 rounded-full   "
       >
-        <FiPlus  size={17} className="text-white   " />
-        <span className="font-bold text-white text-xs md:text-sm lg:text-sm ">
-          Add New
-        </span>
+        <FaPlus size={18} className="text-white   " />
+      
       </div>
 
       {isOpen && (
@@ -122,44 +120,44 @@ export const CreateMeanGradeConfig = ({
                 </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2 lg:grid-cols-2 gap-2 lg:gap-5">
+                  <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-2 gap-2 lg:gap-5">
                     <div>
                       <label
                         htmlFor="Min marks"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Minimum Mean Marks
+                        Minimum Mean Points
                       </label>
                       <input
                         type="number"
-                        id="Min marks"
+                        id="Min-points"
                         placeholder="Enter minimum mean Marks "
-                        {...register("min_mean_marks")}
+                        {...register("min_mean_points")}
                         className="w-full p-2 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
-                      {errors.min_mean_marks && (
+                      {errors.min_mean_points && (
                         <p className="text-red-500 text-sm">
-                          {String(errors.min_mean_marks.message)}
+                          {String(errors.min_mean_points.message)}
                         </p>
                       )}
                     </div>
                     <div>
                       <label
-                        htmlFor="max marks"
+                        htmlFor="max points"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Maximum mean Marks
+                        Maximum mean points
                       </label>
                       <input
                         type="number"
-                        id="max marks"
-                        placeholder="Enter maximum mean marks "
-                        {...register("max_mean_marks", )}
+                        id="max points"
+                        placeholder="Enter maximum mean points "
+                        {...register("max_mean_points" )}
                         className="w-full p-2 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
-                      {errors.max_mean_marks && (
+                      {errors.max_mean_points && (
                         <p className="text-red-500 text-sm">
-                          {String(errors.max_mean_marks.message)}
+                          {String(errors.max_mean_points.message)}
                         </p>
                       )}
                     </div>
@@ -205,39 +203,15 @@ export const CreateMeanGradeConfig = ({
                       )}
                     </div>
                     <div>
-                      <div>
-                        <label
-                          htmlFor="Points"
-                          className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                        >
-                          Points
-                        </label>
-                        <input
-                          type="number"
-                          id="Points"
-                          placeholder="Enter points "
-                          {...register("points")}
-                          className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                        />
-                      </div>
-                      {errors.points && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.points.message)}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
-                    <div>
                       <label
-                        htmlFor="Remarks"
+                        htmlFor="remarks"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Remarks
+                        <span>Class Master&apos;s Remarks</span>
                       </label>
                       <input
                         type="text"
-                        id="Remarks"
+                        id="class-master-remarks"
                         placeholder="Enter remarks "
                         {...register("remarks")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
@@ -248,6 +222,9 @@ export const CreateMeanGradeConfig = ({
                         </p>
                       )}
                     </div>
+                  </div>
+                
+                 
                     <div>
                       <label
                         htmlFor="principal-remarks"
@@ -268,7 +245,7 @@ export const CreateMeanGradeConfig = ({
                         </p>
                       )}
                     </div>
-                  </div>
+                 
                   
                   <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button

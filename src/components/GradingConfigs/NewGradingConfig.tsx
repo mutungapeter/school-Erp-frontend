@@ -5,7 +5,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import { FiPlus } from "react-icons/fi";
-
+import { FaPlus } from "react-icons/fa6";
 import { useCreateGradingConfigMutation } from "@/redux/queries/gradingConfig/gradingConfigApi";
 import { useGetSubjectCategoriesQuery } from "@/redux/queries/subjects/subjectCategoriesApi";
 import "react-datepicker/dist/react-datepicker.css";
@@ -82,13 +82,14 @@ export const CreateNewGradingConfig = ({
 
   return (
     <>
-     <div
-        onClick={handleOpenModal}
-        className=" cursor-pointer text-center justify-center md:py-2 py-1 lg:py-2 lg:px-4 md:px-4 px-2 bg-green-700 rounded-md  flex items-center space-x-2 "
-      >
-        <FiPlus  size={17} className="text-white   " />
-        <span className="font-bold text-white text-xs md:text-sm lg:text-sm ">Add New</span>
-      </div>
+         <div
+             onClick={handleOpenModal}
+             className=" cursor-pointer text-center p-2
+              bg-green-700 rounded-full   "
+           >
+             <FaPlus size={18} className="text-white   " />
+           
+           </div>
 
       {isOpen && (
         <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">

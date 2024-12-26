@@ -85,13 +85,10 @@ const MeanGradeConfigs = () => {
                 </th>
                
                 <th scope="col" className="px-3 py-2 border-r    text-[10px]">
-                Min Mean Marks
+                Min mean points
                 </th>
                 <th scope="col" className="px-3 py-2 border-r  text-[10px]">
-                  Max Mean Marks
-                </th>
-                <th scope="col" className="px-3 py-2 border-r text-[10px]">
-                  Points
+                  Max mean points
                 </th>
                 <th scope="col" className="px-3 py-2 border-r  text-[10px]">
                   Mean Grade
@@ -120,9 +117,9 @@ const MeanGradeConfigs = () => {
                   <tr key={config.id} className="bg-white border-b">
                     <th className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{index + 1}</th>
                    
-                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.min_mean_marks}</td>
-                 <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.max_mean_marks}</td>
-                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.points}</td>
+                    <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.min_mean_points}</td>
+                 <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.max_mean_points}</td>
+              
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.grade}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.remarks}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.principal_remarks}</td>

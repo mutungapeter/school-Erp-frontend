@@ -39,15 +39,16 @@ export const EditMeanGradeConfig = ({
     useGetMeanGradeConfigQuery(meangradeConfigId);
 
   const schema = z.object({
-    min_mean_marks: z.coerce
+    min_mean_points: z.coerce
       .number()
-      .min(0, " Minimum average marks is required"),
-    max_mean_marks: z.coerce
+      .min(0, " Minimum average points is required"),
+      max_mean_points: z.coerce
       .number()
-      .min(1, "Maximum average marks is required"),
+      .min(1, "Maximum average points is required"),
     grade: z.string().min(1, "Grade is required"),
-    points: z.coerce.number().min(1, "Points required"),
+   
     remarks: z.string().min(1, "Remarks  required"),
+    principal_remarks: z.string().min(1, "Principal Remarks  required"),
   });
 
   const {
@@ -62,15 +63,15 @@ export const EditMeanGradeConfig = ({
   console.log("meanGradeConfigData", meanGradeConfigData);
   useEffect(() => {
     if (meanGradeConfigData) {
-      setValue("min_mean_marks", meanGradeConfigData.min_mean_marks);
-      setValue("max_mean_marks", meanGradeConfigData.max_mean_marks);
+      setValue("min_mean_points", meanGradeConfigData.min_mean_points);
+      setValue("max_mean_points", meanGradeConfigData.max_mean_points);
       setValue("grade", meanGradeConfigData.grade);
-      setValue("points", meanGradeConfigData.points);
       setValue("remarks", meanGradeConfigData.remarks);
+      setValue("principal_remarks", meanGradeConfigData.principal_remarks);
     }
   }, [meanGradeConfigData, setValue]);
   const onSubmit = async (data: FieldValues) => {
-    const { grade, min_mean_marks, max_mean_marks, points, remarks } = data;
+    const { grade, min_mean_points, max_mean_points, principal_remarks, remarks } = data;
     const id = meangradeConfigId;
     try {
       await updateMeanGradeConfig({ id, ...data }).unwrap();
@@ -140,38 +141,38 @@ export const EditMeanGradeConfig = ({
                         htmlFor="Min marks"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Minimum Mean Marks
+                        Minimum mean points
                       </label>
                       <input
                         type="number"
-                        id="Min marks"
-                        placeholder="Enter minimum mean Marks "
-                        {...register("min_mean_marks")}
+                        id="Min points"
+                        placeholder="Enter minimum mean points "
+                        {...register("min_mean_points")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
-                      {errors.min_mean_marks && (
+                      {errors.min_mean_points && (
                         <p className="text-red-500 text-sm">
-                          {String(errors.min_mean_marks.message)}
+                          {String(errors.min_mean_points.message)}
                         </p>
                       )}
                     </div>
                     <div>
                       <label
-                        htmlFor="max marks"
+                        htmlFor="max-mean-points"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Maximum mean Marks
+                        Maximum mean points
                       </label>
                       <input
                         type="number"
-                        id="max marks"
+                        id="max-mean-points"
                         placeholder="Enter maximum mean marks "
-                        {...register("max_mean_marks")}
+                        {...register("max_mean_points")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
-                      {errors.max_mean_marks && (
+                      {errors.max_mean_points && (
                         <p className="text-red-500 text-sm">
-                          {String(errors.max_mean_marks.message)}
+                          {String(errors.max_mean_points.message)}
                         </p>
                       )}
                     </div>
@@ -217,33 +218,15 @@ export const EditMeanGradeConfig = ({
                       )}
                     </div>
 
-                    <div>
-                      <label
-                        htmlFor="Points"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Points
-                      </label>
-                      <input
-                        type="number"
-                        id="Points"
-                        placeholder="Enter points "
-                        {...register("points")}
-                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      />
-                      {errors.points && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.points.message)}
-                        </p>
-                      )}
-                    </div>
+                 
                   </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
                   <div>
                     <label
                       htmlFor="Remarks"
                       className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
-                      Remarks
+                     Class Master/Mistress Remarks
                     </label>
                     <input
                       type="text"
@@ -257,6 +240,27 @@ export const EditMeanGradeConfig = ({
                         {String(errors.remarks.message)}
                       </p>
                     )}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="principal-remarks"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                     Principal remarks
+                    </label>
+                    <input
+                      type="text"
+                      id="principal-remarks"
+                      placeholder="Enter principal remarks "
+                      {...register("princial_remarks")}
+                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                    />
+                    {errors.princial_remarks && (
+                      <p className="text-red-500 text-sm">
+                        {String(errors.princial_remarks.message)}
+                      </p>
+                    )}
+                  </div>
                   </div>
 
                   <div className="flex justify-start lg:justify-end md:justify-end mt-3 ">
