@@ -338,9 +338,9 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                   }}
                 >
                   <Text style={styles.overallText}>
-                    Points:{" "}
+                    Average Points:{" "}
                     <Text style={styles.innerText}>
-                      {report.overall_grading.total_points}
+                      {report.overall_grading.mean_points}
                     </Text>
                   </Text>
                   <View
