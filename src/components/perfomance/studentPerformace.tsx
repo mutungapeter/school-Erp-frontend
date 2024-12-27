@@ -29,7 +29,7 @@ const StudentPerformanceChart = ({
     performanceData && performanceData[0]?.length > 0
       ? performanceData[0].map((item: TermData) => ({
           term: item.term,
-          average_marks: parseFloat(item.mean_marks),
+          average_marks: parseFloat(item.mean_marks) || 0,
         }))
       : [];
   console.log("chartData", chartData);
@@ -59,14 +59,25 @@ const StudentPerformanceChart = ({
             bottom: 0,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="term" />
-          <YAxis domain={[0, 100]} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#ddd" />
+          <XAxis dataKey="term"
+           axisLine={false}
+          tick={{ fill: "#d1d5db" }}
+          tickLine={false}
+            tickMargin={10}
+          />
+          <YAxis 
+          axisLine={false}
+          tick={{ fill: "#d1d5db" }}
+           tickLine={false}  
+           tickMargin={20}
+          domain={[0, 100]}  
+          />
           <Line
             type="monotone"
             dataKey="average_marks"
-            stroke="#82ca9d"
-            fill="#82ca9d"
+            stroke="#66BB6A"
+            strokeWidth={5}
           />
           <Tooltip />
           <Legend
