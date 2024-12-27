@@ -94,7 +94,7 @@ const MarksList = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch: refetchClasses,
-  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const {
     isLoading: loadingSubjects,

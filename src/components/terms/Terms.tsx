@@ -245,9 +245,11 @@ const Terms = () => {
               <th scope="col" className="px-3 py-2  border-r text-left text-black">
                 Status
               </th>
+              {hasAdminPermissions() && (
               <th scope="col" className="px-3 py-2 text-left border  text-black">
                 Actions
               </th>
+              )}
             </tr>
           </thead>
           <tbody>

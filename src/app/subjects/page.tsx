@@ -22,13 +22,13 @@ const SubjectsPage = () => {
   return (
     // <ProtectedRoute requiredRoles={["Admin", "Principal", "Teacher"]}>
 
-    <Layout>
+    <DefaultLayout>
 
     <Suspense fallback={<PageLoadingSpinner />}>
 
     <Subjects />
     </Suspense>
-    </Layout>
+    </DefaultLayout>
     // </ProtectedRoute>
 
   );
