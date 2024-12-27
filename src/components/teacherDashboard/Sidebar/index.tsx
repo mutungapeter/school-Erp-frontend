@@ -60,7 +60,7 @@ const menuGroups: MenuGroup[] = [
         // icon: <IoHomeOutline size={20} />,
         icon: "/icons/home.png",
         label: "Dashboard",
-        route: "/dashboard",
+        route: "/teacher-dashboard",
       },
     
            {
@@ -101,7 +101,7 @@ const menuGroups: MenuGroup[] = [
         // icon: <LiaSchoolSolid size={20}  />,
         icon: "/icons/subject.png",
         label: "Subjects",
-        route: "/teachers/teacher-subjects",
+        route: "/teacher-subjects",
       },
       {
         icon: "/icons/assignment.png",

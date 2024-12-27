@@ -41,14 +41,14 @@ const TeacherSubjectsAndClasses = () => {
   );
 
   return (
-    <div className=" space-y-5 py-5 ">
+    <div className=" space-y-5 py-5 bg-white shadow-md rounded-md ">
       <div className=" p-3  flex justify-between">
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
            Subjects and  Classes
         </h2>
-        <h2 className="font-semibold text-black text-xs md:text-lg lg:text-lg">{data?.staff_no}</h2>
+    
       </div>
-      <div className=" relative bg-white shadow-md overflow-x-auto   ">
+      <div className=" relative overflow-x-auto   ">
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
