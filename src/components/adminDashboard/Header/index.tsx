@@ -109,9 +109,9 @@ const Header: React.FC<Props> = ({
             {/* Dark Mode Toggler */}
             {/* <DarkModeSwitcher /> */}
             {/* Notification Menu Area */}
-            <DropdownNotification />
+            {/* <DropdownNotification /> */}
             {/* Chat Notification Area */}
-            <DropdownMessage />
+            {/* <DropdownMessage /> */}
           </ul>
 
           {/* User Area */}
