@@ -1,31 +1,22 @@
-import { usePermissions } from "@/src/hooks/hasAdminPermission";
-import AssignElectives from "./assignElectives";
-import UpdateElectives from "./updateElectives";
-import { FaDigitalTachograph } from "react-icons/fa";
-import { PiChalkboardTeacherBold } from "react-icons/pi";
+import {
+  useGetClassesQuery
+} from "@/redux/queries/classes/classesApi";
 import {
   useGetStudentPerformanceQuery,
   useGetStudentQuery,
 } from "@/redux/queries/students/studentsApi";
-import StudentPerformanceChart from "../perfomance/studentPerformace";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 import Image from "next/image";
-import { ClassLevel } from "@/src/definitions/classlevels";
-import {
-  useDeleteClassLevelsMutation,
-  useGetClassesQuery,
-} from "@/redux/queries/classes/classesApi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import { BsChevronDown } from "react-icons/bs";
+import { FaDigitalTachograph } from "react-icons/fa";
+import { PiChalkboardTeacherBold } from "react-icons/pi";
+import StudentPerformanceChart from "../perfomance/studentPerformace";
 
-import ContentSpinner from "../perfomance/contentSpinner";
-import { MdOutlineCalendarMonth } from "react-icons/md";
-import { FaUserTie } from "react-icons/fa6";
-import { FaPhoneAlt } from "react-icons/fa";
-import { HiOutlineMail } from "react-icons/hi";
 import Link from "next/link";
 import Announcements from "../adminDashboard/dashboard/Announcements";
+import ContentSpinner from "../perfomance/contentSpinner";
 interface StudentDetailsProps {
   student_id: number;
 }

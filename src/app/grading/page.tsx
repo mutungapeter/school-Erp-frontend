@@ -14,14 +14,13 @@ const SubjectGradingScaleConfigurations = () => {
     }
   );
   return (
-    // <ProtectedRoute requiredRoles={["Admin", "Principal", "Teacher"]}>
-
+  
     <DefaultLayout>
       <Suspense fallback={<PageLoadingSpinner />}>
      <GradingConfigs />
       </Suspense>
   </DefaultLayout>
-  // </ProtectedRoute>
+
   );
 };
 export default SubjectGradingScaleConfigurations;

@@ -65,13 +65,13 @@ const Accounts = () => {
     refetch();
   };
   
-  if (loadingUsers) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <PageLoadingSpinner />
-      </div>
-    );
-  }
+  // if (loadingUsers) {
+  //   return (
+  //     <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
+  //       <PageLoadingSpinner />
+  //     </div>
+  //   );
+  // }
   console.log("usersData", usersData);
   return (
     <>

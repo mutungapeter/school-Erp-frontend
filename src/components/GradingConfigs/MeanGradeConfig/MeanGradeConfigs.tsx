@@ -9,7 +9,7 @@ import { CreateMeanGradeConfig } from "./NewMeanGradingConfig";
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import DefaultLayout from "../../adminDashboard/Layouts/DefaultLayout";
 import { PAGE_SIZE } from "@/src/constants/constants";
-
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 
 
 const MeanGradeConfigs = () => {
@@ -21,6 +21,7 @@ const MeanGradeConfigs = () => {
     parseInt(pageParam || "1")
   );
   const router = useRouter();
+  const { hasAdminPermissions, loading: loadingPermissions } = usePermissions();
   const {
     isLoading: loadingMeangradeConfigs,
     data: meanGradeData,
@@ -57,12 +58,8 @@ const MeanGradeConfigs = () => {
     refetch();
   };
  
-  if (loadingMeangradeConfigs) {
-    return (
-      <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <PageLoadingSpinner />
-      </div>
-    );
+if (loadingPermissions) {
+    return <PageLoadingSpinner />;
   }
   console.log("meanGradeData", meanGradeData);
   return (
@@ -71,7 +68,9 @@ const MeanGradeConfigs = () => {
         <div className="p-3  flex justify-between">
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm">Mean Grade Scales</h2>
          <div>
+         {hasAdminPermissions() && (
          <CreateMeanGradeConfig refetchMeanGradeConfigs={refetchMeanGradeConfigs} />
+         )}
          </div>
         </div>
       
@@ -99,10 +98,11 @@ const MeanGradeConfigs = () => {
                 <th scope="col" className="px-3 py-2 border-r text-[10px]">
                  Principal&apos;s Remarks
                 </th>
-             
+                {hasAdminPermissions() && (
                 <th scope="col" className="px-3 py-2 text-[10px]">
                   Actions
                 </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -123,11 +123,13 @@ const MeanGradeConfigs = () => {
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.grade}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.remarks}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.principal_remarks}</td>
+                    {hasAdminPermissions() && (
                     <td className="px-3 py-2 flex items-center space-x-5">
                       <EditMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
                       <DeleteMeanGradeConfig  refetchMeanGradeConfigs={refetchMeanGradeConfigs} meangradeConfigId={config.id} />
                     
                     </td>
+                    )}
                   </tr>
                 ))
               ) : (

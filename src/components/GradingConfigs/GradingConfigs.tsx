@@ -10,7 +10,7 @@ import { EditGradingConfig } from "./editGradingConfig";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import DefaultLayout from "../adminDashboard/Layouts/DefaultLayout";
 import { PAGE_SIZE } from "@/src/constants/constants";
-
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 const GradingConfigs = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -20,6 +20,7 @@ const GradingConfigs = () => {
     parseInt(pageParam || "1")
   );
   const router = useRouter();
+  const { hasAdminPermissions, loading: loadingPermissions } = usePermissions();
   const {
     isLoading: loadingGradingConfigs,
     data: gradingConfigsData,
@@ -56,16 +57,9 @@ const GradingConfigs = () => {
     refetch();
   };
 
-  if (loadingGradingConfigs) {
-    return (
-   
-     <div className="mx-auto w-full md:max-w-screen-2xl lg:max-w-screen-2xl p-3 md:p-4 2xl:p-5">
-        <>
-        <PageLoadingSpinner />
-        </>
-</div>
-      
-    );
+ 
+  if (loadingPermissions) {
+    return <PageLoadingSpinner />;
   }
   console.log("gradingConfigsData", gradingConfigsData);
   return (
@@ -75,8 +69,11 @@ const GradingConfigs = () => {
           <h2 className="font-semibold text-black lg:text-xl md:text-lg text-sm ">
             Grading Scales
           </h2>
+          
           <div>
+          {hasAdminPermissions() && (
           <CreateNewGradingConfig refetchConfigs={refetchConfigs} />
+          )}
           </div>
         </div>
 
@@ -105,10 +102,11 @@ const GradingConfigs = () => {
                 <th scope="col" className="px-4 border-r py-3 text-[10px]">
                   Remarks
                 </th>
-
+                {hasAdminPermissions() && (
                 <th scope="col" className="px-4 py-3 text-[10px]">
                   Actions
                 </th>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -131,7 +129,9 @@ const GradingConfigs = () => {
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.grade}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.points}</td>
                     <td className="px-3 py-2 text-sm lg:text-sm border-r md:text-sm">{config.remarks}</td>
+                    {hasAdminPermissions() && (
                     <td className="px-3 py-2 flex items-center space-x-5">
+                     
                       <EditGradingConfig
                         configId={config.id}
                         refetchConfigs={refetchConfigs}
@@ -141,6 +141,7 @@ const GradingConfigs = () => {
                         refetchConfigs={refetchConfigs}
                       />
                     </td>
+                    )}
                   </tr>
                 ))
               ) : (

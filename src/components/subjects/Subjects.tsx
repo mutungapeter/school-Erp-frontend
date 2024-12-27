@@ -15,8 +15,9 @@ import { useDebouncedCallback } from "use-debounce";
 import ContentSpinner from "../perfomance/contentSpinner";
 import DeleteConfirmationModal from "../students/DeleteModal";
 import EditSubject from "./editSubject";
-import { AddSubject } from "./NewSubject";
 import { usePermissions } from "@/src/hooks/hasAdminPermission";
+import { AddSubject } from "./NewSubject";
+
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 interface Subject {
   id: number;
@@ -178,10 +179,10 @@ const Subjects = () => {
               />
             </div>
             <div className="flex items-center self-end gap-4 ">
-              {/* <button className="flex items-center text-center p-2 justify-center rounded-full bg-green-700 shadow-md">
-                <TbAdjustmentsHorizontal size={18} className="text-white" />
-              </button> */}
+          
+              {hasAdminPermissions() && (
               <AddSubject refetchSubjects={refetchSubjects} />
+              )}
             </div>
           </div>
         </div>

@@ -70,7 +70,7 @@ const TeacherSubjectsAndClasses = () => {
                   {groupedSubjects[subject]
                     .map(
                       (s) =>
-                        `${s.class_level.form_level.name}${
+                        `${s.class_level.name}${
                           s.class_level.stream
                             ? ` ${s.class_level.stream.name}`
                             : ""

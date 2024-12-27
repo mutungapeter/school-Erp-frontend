@@ -275,6 +275,7 @@ const Students = () => {
             <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
               <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
                 <tr>
+                {hasAdminPermissions() && (
                   <th scope="col" className="px-4 py-3 border-r  text-center">
                     <input
                       id="checkbox-all"
@@ -301,7 +302,7 @@ const Students = () => {
                                        dark:border-gray-600"
                     />
                   </th>
-
+                )}
                   <th
                     scope="col"
                     className="px-4 py-3 text-left border-r  text-[10px]"
@@ -355,6 +356,7 @@ const Students = () => {
                   studentsData?.results.length > 0 ? (
                   studentsData.results.map((student: Student) => (
                     <tr key={student.id} className="bg-white border-b">
+                      {hasAdminPermissions() && (
                       <th className="px-3 py-2 text-gray-900 text-center border-r">
                         <input
                           id="checkbox-table-search-1"
@@ -367,7 +369,7 @@ const Students = () => {
                                      dark:bg-gray-700 dark:border-gray-600"
                         />
                       </th>
-
+                      )}
                       <td className="px-3 py-2 text-left font-normal text-sm border-r lg:text-sm md:text-sm text-gray-900 whitespace-nowrap">
                         {student.first_name} {student.last_name}
                       </td>

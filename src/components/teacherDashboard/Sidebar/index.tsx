@@ -101,7 +101,7 @@ const menuGroups: MenuGroup[] = [
         // icon: <LiaSchoolSolid size={20}  />,
         icon: "/icons/subject.png",
         label: "Subjects",
-        route: "/teachers/teacher-subjects",
+        route: "/subjects",
       },
       {
         icon: "/icons/assignment.png",
