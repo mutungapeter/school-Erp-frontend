@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -25,8 +25,8 @@ export const CreateMeanGradeConfig = ({
     useCreateMeanGradeConfigMutation();
 
   const schema = z.object({
-    min_mean_points: z.coerce.number().min(0, "Minimum mean points is required"),
-    max_mean_points: z.coerce.number().min(0, "Maximum mean points is required"),
+    min_mean_points: z.coerce.number().min(0.00, "Minimum mean points is required"),
+    max_mean_points: z.coerce.number().min(0.99, "Maximum mean points is required"),
     grade: z.string().min(1, "Grade is required"),
     remarks: z.string().min(1, "Remarks  required"),
     principal_remarks: z.string().min(1, "Principal's remarks  required"),
@@ -37,10 +37,20 @@ export const CreateMeanGradeConfig = ({
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
   });
+  const minMeanPoints = watch("min_mean_points", "0.00");
+  const maxMeanPoints = watch("max_mean_points", "0.00");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+   
+    const formattedValue = parseFloat(value).toFixed(2);
+    setValue(name, formattedValue); 
+  };
 
   const onSubmit = async (data: FieldValues) => {
     const {
@@ -51,8 +61,17 @@ export const CreateMeanGradeConfig = ({
       remarks,
       principal_remarks,
     } = data;
+    const formattedMinMeanPoints = parseFloat(min_mean_points).toFixed(2);
+    const formattedMaxMeanPoints = parseFloat(max_mean_points).toFixed(2);
+  
+    const formattedData = {
+      ...data,
+      min_mean_points: formattedMinMeanPoints,
+      max_mean_points: formattedMaxMeanPoints,
+    };
+  
     try {
-      await createMeanGradeConfig(data).unwrap();
+      await createMeanGradeConfig(formattedData).unwrap();
       toast.success("Mean Grade configuration added successfully!");
       reset();
       handleCloseModal();
@@ -129,10 +148,13 @@ export const CreateMeanGradeConfig = ({
                         Minimum Mean Points
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="Min-points"
+                        
                         placeholder="Enter minimum mean Marks "
                         {...register("min_mean_points")}
+                        
+                        
                         className="w-full p-2 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
                       {errors.min_mean_points && (
@@ -149,10 +171,12 @@ export const CreateMeanGradeConfig = ({
                         Maximum mean points
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="max points"
+                    
                         placeholder="Enter maximum mean points "
                         {...register("max_mean_points" )}
+                        
                         className="w-full p-2 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
                       {errors.max_mean_points && (

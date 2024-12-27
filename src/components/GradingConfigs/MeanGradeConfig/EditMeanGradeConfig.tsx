@@ -41,10 +41,10 @@ export const EditMeanGradeConfig = ({
   const schema = z.object({
     min_mean_points: z.coerce
       .number()
-      .min(0, " Minimum average points is required"),
+      .min(0.00, " Minimum average points is required"),
       max_mean_points: z.coerce
       .number()
-      .min(1, "Maximum average points is required"),
+      .min(0.99, "Maximum average points is required"),
     grade: z.string().min(1, "Grade is required"),
    
     remarks: z.string().min(1, "Remarks  required"),
@@ -72,9 +72,18 @@ export const EditMeanGradeConfig = ({
   }, [meanGradeConfigData, setValue]);
   const onSubmit = async (data: FieldValues) => {
     const { grade, min_mean_points, max_mean_points, principal_remarks, remarks } = data;
+    const formattedMinMeanPoints = parseFloat(min_mean_points).toFixed(2);
+    const formattedMaxMeanPoints = parseFloat(max_mean_points).toFixed(2);
+  
+    const formattedData = {
+      ...data,
+      min_mean_points: formattedMinMeanPoints,
+      max_mean_points: formattedMaxMeanPoints,
+    };
+  
     const id = meangradeConfigId;
     try {
-      await updateMeanGradeConfig({ id, ...data }).unwrap();
+      await updateMeanGradeConfig({ id, ...formattedData }).unwrap();
       toast.success("Mean Grade configuration updated successfully!");
       handleCloseModal();
       refetchMeanGradeConfigs();
@@ -144,7 +153,7 @@ export const EditMeanGradeConfig = ({
                         Minimum mean points
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="Min points"
                         placeholder="Enter minimum mean points "
                         {...register("min_mean_points")}
@@ -164,7 +173,7 @@ export const EditMeanGradeConfig = ({
                         Maximum mean points
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         id="max-mean-points"
                         placeholder="Enter maximum mean marks "
                         {...register("max_mean_points")}
