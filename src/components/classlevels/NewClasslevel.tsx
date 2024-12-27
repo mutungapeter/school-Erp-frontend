@@ -149,7 +149,7 @@ export const CreateClassLevel = ({ refetchClasses }: CreateClassProps) => {
                     <input
                       type="text"
                       id="Name"
-                      placeholder="name e.g Form One , Form Two"
+                      placeholder="name e.g Class One, Grade One , Form One"
                       {...register("name")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
