@@ -3,9 +3,8 @@
 
 import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
-
+import Lessons from "@/src/components/lessons/Lessons";
 import { Suspense } from "react";
-import Attendance from "@/src/components/attendance/Attendance";
 
 const LessonsPage = () => {
 
@@ -14,7 +13,7 @@ const LessonsPage = () => {
   <DefaultLayout>
 
     <Suspense fallback={<PageLoadingSpinner />}>
-  <Attendance />
+  <Lessons />
     </Suspense>
   </DefaultLayout>
 

@@ -131,6 +131,7 @@ export interface Report {
     total_marks:number;
     position:number;
     kcpe_average:number;
+    principal_remarks:string;
   };
   marks: Marks[];
   term_data:TermData[];

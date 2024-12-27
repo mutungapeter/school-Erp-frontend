@@ -3,22 +3,19 @@
 
 import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
-
+import ClassPerformance from "@/src/components/perfomance/classPerformance";
 import { Suspense } from "react";
-import Attendance from "@/src/components/attendance/Attendance";
 
-const LessonsPage = () => {
+const AlumniPage = () => {
 
   return (
 
   <DefaultLayout>
-
     <Suspense fallback={<PageLoadingSpinner />}>
-  <Attendance />
+  <ClassPerformance />
     </Suspense>
   </DefaultLayout>
 
-
 )
 };
-export default LessonsPage;
+export default AlumniPage;

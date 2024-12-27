@@ -4,30 +4,26 @@ import ClickOutside from "@/components/ClickOutside";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
+import { PiChartLineUpThin } from "react-icons/pi";
 // import AdminPermissions from "@/src/hooks/AdminProtected";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { AiOutlineBarChart } from "react-icons/ai";
+
 import {
   HiOutlineClipboardDocument
 } from "react-icons/hi2";
-import { IoHomeOutline } from "react-icons/io5";
-import { LiaChalkboardTeacherSolid, LiaSchoolSolid } from "react-icons/lia";
-import { MdOutlineDashboard } from "react-icons/md";
-import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 import {
+  PiChalkboardThin,
   PiStudentDuotone,
-  PiStudentLight,
-  PiUsersThreeLight,
+  PiUsersThreeLight
 } from "react-icons/pi";
 import { SlSettings } from "react-icons/sl";
 import { TfiAlignLeft } from "react-icons/tfi";
-import { TiDocumentText } from "react-icons/ti";
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import SidebarItem from "./SidebarItem";
-import { PiChalkboardTeacherThin } from "react-icons/pi";
-import { PiChalkboardThin } from "react-icons/pi";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -36,7 +32,7 @@ interface SidebarProps {
 }
 
 interface MenuItem {
-  icon?: JSX.Element;
+  icon?: JSX.Element | string;
   label: string;
   route: string;
   children?: MenuItem[];
@@ -53,58 +49,83 @@ const menuGroups: MenuGroup[] = [
     name: "MENU",
     menuItems: [
       {
-        icon: <IoHomeOutline size={20} />,
+        // icon: <IoHomeOutline size={20} />,
+        icon: "/icons/home.png",
         label: "Dashboard",
         route: "/dashboard",
       },
     
       {
-        icon: <PiStudentLight size={20} />,
+        // icon: <PiStudentLight size={20} />,
+        icon: "/icons/student.png",
         label: "Students",
         route: "/students",
       },
       {
-        icon: <LiaChalkboardTeacherSolid size={20}  />,
+        // icon: <LiaChalkboardTeacherSolid size={20}  />,
+        icon: "/icons/teacher.png",
         label: "Teachers",
         route: "/teachers",
       },
+    
       {
-        icon: <LiaSchoolSolid size={20}  />,
-        label: "Subjects",
-        route: "/subjects",
-      },
-      {
-        icon: <MdOutlineDashboard size={20}  />,
+        icon: <AiOutlineBarChart size={25} className="text-gray-500"  />,
         label: "Terms",
         route: "/terms",
       },
       {
-        icon: <PiChalkboardTeacherThin size={20}  />,
+        // icon: <PiChalkboardTeacherThin size={20}  />,
+        icon: "/icons/class.png",
         label: "Classes",
         route: "/classes",
       },
       
       {
-        icon: <PiChalkboardThin size={20}  />,
+        icon: <PiChalkboardThin size={25} className="text-gray-500"  />,
         label: "Streams",
         route: "/streams",
       },
-   
-    
-
-     
+      {
+        // icon: <LiaSchoolSolid size={20}  />,
+        icon: "/icons/subject.png",
+        label: "Subjects",
+        route: "/subjects",
+      },
+      {
+        icon: "/icons/assignment.png",
+        label: "Assignments",
+        route: "/assignments",
+      },
+      {
+        // icon: <LiaSchoolSolid size={20}  />,
+        icon: "/icons/attendance.png",
+        label: "Attendance",
+        route: "/attendance",
+      },
+      {
+        icon: "/icons/lesson.png",
+        label: "Lessons",
+        route: "/lessons",
+      },
+      {
+        icon: "/icons/exam.png",
+        label: "Exams",
+        route: "/exams",
+      },
+          
     ],
   },
   {
     // name: "OTHERS",
     menuItems: [
       {
-        icon: <PiChalkboardTeacherThin size={20}  />,
+        icon: <PiChartLineUpThin size={25}  className="text-gray-500" />,
         label: "Perfomance",
-        route: "#",
+        route: "/perfomance",
       },
       {
-        icon: <HiOutlineClipboardDocumentList size={20} />,
+        // icon: <HiOutlineClipboardDocumentList size={20} />,
+        icon: "/icons/result.png",
         label: "Results",
         route: "#",
         children: [
@@ -114,7 +135,8 @@ const menuGroups: MenuGroup[] = [
         ],
       },  
       {
-        icon: <SlSettings size={20} />,
+        icon: <SlSettings size={25} className="text-gray-500"/>,
+        
         label: "Settings",
         route: "#",
         children: [
@@ -123,19 +145,24 @@ const menuGroups: MenuGroup[] = [
         ],
       },
       {
-        icon: <HiOutlineClipboardDocument size={20}  />,
+        icon: <HiOutlineClipboardDocument size={25} className="text-gray-500" />,
         label: "Promotion Records",
         route: "/promotions",
       },
       {
-        icon: <PiStudentDuotone size={20} />,
+        icon: <PiStudentDuotone size={25} className="text-gray-500" />,
         label: "Alumni",
         route: "/alumni",
       },
       {
-        icon: <PiUsersThreeLight size={20} />,
+        icon: <PiUsersThreeLight size={25} className="text-gray-500" />,
         label: "Admins",
         route: "/accounts",
+      },
+      {
+        icon: "/icons/announcement.png",
+        label: "Announcements",
+        route: "/announcements",
       },
     ],
   },
@@ -165,15 +192,15 @@ const Sidebar = ({
           sidebarOpen ? "translate-x-0 w-62.5" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between gap-2 px-6 py-3 lg:py-4">
-          <Link href="/" className="w-[176px] h-[60px]">
+        <div className="flex items-center justify-between gap-2 px-3 py-2 lg:py-2">
+          <Link href="/" className="w-[176px] h-[50px]">
             <Image
               width={176}
-              height={60}
+              height={50}
               src={"/images/logo.jpg"}
               alt="Logo"
               priority
-              className="w-[176px] h-[60px] object-contain"
+              className="w-[176px] h-[50px] object-contain"
             />
           </Link>
 

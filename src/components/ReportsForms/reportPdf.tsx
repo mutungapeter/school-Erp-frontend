@@ -482,8 +482,8 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                   <View style={{ padding: 5 }}>
                     <View style={styles.dateAndSignature}>
                       <Text style={styles.commentText}>
-                        {report.overall_grading.mean_remarks
-                          ? report.overall_grading.mean_remarks
+                        {report.overall_grading.principal_remarks
+                          ? report.overall_grading.principal_remarks
                           : "N/A"}
                       </Text>
                       <View

@@ -37,7 +37,7 @@ export const EditMeanGradeConfig = ({
     useUpdateMeanGradeConfigMutation();
   const { data: meanGradeConfigData, isLoading: isFetching } =
     useGetMeanGradeConfigQuery(meangradeConfigId);
-
+console.log("meanGradeConfigData",meanGradeConfigData)
   const schema = z.object({
     min_mean_points: z.coerce
       .number()
@@ -47,8 +47,8 @@ export const EditMeanGradeConfig = ({
       .min(0.99, "Maximum average points is required"),
     grade: z.string().min(1, "Grade is required"),
    
-    remarks: z.string().min(1, "Remarks  required"),
-    principal_remarks: z.string().min(1, "Principal Remarks  required"),
+    remarks: z.string().min(1, "Remarks  required"),   
+principal_remarks: z.string().min(1, "Principal Remarks  required"),
   });
 
   const {
@@ -235,7 +235,7 @@ export const EditMeanGradeConfig = ({
                       htmlFor="Remarks"
                       className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
-                     Class Master/Mistress Remarks
+                     Class Master Remarks
                     </label>
                     <input
                       type="text"
@@ -252,16 +252,16 @@ export const EditMeanGradeConfig = ({
                   </div>
                   <div>
                     <label
-                      htmlFor="principal-remarks"
+                      htmlFor="principal_remarks"
                       className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
                      Principal remarks
                     </label>
                     <input
                       type="text"
-                      id="principal-remarks"
+                      id="principal_remarks"
                       placeholder="Enter principal remarks "
-                      {...register("princial_remarks")}
+                      {...register("principal_remarks")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
                     {errors.princial_remarks && (

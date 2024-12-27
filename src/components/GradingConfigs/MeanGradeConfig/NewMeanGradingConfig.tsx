@@ -150,7 +150,7 @@ export const CreateMeanGradeConfig = ({
                       <input
                         type="text"
                         id="Min-points"
-                        
+                        step="0.01"
                         placeholder="Enter minimum mean Marks "
                         {...register("min_mean_points")}
                         

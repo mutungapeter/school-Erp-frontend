@@ -117,26 +117,30 @@ const ClassPerformance: React.FC = () => {
   }
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1 bg-white shadow-md p-3 ">
       <div
-        className="flex flex-col   space-y-3 md:space-y-0 lg:space-y-0
-      md:justify-end lg:justify-end mt-2 lg:p-0 lg:flex-row md:flex-row
+        className="flex flex-col    space-y-3 md:space-y-0 lg:space-y-0
+      md:justify-between lg:justisy-between mt-2 lg:p-0 lg:flex-row md:flex-row
       md:items-center lg:items-center md:space-x-2 space-x-0  md:px-3
        px-1 lg:px-3  lg:space-x-5"
       >
-        <div className="relative w-full lg:w-40 md:w-32 xl:w-48 ">
+         <h2 className="   font-semibold text-lg lg:text-xl md:text-xl">Class Performance Analysis</h2>
+       <div className="flex flex-col lg:p-0 lg:flex-row md:flex-row
+      md:items-center lg:items-center  md:space-x-2 space-x-0 lg:space-x-5 space-y-3 md:space-y-0 lg:space-y-0">
+
+        <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
           <select
             name="class_level_id"
             value={filters.class_level_id || ""}
             onChange={handleFilterChange}
-            className="w-full  lg:w-40 md:w-40 xl:w-48 
+            className="w-full  lg:w-56 md:w-56 xl:w-56
              appearance-none p-2 text-md lg:text-md md:text-md
              rounded-md border border-1 border-gray-400
               focus:outline-none focus:border-[#1E9FF2] 
               focus:bg-white placeholder:text-sm 
               md:placeholder:text-sm lg:placeholder:text-sm"
           >
-            <option value="">Class</option>
+            <option value="">--Select Class---</option>
             {classesData?.map((classLevel: ClassLevel) => (
               <option key={classLevel.id} value={classLevel.id}>
                 {classLevel.name} {classLevel?.stream?.name} - {classLevel.calendar_year}
@@ -150,19 +154,19 @@ const ClassPerformance: React.FC = () => {
             -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
-        <div className="relative w-full lg:w-32 md:w-32 xl:w-32  ">
+        <div className="relative w-full lg:w-56 md:w-56 xl:w-56  ">
           <select
             name="term_id"
             value={filters.term_id || ""}
             onChange={handleFilterChange}
-            className="w-full lg:w-32 md:w-32 xl:w-32
+            className="w-full lg:w-56 md:w-56 xl:w-56
               p-2 text-md lg:text-md md:text-md  
                appearance-none   rounded-md border border-1
                 border-gray-400 focus:outline-none focus:border-[#1E9FF2] 
                 focus:bg-white placeholder:text-sm 
               md:placeholder:text-sm lg:placeholder:text-sm"
           >
-            <option value="">Term</option>
+            <option value="">---Select term---</option>
             {filteredTerms?.map((term: any) => (
               <option key={term.id} value={term.id}>
                 {term.term}
@@ -175,6 +179,7 @@ const ClassPerformance: React.FC = () => {
             className="absolute top-[50%] right-4  transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
+       </div>
       </div>
       {loadingClassPerformance ? (
         <ContentSpinner />
@@ -196,7 +201,7 @@ const ClassPerformance: React.FC = () => {
                 dataKey="no_of_students"
                 nameKey="mean_grade"
                 label={({ mean_grade, percentage }) =>
-                  `${mean_grade}- ${percentage}%`
+                  `${mean_grade} ${percentage}%`
                 }
               >
                 {dataWithPercentages.map((entry: DataItem, index: number) =>

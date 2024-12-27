@@ -3,6 +3,7 @@ import Link from "next/link";
 import SidebarDropdown from "./SidebarDropdown";
 import { usePathname } from "next/navigation";
 import { GoChevronRight } from "react-icons/go";
+import Image from "next/image";
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const handleClick = () => {
     const updatedPageName =
@@ -19,7 +20,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
     }
     return false;
   };
-
+  const iconSize = 20;
   const isItemActive = isActive(item);
 
   return (
@@ -35,7 +36,18 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
            transform transition-transform 
                     hover:translate-x-3  `}
         >
-          {item.icon}
+          {/* {item.icon} */}
+          {/* <Image src={item.icon} alt="" width={20} height={20} /> */}
+          {/* {React.isValidElement(item.icon) ? (
+          item.icon
+        ) : (
+          <Image src={item.icon} alt="" width={20} height={20} />
+        )} */}
+        {React.isValidElement(item.icon) ? (
+            React.cloneElement(item.icon, { size: iconSize })
+          ) : (
+            <Image src={item.icon} alt="" width={iconSize} height={iconSize} />
+          )}
           {item.label}
           {item.children && (
            
