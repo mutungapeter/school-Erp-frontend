@@ -18,7 +18,7 @@ const SidebarDropdown = ({ item }: any) => {
                  duration-300 ease-in-out
                  transform transition-transform 
                     hover:translate-x-3 ${
-                pathname === item.route ? "text-[#771BCC] bg-[#F3EEF6]" : ""
+                pathname === item.route ? "text-white bg-[#0270BD]" : ""
               }`}
             >
               {item.label}

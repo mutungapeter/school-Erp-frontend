@@ -25,14 +25,15 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
 
   return (
     <>
+    {/* bg-[#F3EEF6] */}
       <li>
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? "  text-[#771BCC] bg-[#F3EEF6]" : ""} 
+          className={`${isItemActive ? "  text-white  bg-[#0270BD]" : ""} 
           group relative flex items-center gap-4
            rounded-lg p-2  
-           text-[#585882ff] md:text-md text-md lg:text-md  hover:text-[#771BCC] hover:bg-[#F3EEF6]
+           text-[#585882ff] md:text-md text-md lg:text-md  hover:text-[#0270BD] hover:bg-[#F3F7FF]
            transform transition-transform 
                     hover:translate-x-3  `}
         >
@@ -43,11 +44,26 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
         ) : (
           <Image src={item.icon} alt="" width={20} height={20} />
         )} */}
-        {React.isValidElement(item.icon) ? (
-            React.cloneElement(item.icon, { size: iconSize })
-          ) : (
-            <Image src={item.icon} alt="" width={iconSize} height={iconSize} />
-          )}
+       
+          {React.isValidElement(item.icon) ? (
+          React.cloneElement(item.icon, {
+            size: iconSize,
+            className: `${isItemActive ? 'text-white text-gray-500 group-hover:text-gray-500' : 'text-gray-500 hover:text-gray-500'}`,
+          })
+        ) : (
+          <Image
+            src={item.icon}
+            alt=""
+            width={iconSize}
+            height={iconSize}
+            className={`transition duration-300 
+              ${isItemActive 
+                ? 'filter invert brightness-0 group-hover:filter group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100'  // Active state with filters
+                : 'opacity-70 group-hover:filter group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100'  // Inactive state with hover filter
+              } 
+            `}
+          />
+        )}
           {item.label}
           {item.children && (
            
