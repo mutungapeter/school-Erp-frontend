@@ -222,6 +222,12 @@ const MeritList = () => {
                 scope="col"
                 className="px-6 py-4 text-xs lg:text-sm md:text-sm"
               >
+                Mean Points
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-4 text-xs lg:text-sm md:text-sm"
+              >
                 Mean Grade
               </th>
 
@@ -262,6 +268,9 @@ const MeritList = () => {
                   </td>
                   <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
                     {report.student.admission_number}
+                  </td>
+                  <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
+                    {report.overall_grading.mean_points}
                   </td>
                   <td className="px-3 py-2 text-sm lg:text-lg md:text-lg font-normal text-gray-900 whitespace-nowrap">
                     {report.overall_grading.mean_grade}
