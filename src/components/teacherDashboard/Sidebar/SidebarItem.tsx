@@ -33,11 +33,25 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
                     hover:translate-x-3  dark:hover:bg-meta-4`}
         >
           {/* {item.icon} */}
-          {React.isValidElement(item.icon) ? (
-                      React.cloneElement(item.icon, { size: iconSize })
-                    ) : (
-                      <Image src={item.icon} alt="" width={iconSize} height={iconSize} />
-                    )}
+        {React.isValidElement(item.icon) ? (
+                  React.cloneElement(item.icon, {
+                    size: iconSize,
+                    className: `${isItemActive ? 'text-white text-gray-500 group-hover:text-gray-500' : 'text-gray-500 hover:text-gray-500'}`,
+                  })
+                ) : (
+                  <Image
+                    src={item.icon}
+                    alt=""
+                    width={iconSize}
+                    height={iconSize}
+                    className={`transition duration-300 
+                      ${isItemActive 
+                        ? 'filter invert brightness-0 group-hover:filter group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100'  // Active state with filters
+                        : 'opacity-70 group-hover:filter group-hover:brightness-100 group-hover:saturate-100 group-hover:contrast-100'  // Inactive state with hover filter
+                      } 
+                    `}
+                  />
+                )}
           {item.label}
           {item.children && (
            

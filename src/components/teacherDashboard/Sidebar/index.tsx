@@ -31,7 +31,7 @@ import dynamic from "next/dynamic";
 import { RiHomeGearLine } from "react-icons/ri";
 import { MdOutlineDashboard } from "react-icons/md";
 import { AiOutlineBarChart } from "react-icons/ai";
-
+import { LiaClipboardListSolid } from "react-icons/lia";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -140,14 +140,15 @@ const menuGroups: MenuGroup[] = [
               route: "/perfomance",
             },
             {
-              // icon: <HiOutlineClipboardDocumentList size={20} />,
-              icon: "/icons/result.png",
+              icon: <LiaClipboardListSolid size={20} />,
+        
               label: "Results",
               route: "#",
               children: [
                 { label: "Upload Marks", route: "/marks" },
                 { label: "View Marks", route: "/marks/list" },
                 { label: "Report Forms", route: "/reports/reportcard" },
+                { label: "Merit Lists", route: "/meritlists" },
               ],
             },  
             {

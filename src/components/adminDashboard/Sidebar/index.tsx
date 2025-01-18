@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiOutlineBarChart } from "react-icons/ai";
-
+import { LiaClipboardListSolid } from "react-icons/lia";
 import {
   HiOutlineClipboardDocument
 } from "react-icons/hi2";
@@ -124,14 +124,15 @@ const menuGroups: MenuGroup[] = [
         route: "/perfomance",
       },
       {
-        // icon: <HiOutlineClipboardDocumentList size={20} />,
-        icon: "/icons/result.png",
+        icon: <LiaClipboardListSolid size={20} />,
+        // icon: "/icons/result.png",
         label: "Results",
         route: "#",
         children: [
           { label: "Upload Marks", route: "/marks" },
           { label: "View Marks", route: "/marks/list" },
           { label: "Report Forms", route: "/reports/reportcard" },
+          { label: "Merit Lists", route: "/meritlists" },
         ],
       },  
       {
