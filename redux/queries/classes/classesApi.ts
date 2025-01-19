@@ -23,6 +23,19 @@ export const classesApi = apiSlice.injectEndpoints({
         };
       },
     }),
+    getAllActiveClasses: builder.query({
+      query: ({ page, page_size }: GetClassesInterface = {}) => {
+        const queryParams: Record<string, any> = {};
+        if (page) queryParams.page = page;
+        if (page_size) queryParams.page_size = page_size;
+
+        return {
+          url: `all-active-class-levels/`,
+          method: "GET",
+          params: queryParams,
+        };
+      },
+    }),
     getAllClasses: builder.query({
       query: ({ page, page_size,calendar_year }: GetAllClassesInterface = {}) => {
         const queryParams: Record<string, any> = {};
@@ -105,6 +118,7 @@ export const classesApi = apiSlice.injectEndpoints({
 
 export const {
   useGetClassesQuery,
+  useGetAllActiveClassesQuery,
   useGetAllClassesQuery,
   useGetCLassLevelQuery,
   useUpdateClassLevelMutation,

@@ -1,6 +1,4 @@
-interface Props {
-  data: any;
-}
+"use client";
 import { MdAccountCircle, MdOutlineCalendarMonth } from "react-icons/md";
 import Image from "next/image";
 import { groupBy } from "lodash";
@@ -12,36 +10,50 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import Announcements from "../adminDashboard/dashboard/Announcements";
 import Link from "next/link";
+import { useGetTeacherQuery } from "@/redux/queries/teachers/teachersApi";
 import TeacherPerformance from "./Perfomance";
-const TeacherDetails = ({ data }: Props) => {
-  console.log("data", data);
+import AssignTeacher from "./assignSubjectsAndClasses";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+interface Props {
+  teacher_id: number;
+}
+const TeacherDetails = ({ teacher_id }: Props) => {
+  const { data, isLoading, isSuccess, error, refetch } =
+    useGetTeacherQuery(teacher_id);
+  const { hasAdminPermissions, loading: loadingPermissions } = usePermissions();
   const groupedSubjects = groupBy(
     data?.subjects,
     (s) => s.subject.subject_name
   );
   console.log("groupedsubjects", groupedSubjects);
   const uniqueSubjects = Array.from(
-    new Set(data?.subjects?.map((s:any) => s.subject.subject_name))
+    new Set(data?.subjects?.map((s: any) => s.subject.subject_name))
   );
 
-  
   const numOfSubjects = uniqueSubjects.length;
 
-
-  const groupedClasses = data?.subjects?.map((s:any) => {
+  const refetchDetails = () => {
+    refetch();
+  };
+  const groupedClasses = data?.subjects?.map((s: any) => {
     const subjectName = s.subject.subject_name;
-    const className = `${s.class_level.name} ${s.class_level.stream ? s.class_level.stream.name : ''}`;
+    const className = `${s.class_level.name} ${
+      s.class_level.stream ? s.class_level.stream.name : ""
+    }`;
     return { subjectName, className };
   });
 
   // Count unique classes (combination of subject and class level/stream)
   const uniqueClasses = Array.from(
-    new Set(groupedClasses?.map((s:any) => `${s.subjectName}-${s.className}`))
+    new Set(groupedClasses?.map((s: any) => `${s.subjectName}-${s.className}`))
   );
 
   // Calculate the number of unique classes
   const numOfClasses = uniqueClasses.length;
-
+  if (loadingPermissions) {
+    return <PageLoadingSpinner />;
+  }
   return (
     <>
       <div className="flex-1  flex flex-col gap-4 xl:flex-row">
@@ -160,7 +172,26 @@ const TeacherDetails = ({ data }: Props) => {
               <h2 className="text-black font-semibold text-sm md:text-xl lg:text-xl ">
                 Subjects
               </h2>
-              <EditTeacherSubjects teacher_id={data?.id} />
+              {hasAdminPermissions() && (
+<div>
+
+              {data?.subjects && data.subjects.length > 0 ? (
+                <div>
+                  <EditTeacherSubjects
+                    teacher_id={data?.id}
+                    refetchDetails={refetchDetails}
+                  />
+                </div>
+              ) : (
+                <div>
+                  <AssignTeacher
+                    teacher_id={data?.id}
+                    refetchDetails={refetchDetails}
+                  />
+                </div>
+              )}
+</div>
+              )}
             </div>
             <table className="w-full    bg-white text-sm border text-left rounded-md rtl:text-right text-gray-500 ">
               <thead className="text-xs text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
@@ -187,7 +218,7 @@ const TeacherDetails = ({ data }: Props) => {
                               s.class_level.stream
                                 ? ` ${s.class_level.stream.name}`
                                 : ""
-                            }`
+                            } (${s.class_level.calendar_year})`
                         )
                         .join(", ")}
                     </td>

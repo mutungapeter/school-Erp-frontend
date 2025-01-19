@@ -47,6 +47,7 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -73,7 +74,10 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
   };
 
   const handleOpenModal = () => setIsOpen(true);
-  const handleCloseModal = () => setIsOpen(false);
+  const handleCloseModal = () => {
+    reset();
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -101,7 +105,7 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
 
           <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
             <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-4 w-full sm:max-w-xl p-4 md:p-5 lg:p-5 md:max-w-xl">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-3 w-full sm:max-w-lg p-4 md:p-5 lg:p-5 md:max-w-lg">
                 {isSubmitting && <Spinner />}
 
                 <div className="flex justify-between items-center pb-3">
@@ -117,9 +121,15 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                   </div>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
                 <div>
-                      
+                <label
+                      htmlFor="firstName"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg   mb-2"
+                    >
+                      First Name
+                    </label>
                       <input
                         type="text"
                         id="firstName"
@@ -133,26 +143,41 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
+                    <div>
+                      
+                      <label
+                        htmlFor="lastName"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                        Last Name
+                      </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          placeholder="Enter last name"
+                          {...register("last_name")}
+                          className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                        />
+                        {errors.last_name && (
+                          <p className="text-red-500 text-sm">
+                            {String(errors.last_name.message)}
+                          </p>
+                        )}
+                      </div>
+                </div>
+               
                   
                 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                  <div>
-                      
-                      <input
-                        type="text"
-                        id="lastName"
-                        placeholder="Enter last name"
-                        {...register("last_name")}
-                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      />
-                      {errors.last_name && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.last_name.message)}
-                        </p>
-                      )}
-                    </div>
+              
                     <div>
                      
+                    <label
+                      htmlFor="phone"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Phone 
+                    </label>
                       <input
                         type="text"
                         id="Phone"
@@ -166,11 +191,14 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                   
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
                     <div>
                     
+                    <label
+                      htmlFor="username"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                    Username
+                    </label>
                       <input
                         type="text"
                         id="username"
@@ -184,8 +212,16 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                    <div>
-                    
+                  </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
+                   
+                    <div>         
+                    <label
+                      htmlFor="Email"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Email
+                    </label>
                       <input
                         type="text"
                         id="email"
@@ -199,27 +235,41 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                         </p>
                       )}
                     </div>
-                  
+                    <div>
+                     
+                     <label
+                       htmlFor="staff-no"
+                       className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                     >
+                       Staff No
+                     </label>
+                       <input
+                         type="text"
+                         id="staff_no"
+                         placeholder="Enter staff no"
+                         {...register("staff_no")}
+                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                       />
+                       {errors.staff_no && (
+                         <p className="text-red-500 text-sm">
+                           {String(errors.staff_no.message)}
+                         </p>
+                       )}
+                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-5">
-                  <div>
-                     
-                      <input
-                        type="text"
-                        id="staff_no"
-                        placeholder="Enter staff no"
-                        {...register("staff_no")}
-                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      />
-                      {errors.staff_no && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.staff_no.message)}
-                        </p>
-                      )}
-                    </div>
+                 
+                    <div>
+
                     <div className="relative">
                      
+                    <label
+                      htmlFor="gender"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                    >
+                      Gender
+                    </label>
                       <select
                         id="gender"
                         {...register("gender")}
@@ -232,50 +282,56 @@ export const CreateTeacher = ({ refetchTeachers }: CreateTeacherProps) => {
                       <BsChevronDown 
                       color="gray" 
                       size={20}
-                        className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                        className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.gender && (
                         <p className="text-red-500 text-sm">
                           {String(errors.gender.message)}
                         </p>
                       )}
                     </div>
-
+                    <div>
+                    
+                    <label
+                        htmlFor="Password"
+                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                      >
+                       Password
+                      </label>
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          placeholder="XXXXXXXXXXXXX"
+                          {...register("password")}
+                          className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                        />
+                        {errors.password && (
+                          <p className="text-red-500 text-sm">
+                            {String(errors.password.message)}
+                          </p>
+                        )}
+                      </div>
                    
                   </div>
                   <div>
-                  <div>
-                    
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        placeholder="Enter password"
-                        {...register("password")}
-                        className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                      />
-                      {errors.password && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.password.message)}
-                        </p>
-                      )}
-                    </div>
                     <div className="flex items-center space-x-2">
                       <input
                         type="checkbox"
                         className="w-5 h-5"
                         onChange={() => setShowPassword(!showPassword)}
                       />
-                      <span  className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2">Show Password</span>
+                      <span  className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal">Show Password</span>
                     </div>
                   </div>
 
-                  <div className="flex justify-start lg:justify-end md:justify-end mt-3 py-2">
+                  <div className="flex justify-start lg:justify-end md:justify-end py-2">
                     <button
                       type="submit"
                       disabled={isSubmitting}
                       className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
-                       text-white rounded-md  px-5 py-2"
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
+                        rounded-md  px-5 py-2"
                     >
                       <BiCheckCircle className="text-white " size={18} />
                      <span> {isSubmitting ? "Submitting..." : "Save Teacher"}</span>

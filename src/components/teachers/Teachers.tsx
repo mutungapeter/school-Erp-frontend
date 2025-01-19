@@ -5,7 +5,6 @@ import {
 } from "@/redux/queries/teachers/teachersApi";
 import { PAGE_SIZE } from "@/src/constants/constants";
 import { Teacher } from "@/src/definitions/teachers";
-import { usePermissions } from "@/src/hooks/hasAdminPermission";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { FiDelete } from "react-icons/fi";
@@ -20,10 +19,11 @@ import DeleteConfirmationModal from "../students/DeleteModal";
 import { CreateTeacher } from "./NewTeacher";
 import AssignTeacher from "./assignSubjectsAndClasses";
 import EditTeacher from "./editTeacher";
+import { usePermissions } from "@/src/hooks/hasAdminPermission";
 const Teachers = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
-   const { hasAdminPermissions ,loading:loadingPermissions} = usePermissions();
+  const { hasAdminPermissions, loading: loadingPermissions } = usePermissions();
   const initialFilters = useMemo(
     () => ({
       staff_no: searchParams.get("staff_no") || "",
@@ -146,18 +146,16 @@ const Teachers = () => {
         <h2 className="font-semibold text-black text-xl">All Teachers</h2>
 
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-       
           <div className="flex items-center self-end gap-4 ">
-          {hasAdminPermissions() && (
-            <>
-            <div>
-
-            <CreateTeacher refetchTeachers={refetchTeachers} />
-            </div>
-            </>
-              )}
+            {hasAdminPermissions() && (
+              <>
+                <div>
+                  <CreateTeacher refetchTeachers={refetchTeachers} />
+                </div>
+              </>
+            )}
           </div>
-      
+
           <div className=" relative w-full md:w-auto flex items-center gap-2  text-gray-500 focus-within:text-blue-600 rounded-full  ring-[1.5px] ring-gray-300 px-2 focus-within:ring-1 focus-within:ring-blue-600">
             <GoSearch size={20} className="" />
             <input
@@ -172,7 +170,6 @@ const Teachers = () => {
         </div>
       </div>
       <div className=" relative overflow-x-auto p-2    ">
-        
         {selectedTeachers.length > 0 && (
           <div className="flex items-center space-x-3 py-3">
             <button
@@ -203,34 +200,34 @@ const Teachers = () => {
         <table className="w-full bg-white text-sm border text-left rtl:text-right text-gray-500 ">
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
-            {hasAdminPermissions() && (
-              <th scope="col" className="px-3 py-2 border-r  text-center">
-                <input
-                  id="checkbox-all"
-                  type="checkbox"
-                  checked={
-                    selectedTeachers.length === teachersData?.results.length
-                  }
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setSelectedTeachers(
-                        teachersData?.results.map(
-                          (teacher: Teacher) => teacher.id
-                        )
-                      );
-                    } else {
-                      setSelectedTeachers([]);
+              {hasAdminPermissions() && (
+                <th scope="col" className="px-3 py-2 border-r  text-center">
+                  <input
+                    id="checkbox-all"
+                    type="checkbox"
+                    checked={
+                      selectedTeachers.length === teachersData?.results.length
                     }
-                  }}
-                  className="w-4 h-4
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedTeachers(
+                          teachersData?.results.map(
+                            (teacher: Teacher) => teacher.id
+                          )
+                        );
+                      } else {
+                        setSelectedTeachers([]);
+                      }
+                    }}
+                    className="w-4 h-4
                                     bg-gray-100 border-gray-300
                                      rounded text-primary-600 
                                      focus:ring-primary-500 dark:focus:ring-primary-600
                                       dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700
                                        dark:border-gray-600"
-                />
-              </th>
-            )}
+                  />
+                </th>
+              )}
               <th scope="col" className="px-3 py-2 border-r  text-[10px]">
                 Name
               </th>
@@ -259,34 +256,33 @@ const Teachers = () => {
                   <ContentSpinner />
                 </td>
               </tr>
-          ) : error ? (
-            <tr className="">
-              <td colSpan={8} className=" py-4">
-                <div className="flex items-center justify-center space-x-6 text-#1F4772">
-                  {/* <TbDatabaseOff size={25} /> */}
-                  <span>
-                    {(error as any)?.data?.error ||
-                      "Internal Server Error"}
-                  </span>
-                </div>
-              </td>
-            </tr>
- ): teachersData?.results && teachersData?.results.length > 0 ? (
-              teachersData?.results.map((teacher: Teacher, index: number) => (
+            ) : error ? (
+              <tr className="">
+                <td colSpan={8} className=" py-4">
+                  <div className="flex items-center justify-center space-x-6 text-#1F4772">
+                    {/* <TbDatabaseOff size={25} /> */}
+                    <span>
+                      {(error as any)?.data?.error || "Internal Server Error"}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            ) :
+              teachersData?.results?.map((teacher: Teacher, index: number) => (
                 <tr key={teacher.id} className="bg-white border-b">
                   {hasAdminPermissions() && (
-                  <th className="px-3 py-2 text-gray-900 text-center border-r">
-                    <input
-                      id="checkbox-table-search-1"
-                      type="checkbox"
-                      checked={selectedTeachers.includes(teacher.id)}
-                      onChange={() => handleSelect(teacher.id)}
-                      className="w-4 h-4 bg-gray-100 border-gray-300 rounded 
+                    <th className="px-3 py-2 text-gray-900 text-center border-r">
+                      <input
+                        id="checkbox-table-search-1"
+                        type="checkbox"
+                        checked={selectedTeachers.includes(teacher.id)}
+                        onChange={() => handleSelect(teacher.id)}
+                        className="w-4 h-4 bg-gray-100 border-gray-300 rounded 
                                    text-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600
                                     dark:ring-offset-gray-800 focus:ring-2
                                      dark:bg-gray-700 dark:border-gray-600"
-                    />
-                  </th>
+                      />
+                    </th>
                   )}
 
                   <td className="px-2 md:px-3 lg:px-3 py-2 text-sm lg:text-sm border-r md:text-sm  text-gray-900 whitespace-nowrap">
@@ -303,34 +299,25 @@ const Teachers = () => {
                   </td>
 
                   <td className="px-3 py-2  flex items-center space-x-5">
-                    <div>
-                    <AssignTeacher teacher_id={teacher.id} />
+                    <div>{/* <AssignTeacher teacher_id={teacher.id} /> */}</div>
+                    <div
+                      className="p-2 rounded-full text-center cursor-pointer bg-purple-600"
+                      onClick={() => handleViewDetails(teacher.id)}
+                    >
+                      <IoEyeSharp className=" text-white" size={15} />
                     </div>
-                    <div className="p-2 rounded-full text-center cursor-pointer bg-purple-600">
-                      <IoEyeSharp
-                        className=" text-white"
-                        size={15}
-                        onClick={() => handleViewDetails(teacher.id)}
+                    {hasAdminPermissions() && (
+                    <div>
+                      <EditTeacher
+                        teacherId={teacher.id}
+                        refetchTeachers={refetchTeachers}
                       />
                     </div>
-
-                    <div>
-                    <EditTeacher
-                      teacherId={teacher.id}
-                      refetchTeachers={refetchTeachers}
-                    />
-                    </div>
-                   
+                    )}
                   </td>
                 </tr>
               ))
-            ) : (
-              <tr>
-                <td colSpan={5} className="text-center py-4">
-                  No records found.
-                </td>
-              </tr>
-            )}
+            }
           </tbody>
         </table>
       </div>

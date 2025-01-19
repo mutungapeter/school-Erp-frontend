@@ -14,9 +14,10 @@ import { IoCloseOutline } from "react-icons/io5";
 import { BiSolidEdit } from "react-icons/bi";
 interface Props {
   teacher_id: number;
+  refetchDetails: () => void;
 }
 
-const EditTeacherSubjects = ({ teacher_id }: Props) => {
+const EditTeacherSubjects = ({ teacher_id, refetchDetails }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const pathname = usePathname();
@@ -124,6 +125,8 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
       } else {
         toast.error("Failed to assign subjects and classes. Please try again.");
       }
+    } finally {
+      refetchDetails();
     }
 
     setSubjectClasses({});
@@ -138,97 +141,103 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
     <>
       <div
         onClick={handleOpenModal}
-        className="flex items-center  cursor-pointer text-center"
+        className="flex items-center  p-1 rounded-md bg-green-700 cursor-pointer text-center"
       >
-        <BiSolidEdit   size={25} className="text-green-700" /> 
-        
+        <BiSolidEdit size={25} className="text-white" />
       </div>
       {isOpen && (
-       <div className="relative z-9999 animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
- 
-       <div 
-       onClick={handleCloseModal}
-       className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn" aria-hidden="true"></div>
-     
-       <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
-         <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-          
-           <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl  sm:my-5  w-full sm:max-w-2xl  md:max-w-2xl">
-             {updating && <Spinner />}
+        <div
+          className="relative z-9999 animate-fadeIn"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            onClick={handleCloseModal}
+            className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity animate-fadeIn"
+            aria-hidden="true"
+          ></div>
 
-            <div className="sticky top-0 bg-white z-10 py-3 text-left px-3 shadow-sm border">
-              <div className="flex justify-between items-center pb-3">
-              <p className="lg:text-2xl md:text-2xl text-sm font-semibold text-black">
-                  {modalTitle}
-                </p>
-                <div className="flex justify-end cursor-pointer">
-                    <IoCloseOutline
-                      size={35}
-                      onClick={handleCloseModal}
-                      className=" text-gray-500 "
-                    />
+          <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+              <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl  sm:my-5  w-full sm:max-w-2xl  md:max-w-2xl">
+                {updating && <Spinner />}
+
+                <div className="sticky top-0 bg-white z-10 py-3 text-left px-3 shadow-sm border">
+                  <div className="flex justify-between items-center pb-3">
+                    <p className="lg:text-2xl md:text-2xl text-sm font-semibold text-black">
+                      {modalTitle}
+                    </p>
+                    <div className="flex justify-end cursor-pointer">
+                      <IoCloseOutline
+                        size={35}
+                        onClick={handleCloseModal}
+                        className=" text-gray-500 "
+                      />
+                    </div>
                   </div>
-              </div>
-            </div>
+                </div>
 
-            <form onSubmit={handleSubmit} className="w-full h-full">
-            <div className=" py-2 text-left px-6 space-y-4 z-9999 overflow-y-auto max-h-[65vh]">
-            {loadingExisting ? (
-                  <div>Loading...</div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
-                    {subjectsData?.map((subject: any) => (
-                      <div key={subject.id} className="">
-                        <div>
-                          <input
-                            type="checkbox"
-                            id={`subject-${subject.id}`}
-                            checked={!!subjectClasses[subject.id]}
-                            onChange={() => handleSubjectChange(subject.id)}
-                          />
-                          <label
-                            htmlFor={`subject-${subject.id}`}
-                            className="ml-2 font-semibold text-sm lg:text-md md:text-md"
-                          >
-                            {subject.subject_name}
-                          </label>
-                        </div>
+                <form onSubmit={handleSubmit} className="w-full h-full">
+                  <div className=" py-2 text-left px-6 space-y-4 z-9999 overflow-y-auto max-h-[65vh]">
+                    {loadingExisting ? (
+                      <div>Loading...</div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+                        {subjectsData?.map((subject: any) => (
+                          <div key={subject.id} className="">
+                            <div>
+                              <input
+                                type="checkbox"
+                                id={`subject-${subject.id}`}
+                                checked={!!subjectClasses[subject.id]}
+                                onChange={() => handleSubjectChange(subject.id)}
+                              />
+                              <label
+                                htmlFor={`subject-${subject.id}`}
+                                className="ml-2 font-semibold text-sm lg:text-md md:text-md"
+                              >
+                                {subject.subject_name}
+                              </label>
+                            </div>
 
-                        {/* Classes for each subject */}
-                        {subjectClasses[subject.id] && (
-                          <div className="ml-4 mt-2">
-                            {subject.class_levels.map((classData: any) => (
-                              <div key={classData.id} className="mb-2">
-                                <input
-                                  type="checkbox"
-                                  id={`class-${subject.id}-${classData.id}`}
-                                  checked={isClassChecked(
-                                    subject.id,
-                                    classData.id
-                                  )}
-                                  onChange={() =>
-                                    handleClassChange(subject.id, classData.id)
-                                  }
-                                />
-                                <label
-                                  htmlFor={`class-${subject.id}-${classData.id}`}
-                                  className="ml-2 text-xs lg:text-md md:text-md"
-                                >
-                                  {classData.name}{" "}
-                                  {classData?.stream?.name}
-                                </label>
+                            {/* Classes for each subject */}
+                            {subjectClasses[subject.id] && (
+                              <div className="ml-4 mt-2">
+                                {subject.class_levels.map((classData: any) => (
+                                  <div key={classData.id} className="mb-2">
+                                    <input
+                                      type="checkbox"
+                                      id={`class-${subject.id}-${classData.id}`}
+                                      checked={isClassChecked(
+                                        subject.id,
+                                        classData.id
+                                      )}
+                                      onChange={() =>
+                                        handleClassChange(
+                                          subject.id,
+                                          classData.id
+                                        )
+                                      }
+                                    />
+                                    <label
+                                      htmlFor={`class-${subject.id}-${classData.id}`}
+                                      className="ml-2 text-xs lg:text-md md:text-md"
+                                    >
+                                      {classData.name} {classData?.stream?.name}{" "}
+                                      ({classData.calendar_year})
+                                    </label>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
+                            )}
                           </div>
-                        )}
+                        ))}
                       </div>
-                    ))}
+                    )}
                   </div>
-                )}
-              </div>
 
-              
-                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-4 px-4">
+                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-4 px-4">
                     <button
                       type="submit"
                       disabled={isLoading}
@@ -237,12 +246,14 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
                        t rounded-md  px-5 py-2"
                     >
                       {/* <LiaEdit className="text-white " size={18} /> */}
-                      <span>{isLoading ? "Updating..." : "Update Subjects"}</span>
+                      <span>
+                        {isLoading ? "Updating..." : "Update Subjects"}
+                      </span>
                     </button>
                   </div>
-            </form>
-          </div>
-        </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}

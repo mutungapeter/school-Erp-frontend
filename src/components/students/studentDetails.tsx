@@ -104,7 +104,7 @@ const StudentDetails = ({ student_id }: StudentDetailsProps) => {
             <div className="bg-blue-100 py-6 px-4 rounded-md shadow-sm border border-blue-600   flex-1 flex gap-4">
               <div className="w-25 h-25 ">
                 <Image
-                  src="/profile.png"
+                  src="/images/profile.jpg"
                   alt=""
                   width={144}
                   height={144}

@@ -6,7 +6,10 @@ import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 import Spinner from "@/src/components/layouts/spinner";
 import TeacherDetails from "@/src/components/teachers/TeacherDetail";
 import { SerializedError } from "@reduxjs/toolkit";
-
+import { useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
+import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
+import { Suspense } from "react";
 interface DetailProps {
   params: {
     id: number;
@@ -21,35 +24,16 @@ interface ApiError {
 }
 
 const Teacher = ({ params: { id } }: DetailProps) => {
-  const { data, isLoading, isSuccess, error, refetch } = useGetTeacherQuery(id);
-  console.log("data", data);
+ const { user, loading } = useAppSelector((state: RootState) => state.auth);
+  const Layout = user?.role === "Teacher" ? TeacherLayout : DefaultLayout;
 
-  if (isLoading) {
-    return (
-      <DefaultLayout>
-        <PageLoadingSpinner />
-      </DefaultLayout>
-    );
-  }
-
-  if (error) {
-    const apiError = error as ApiError | SerializedError;
-    const errorMessage = "data" in apiError && apiError.data?.error  ? apiError.data.error : "Error loading teacher details. Please try again later.";
-
-    return (
-      <DefaultLayout>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-          <div className="text-red-500  text-center p-6 text-xs lg:text-lg  md:text-lg  bg-white rounded shadow-md">
-            <p>{errorMessage}</p>
-          </div>
-        </div>
-      </DefaultLayout>
-    );
-  }
+   
   return (
-    <DefaultLayout>
-      {isSuccess && data && <TeacherDetails data={data} />}
-    </DefaultLayout>
+    <Layout>
+       <Suspense fallback={<PageLoadingSpinner />}>
+       <TeacherDetails teacher_id={id} />
+       </Suspense>
+    </Layout>
   );
 };
 export default Teacher;

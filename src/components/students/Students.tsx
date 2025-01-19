@@ -1,6 +1,6 @@
 "use client";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllActiveClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import {
   useDeleteStudentsMutation,
   useGetStudentsQuery,
@@ -86,7 +86,7 @@ const Students = () => {
     isLoading: loadingClasses,
     data: classesData,
     refetch: refetchClasses,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllActiveClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const [deleteStudents, { isLoading: deleting }] = useDeleteStudentsMutation();
   const totalPages = Math.ceil((studentsData?.count || 0) / pageSize);
@@ -109,7 +109,7 @@ const Students = () => {
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
   };
-
+console.log("classesData",classesData)
   const handleResetFilters = () => {
     setFilters({ class_level_id: "", admission_number: "" });
     setCurrentPage(1);

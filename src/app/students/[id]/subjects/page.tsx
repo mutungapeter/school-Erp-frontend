@@ -1,11 +1,11 @@
 "use client";
-import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
-import StudentDetails from "@/src/components/students/studentDetails";
+import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
 import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
+import StudentDetails from "@/src/components/students/studentDetails";
 import { Suspense } from "react";
 import StudentSubjects from "@/src/components/students/promoteStudents/StudentSubjects";
 

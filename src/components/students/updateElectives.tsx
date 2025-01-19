@@ -151,22 +151,19 @@ const UpdateElectives = ({ studentsData, refetchDetails }: Props) => {
                       ))
                     )}
                   </div>
-                  <div className="flex justify-between mt-6">
-                    <button
-                      type="button"
-                      onClick={handleCloseModal}
-                      className="bg-gray-400 text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-gray-500 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={isLoading}
-                      className="bg-[#36A000] text-white rounded-md py-2 px-3 md:px-6 md:py-3 lg:px-6 lg:py-3 hover:bg-[#36A000] focus:outline-none"
-                    >
-                      {isLoading ? "Submitting..." : "Submit"}
-                    </button>
-                  </div>
+                
+                   <div className="flex justify-start lg:justify-end md:justify-end mt-3">
+                                      <button
+                                        type="submit"
+                                        disabled={isLoading}
+                                        className=" inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                                         focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
+                                         text-white rounded-md  px-5 py-2"
+                                      >
+                                       
+                                       <span> {isLoading ? "Submitting..." : "Update"}</span>
+                                      </button>
+                                    </div>
                 </form>
               </div>
             </div>
