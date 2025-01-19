@@ -26,6 +26,7 @@ import { IoIosClose } from "react-icons/io";
 import { toast } from "react-toastify";
 import DeleteConfirmationModal from "../students/DeleteModal";
 import ContentSpinner from "../perfomance/contentSpinner";
+import { TbDatabaseOff } from "react-icons/tb";
 const Terms = () => {
   const pageSize = PAGE_SIZE;
   const searchParams = useSearchParams();
@@ -66,6 +67,7 @@ const Terms = () => {
     isLoading: loadingTerms,
     data: termsData,
     refetch,
+    error
   } = useGetTermsQuery(
     queryParams,
     { refetchOnMountOrArgChange: true }
@@ -259,7 +261,18 @@ const Terms = () => {
                   <ContentSpinner />
                 </td>
               </tr>
-            ) : termsData?.results && termsData?.results.length > 0 ? (
+             ) : error ? (
+                         <tr>
+                           <td colSpan={8} className=" py-4">
+                             <div className="flex items-center justify-center space-x-6 text-#1F4772">
+                               <TbDatabaseOff size={25} className="text-red-500" />
+                               <span className="text-red-500 text-lg">
+                                 {(error as any)?.data?.error || "No data to show"}
+                               </span>
+                             </div>
+                           </td>
+                         </tr>
+                       ) : termsData?.results && termsData?.results.length > 0 ? (
               termsData?.results.map((term: any) => (
                 <tr key={term.id} className="bg-white border-b">
                   {hasAdminPermissions() && (

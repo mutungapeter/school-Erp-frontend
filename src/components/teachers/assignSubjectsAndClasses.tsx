@@ -139,7 +139,7 @@ console.log("subjectsData", subjectsData)
                 onSubmit={handleSubmit}
                 className="w-full h-full space-y-5 mt-4"
               >
-                <div className=" py-2 text-left px-6 z-9999 overflow-y-auto max-h-[70vh]">
+               <div className=" py-2 text-left px-6 space-y-4 z-9999 overflow-y-auto max-h-[65vh]">
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
                   {subjectsData?.map((subject: any) => (
@@ -191,13 +191,13 @@ console.log("subjectsData", subjectsData)
                 </div>
                 </div>
             
-                <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6 px-4">
+                <div className="flex justify-start lg:justify-end md:justify-end mt-3 py-3 px-4">
                     <button
                       type="submit"
                       disabled={isLoading}
                       className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
-                       text-white rounded-md  px-5 py-2"
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
+                        rounded-md  px-5 py-2"
                     >
                       
                       <span>{isLoading ? "Saving..." : "Save "}</span>

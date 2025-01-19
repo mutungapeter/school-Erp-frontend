@@ -233,8 +233,8 @@ const EditTeacherSubjects = ({ teacher_id }: Props) => {
                       type="submit"
                       disabled={isLoading}
                       className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
-                       text-white rounded-md  px-5 py-2"
+                       focus:outline-none focus:ring-blue-300 font-medium text-sm space-x-4
+                       t rounded-md  px-5 py-2"
                     >
                       {/* <LiaEdit className="text-white " size={18} /> */}
                       <span>{isLoading ? "Updating..." : "Update Subjects"}</span>

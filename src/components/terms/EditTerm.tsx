@@ -5,7 +5,7 @@ import {
 } from "@/redux/queries/teachers/teachersApi";
 import { useEffect, useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, useForm } from "react-hook-form";
 import { BiSolidEdit } from "react-icons/bi";
@@ -29,16 +29,16 @@ interface Props {
   refetchTerms: () => void;
 }
 const EditTerm = ({ termId, refetchTerms }: Props) => {
-  console.log("termId", termId);
+  // console.log("termId", termId);
   const [isOpen, setIsOpen] = useState(false);
   const [updateTerm, { isLoading: Updating }] = useUpdateTermMutation();
   const { data: termData, isLoading: isFetching } = useGetTermQuery(termId);
-  console.log("termData", termData)
+  // console.log("termData", termData)
   const {
     isLoading: loadingClassLevels,
     data: ClassLevelsData,
     refetch,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const schema = z.object({
     term: z.string().min(1, "Term name is required"),

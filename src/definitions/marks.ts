@@ -85,6 +85,11 @@ export interface Marks{
         category: string;
       };
     };
+    teacher: {
+      first_name: string;
+      id: number;
+      last_name:string;
+    };
     term: {
       id: number;
       created_at: string;

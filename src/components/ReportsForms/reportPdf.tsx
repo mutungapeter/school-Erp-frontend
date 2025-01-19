@@ -1,8 +1,13 @@
 "use client";
 import { Marks, Report } from "@/src/definitions/marks";
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
-
+import path from 'path';
 import { Image } from "@react-pdf/renderer";
+import { Font } from "@react-pdf/renderer";
+Font.register({
+  family: 'Pacifico',
+  src: '/fonts/Pacifico-Regular.ttf',
+});
 const styles = StyleSheet.create({
   page: {
     flexDirection: "column",
@@ -108,7 +113,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     textAlign: "center",
-    fontSize: 12,
+    fontSize: 10,
+  },
+  teacherInitials: {
+    fontFamily: 'Pacifico',
+    fontWeight: 'semibold',
+    fontStyle: 'normal',
   },
   subjectTitle: {
     fontWeight: "light",
@@ -315,20 +325,28 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                 <Text style={styles.tableCell}>Remarks</Text>
                 <Text style={styles.tableCellLast}>Initials</Text>
               </View>
-              {report.marks?.map((mark: Marks, index: number) => (
-                <View key={mark.id} style={styles.tableRow}>
-                  <Text style={styles.subjectTableCell}>
-                    {mark.student_subject.subject.subject_name}
-                  </Text>
-                  <Text style={styles.tableCell}>{mark.cat_mark}</Text>
-                  <Text style={styles.tableCell}>{mark.exam_mark}</Text>
-                  <Text style={styles.tableCell}>{mark.total_score}</Text>
-                  <Text style={styles.tableCell}>{mark.grade}</Text>
-                  <Text style={styles.tableCell}>{mark.points}</Text>
-                  <Text style={styles.tableCell}>{mark.remarks}</Text>
-                  <Text style={styles.tableCellLast}></Text>
-                </View>
-              ))}
+              {report.marks?.map((mark: Marks, index: number) =>{
+                   const teacherInitials =
+                   mark.teacher?.first_name && mark.teacher?.last_name
+                     ? `${mark.teacher.first_name.charAt(0)}.${mark.teacher.last_name.charAt(0)}`
+                     : "-"; 
+           
+               return (
+                 <View key={mark.id} style={styles.tableRow}>
+                   <Text style={styles.subjectTableCell}>
+                     {mark.student_subject.subject.subject_name}
+                   </Text>
+                   <Text style={styles.tableCell}>{mark.cat_mark}</Text>
+                   <Text style={styles.tableCell}>{mark.exam_mark}</Text>
+                   <Text style={styles.tableCell}>{mark.total_score}</Text>
+                   <Text style={styles.tableCell}>{mark.grade}</Text>
+                   <Text style={styles.tableCell}>{mark.points}</Text>
+                   <Text style={styles.tableCell}>{mark.remarks}</Text>
+                   <Text style={[styles.tableCellLast, styles.teacherInitials]}>{teacherInitials}</Text>
+                 </View>
+               )
+              }
+              )}
               <View style={{ padding: 8, flexDirection: "column", gap: 10 }}>
                 <View
                   style={{

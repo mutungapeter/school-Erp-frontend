@@ -16,7 +16,7 @@ import { PiCalendarDotsLight } from "react-icons/pi";
 import { FaPlus, FaPlusCircle } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
 import { formattDate } from "@/src/utils/dates";
-import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 interface Props {
   refetchTerms: () => void;
 }
@@ -38,14 +38,11 @@ const CreateTerm = ({ refetchTerms }: Props) => {
     isLoading: loadingClassLevels,
     data: ClassLevelsData,
     refetch,
-  } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
+  } = useGetAllClassesQuery({}, { refetchOnMountOrArgChange: true });
  
-
+console.log("ClassLevelsData",ClassLevelsData)
   const schema = z.object({
     term: z.string().min(1,  "Term is required" ),
-    // term: z.enum(["Term 1", "Term 2", "Term 3"], {
-    //   required_error: "Term is required",
-    // }),
     class_level: z.coerce.number().min(1, "Class is required "),
     start_date: z.string().date(),
     end_date: z.string().date(),

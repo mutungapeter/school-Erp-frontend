@@ -6,10 +6,11 @@ import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import dynamic from 'next/dynamic';
 import DefaultLayout from "@/src/components/adminDashboard/Layouts/DefaultLayout";
+import ContentSpinner from "@/src/components/perfomance/contentSpinner";
 
 const Reports = dynamic(() => import('../../../components/ReportsForms/ReportCard'), {
   ssr: false,
-  loading: () => <PageLoadingSpinner />,
+  loading: () => <ContentSpinner />,
 });
 const ReportCardPage=()=>{
     const ProtectedRoute = dynamic(
