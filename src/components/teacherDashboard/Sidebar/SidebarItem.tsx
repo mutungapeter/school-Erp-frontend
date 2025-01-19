@@ -29,11 +29,15 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
         <Link
           href={item.route}
           onClick={handleClick}
-          className={`${isItemActive ? " dark:bg-meta-4 text-[#771BCC] bg-[#F3EEF6]" : ""} group relative flex items-center gap-4 rounded-sm px-4 py-2  text-[#585882ff] md:text-xl text-md lg:text-xl  hover:text-[#771BCC] transform transition-transform 
-                    hover:translate-x-3  dark:hover:bg-meta-4`}
+          className={`${isItemActive ? "  text-white  bg-[#0270BD]" : ""} 
+          group relative flex items-center gap-4
+           rounded-lg p-2  
+           text-[#585882ff] md:text-md text-md lg:text-md  hover:text-[#0270BD] hover:bg-[#F3F7FF]
+           transform transition-transform 
+                    hover:translate-x-3  `}
         >
           {/* {item.icon} */}
-        {React.isValidElement(item.icon) ? (
+         {React.isValidElement(item.icon) ? (
                   React.cloneElement(item.icon, {
                     size: iconSize,
                     className: `${isItemActive ? 'text-white text-gray-500 group-hover:text-gray-500' : 'text-gray-500 hover:text-gray-500'}`,
