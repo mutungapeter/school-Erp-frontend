@@ -42,18 +42,28 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
     refetch: refetchClasses,
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
 
+  // const schema = z.object({
+  //   cat_mark: z
+  //     .number()
+  //     .min(0, "Cat mark must be a positive number")
+  //     .max(30, "Cat mark must be less than or equal to 30"),
+  //   exam_mark: z
+  //     .number()
+  //     .min(0, "Exam mark must be a positive number")
+  //     .max(70, "Exam mark must be less than or equal to 70"),
+  //   term: z.number().min(1, "Term is required"),
+  // });
   const schema = z.object({
-    cat_mark: z
+    total_score: z
+      .coerce
       .number()
-      .min(0, "Cat mark must be a positive number")
-      .max(30, "Cat mark must be less than or equal to 30"),
-    exam_mark: z
-      .number()
-      .min(0, "Exam mark must be a positive number")
-      .max(70, "Exam mark must be less than or equal to 70"),
+      .min(0, "Exam marks must be a positive number")
+      .max(100, "Exam mark must be less than or equal to 100"),
+      exam_type: z.enum(["Midterm", "Endterm"], {
+        errorMap: () => ({ message: "Exam type is required" }),
+      }),
     term: z.number().min(1, "Term is required"),
   });
-
   const {
     register,
     handleSubmit,
@@ -66,9 +76,9 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
 
   useEffect(() => {
     if (markData) {
-      setValue("cat_mark", markData.cat_mark);
-      setValue("exam_mark", markData.exam_mark);
+     
       setValue("total_score", markData.total_score);
+      setValue("exam_type", markData.exam_type);
       setValue("term", markData.term.id);
     }
   }, [markData, setValue]);
@@ -87,7 +97,7 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
   const totalMark = Number(catMark) + Number(examMark);
   const onSubmit = async (data: FieldValues) => {
     const id = marksId;
-    const { cat_mark, exam_mark, term } = data;
+    const { total_score, exam_type, term } = data;
     const studentId = markData.student.id;
     const subjectId = markData.student_subject.id;
 
@@ -95,8 +105,8 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
       const payload = {
         student: studentId,
         student_subject: subjectId,
-        cat_mark: parseFloat(cat_mark),
-        exam_mark: parseFloat(exam_mark),
+        total_score: parseFloat(total_score),
+        exam_type: exam_type,
         term,
       };
       await updateMarksData({ id, ...payload }).unwrap();
@@ -196,59 +206,47 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
                       htmlFor="cat"
                       className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                     >
-                      Cat Mark
+                      Exam Marks
                     </label>
                     <input
                       type="number"
-                      id="cat"
-                      placeholder="Enter cart mark"
-                      {...register("cat_mark")}
+                      id="total_score"
+                      placeholder="Enter exam marks"
+                      {...register("total_score")}
                       className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                     />
-                    {errors.cat_mark && (
+                    {errors.total_score && (
                       <p className="text-red-500 text-sm">
-                        {String(errors.cat_mark.message)}
+                        {String(errors.total_score.message)}
                       </p>
                     )}
                   </div>
-                  <div>
-                    <label
-                      htmlFor="exam"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                    >
-                      Exam Mark
-                    </label>
-                    <input
-                      type="number"
-                      id="exam"
-                      placeholder="Enter exam mark"
-                      {...register("exam_mark")}
-                      className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                    />
-                    {errors.exam_mark && (
-                      <p className="text-red-500 text-sm">
-                        {String(errors.exam_mark.message)}
-                      </p>
-                    )}
-                  </div>
+               
                 </div>
              
-                  <div>
-                    <label
-                      htmlFor="total"
-                     className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                    >
-                      Total Marks
-                    </label>
-                    <input
-                      type="number"
-                      id="total"
-                      value={totalMark}
-                      readOnly
-                      className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
-                    />
-                  </div>
-              
+                 
+                <div className="relative">
+                  <label
+                    htmlFor="exam_type"
+                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                  >
+                   Exam type
+                  </label>
+                  <select
+                    id="exam_type"
+                    {...register("exam_type")}
+                    className="w-full appearance-none py-2 px-4 text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  >
+                    <option value="">--- Exam Type ---</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Endterm">Endterm</option>
+                  </select>
+                  <BsChevronDown 
+                      color="gray" 
+                      size={20}
+                    className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  />
+                </div>
                
                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button

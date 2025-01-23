@@ -40,6 +40,7 @@ const MarksList = () => {
       class_level: searchParams.get("class_level") || "",
       admission_number: searchParams.get("admission_number") || "",
       term: searchParams.get("term") || "",
+      exam_type: searchParams.get("exam_type") || "",
       subject: searchParams.get("subject") || "",
     }),
     [searchParams]
@@ -56,6 +57,9 @@ const MarksList = () => {
     };
     if (filters.term){
       params.set("term", filters.term)
+    };
+    if (filters.exam_type){
+      params.set("exam_type", filters.exam_type)
     };
     if (filters.subject){
       params.set("subject", filters.subject)
@@ -138,6 +142,7 @@ const MarksList = () => {
       admission_number: "",
       subject: "",
       term: "",
+      exam_type: "",
     });
     const params = new URLSearchParams();
     router.push("?");
@@ -271,7 +276,27 @@ const MarksList = () => {
        
         
       </div>
-      <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-4 px-4 lg:justify-end md:justify-end   lg:items-center md:items-center">
+      <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-3 px-2 lg:justify-end md:justify-end   lg:items-center md:items-center">
+      <div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
+                  
+                  <select
+                  name="exam_type"
+                    id="exam_type"
+                    value={filters.exam_type || ""}
+              onChange={handleFilterChange}
+                    className="w-full lg:w-55 md:w-55 xl:w-55 
+              text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                >
+                    <option value="">--- Exam Type ---</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Endterm">Endterm</option>
+                  </select>
+                  <BsChevronDown 
+                      color="gray" 
+                      size={20}
+                    className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  />
+                </div>
           <div className="relative w-full lg:w-64 md:w-64 xl:w-64  ">
           <IoMdSearch
                   size={25}
@@ -356,14 +381,17 @@ const MarksList = () => {
               <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Subject
               </th>
-              <th scope="col" className="px-4 border-r py-3 text-[10px]">
+              {/* <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Cat
               </th>
               <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Exam
+              </th> */}
+              <th scope="col" className="px-4 border-r py-3 text-[10px]">
+             Exam Type
               </th>
               <th scope="col" className="px-4 border-r py-3 text-[10px]">
-                Total
+                Exam Mark
               </th>
               <th scope="col" className="px-4 border-r py-3 text-[10px]">
                 Grade
@@ -416,10 +444,7 @@ const MarksList = () => {
                     {marksData.student_subject?.subject.subject_name}
                   </td>
                   <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
-                    {marksData.cat_mark}
-                  </td>
-                  <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
-                    {marksData.exam_mark}
+                    {marksData.exam_type}
                   </td>
                   <td className="px-3 py-2 border-r text-sm lg:text-sm md:text-sm">
                     {marksData.total_score}

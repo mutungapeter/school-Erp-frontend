@@ -24,6 +24,7 @@ const Reports = () => {
       class_level: searchParams.get("class_level") || "",
       admission_number: searchParams.get("admission_number") || "",
       term: searchParams.get("term") || "",
+      exam_type: searchParams.get("exam_type") || "",
     }),
     [searchParams]
   );
@@ -38,10 +39,18 @@ const Reports = () => {
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (filters.class_level) params.set("class_level", filters.class_level);
-    if (filters.admission_number)
+    if (filters.class_level) {
+      params.set("class_level", filters.class_level);
+    }
+    if (filters.admission_number) {
       params.set("admission_number", filters.admission_number);
-    if (filters.term) params.set("term", filters.term);
+    }
+    if (filters.term) {
+      params.set("term", filters.term);
+    }
+    if (filters.exam_type) {
+      params.set("exam_type", filters.exam_type);
+    }
 
     router.replace(`?${params.toString()}`);
   }, [filters]);
@@ -63,12 +72,29 @@ const Reports = () => {
       class_level: filters.class_level || "",
       term: filters.term || "",
       admission_number: filters.admission_number || "",
+      exam_type: filters.exam_type || "",
     },
     {
       refetchOnMountOrArgChange: true,
     }
   );
+  const getSubtitle = (studentsData: any[]) => {
+    if (!studentsData || studentsData.length === 0) return "";
 
+    const firstMark = studentsData[0]?.marks?.find(
+      (mark: any) => mark.exam_type === "Midterm" || mark.exam_type === "Endterm"
+    );
+
+    if (firstMark?.exam_type === "Midterm") {
+      return "Midterm Report";
+    } else if (firstMark?.exam_type === "Endterm") {
+      return "Endterm Report";
+    } else {
+      return "Report";
+    }
+  };
+
+  const subtitle = useMemo(() => getSubtitle(data?.students_data || []), [data?.students_data]);
   const {
     isLoading: loadingClasses,
     data: classesData,
@@ -118,10 +144,12 @@ const Reports = () => {
       class_level: "",
       admission_number: "",
       term: "",
+      exam_type: "",
     });
 
     router.push("?");
   };
+  
 
   console.log("data", data);
 
@@ -179,20 +207,41 @@ const Reports = () => {
               className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
             />
           </div>
-          <div className=" relative w-full md:w-auto flex items-center gap-2 text-xs rounded-full  ring-[1.5px] ring-gray-300 px-2 focus-within:ring-1 focus-within:ring-blue-600 text-gray-500 focus-within:text-blue-600">
-                                  <CiSearch size={20} className="" />
-                    
-                                  <input
-                                    type="text"
-                                    name="admission_number"
-                                    value={filters.admission_number || ""}
-                                    onChange={handleFilterChange}
-                                    placeholder="admission number"
-                                    className=" w-full md:w-auto text-gray-900 lg:w-[200px] text-sm p-2 bg-transparent outline-none  "
-                                  />
-                                </div>
+          <div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
+            <select
+              name="exam_type"
+              id="exam_type"
+              value={filters.exam_type || ""}
+              onChange={handleFilterChange}
+              className="w-full lg:w-55 md:w-55 xl:w-55 
+              text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+            >
+              <option value="">--- Exam Type ---</option>
+              <option value="Midterm">Midterm</option>
+              <option value="Endterm">Endterm</option>
+            </select>
+            <BsChevronDown
+              color="gray"
+              size={20}
+              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+            />
+          </div>
+       
         </div>
-    
+        <div className="flex flex-col space-y-3 md:space-y-0  lg:flex-row md:flex-row lg:space-x-4 md:space-x-3 px-2 lg:justify-end md:justify-end   lg:items-center md:items-center">
+        <div className=" relative w-full md:w-auto flex items-center gap-2 text-xs rounded-full  ring-[1.5px] ring-gray-300 px-2 focus-within:ring-1 focus-within:ring-blue-600 text-gray-500 focus-within:text-blue-600">
+            <CiSearch size={20} className="" />
+
+            <input
+              type="text"
+              name="admission_number"
+              value={filters.admission_number || ""}
+              onChange={handleFilterChange}
+              placeholder="admission number"
+              className=" w-full md:w-auto text-gray-900 lg:w-[200px] text-sm p-2 bg-transparent outline-none  "
+            />
+          </div>
+        </div>
       </div>
 
       {loading ? (
@@ -210,7 +259,8 @@ const Reports = () => {
           {isMobile ? (
             <div>
               <PDFDownloadLink
-                document={<ReportPDF data={data.students_data} title={title} />}
+                document={<ReportPDF data={data.students_data} title={title} 
+                subtitle={subtitle} />}
                 fileName="report-cards.pdf"
               >
                 <div className="mx-auto flex justify-center">
@@ -234,7 +284,7 @@ const Reports = () => {
             </div>
           ) : (
             <PDFViewer style={{ width: "100%", height: "600px" }}>
-              <ReportPDF data={data.students_data} title={title} />
+              <ReportPDF data={data.students_data} title={title} subtitle={subtitle} />
             </PDFViewer>
           )}
         </Suspense>

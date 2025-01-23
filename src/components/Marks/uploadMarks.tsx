@@ -36,40 +36,46 @@ export const UploadMarks = () => {
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
 
   const schema = z.object({
-    term: z.number().min(1, "Term is required"),
-    class_level: z.number().min(1, "Class level is required"),
+    term: z.coerce.number().min(1, "Term is required"),
+    class_level: z.coerce.number().min(1, "Class level is required"),
+    exam_type: z.enum(["Midterm", "Endterm"], {
+      errorMap: () => ({ message: "Exam type is required" }),
+    }),
     marks_file: z
       .any()
-      .refine(
-        (fileList) => fileList instanceof FileList && fileList.length > 0,
-        {
-          message: "Please upload a valid file",
-        }
-      )
-      .refine(
-        (fileList) => {
-          const file = fileList[0];
-          return file instanceof File && file.size > 0;
-        },
-        {
-          message: "Please upload a file with size greater than 0",
-        }
-      )
-      .refine(
-        (fileList) => {
-          const file = fileList[0];
-          console.log("file.type", file.type);
-          const validTypes = [
-            "text/csv",
-            "application/vnd.ms-excel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          ];
-          return validTypes.includes(file.type);
-        },
-        {
-          message: "Please upload a valid CSV or Excel file",
-        }
-      ),
+      .refine((fileList) => fileList instanceof FileList && fileList.length > 0, {
+        message: "Please upload a valid file",
+      }),
+      // .refine(
+      //   (fileList) => fileList instanceof FileList && fileList.length > 0,
+      //   {
+      //     message: "Please upload a valid file",
+      //   }
+      // )
+      // .refine(
+      //   (fileList) => {
+      //     const file = fileList[0];
+      //     return file instanceof File && file.size > 0;
+      //   },
+      //   {
+      //     message: "Please upload a file with size greater than 0",
+      //   }
+      // )
+      // .refine(
+      //   (fileList) => {
+      //     const file = fileList[0];
+      //     console.log("file.type", file?.type);
+      //     const validTypes = [
+      //       "text/csv",
+      //       "application/vnd.ms-excel",
+      //       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      //     ];
+      //     return validTypes.includes(file.type);
+      //   },
+      //   {
+      //     message: "Please upload a valid CSV or Excel file",
+      //   }
+      // ),
   });
 
   const {
@@ -97,12 +103,13 @@ const filteredTerms = termsData?.filter(
 );
 
   const onSubmit = async (data: FieldValues) => {
-    const { term, class_level, marks_file } = data;
+    const { term, class_level, exam_type, marks_file } = data;
 
     if (marks_file && marks_file instanceof FileList) {
       const formData = new FormData();
       formData.append("term", term);
       formData.append("class_level", class_level);
+      formData.append("exam_type", exam_type);
       formData.append("marks_file", marks_file[0]);
 
       try {
@@ -212,7 +219,8 @@ const filteredTerms = termsData?.filter(
                     </div>
                  
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                    <div className="relative">
+                  <div>
+                  <div className="relative">
                       <label
                         htmlFor="term"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
@@ -221,7 +229,7 @@ const filteredTerms = termsData?.filter(
                       </label>
                       <select
                         id="term"
-                        {...register("class_level", { valueAsNumber: true })}
+                        {...register("class_level")}
                         onChange={handleClassChange}
                         className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
@@ -244,12 +252,14 @@ const filteredTerms = termsData?.filter(
                         size={16}
                         className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.class_level && (
                         <p className="text-red-500 text-sm">
                           {String(errors.class_level.message)}
                         </p>
                       )}
-                    </div>
+                  </div>
+                    <div>
                     <div className="relative">
                       <label
                         htmlFor="term"
@@ -259,7 +269,7 @@ const filteredTerms = termsData?.filter(
                       </label>
                       <select
                         id="term"
-                        {...register("term", { valueAsNumber: true })}
+                        {...register("term")}
                         onChange={handleTermChange}
                         className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
@@ -281,14 +291,45 @@ const filteredTerms = termsData?.filter(
                         size={16}
                         className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                       />
+                    </div>
                       {errors.term && (
                         <p className="text-red-500 text-sm">
                           {String(errors.term.message)}
                         </p>
                       )}
                     </div>
+                   
                   </div>
-                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                  <div>
+                <div className="relative">
+                  <label
+                    htmlFor="exam_type"
+                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                  >
+                   Exam type
+                  </label>
+                  <select
+                    id="exam_type"
+                    {...register("exam_type")}
+                    className="w-full appearance-none py-2 px-4 text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  >
+                    <option value="">--- Exam Type ---</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Endterm">Endterm</option>
+                  </select>
+                  <BsChevronDown 
+                      color="gray" 
+                      size={20}
+                    className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  />
+                </div>
+                  {errors.exam_type && (
+                    <p className="text-red-500 text-sm">
+                      {String(errors.exam_type.message)}
+                    </p>
+                  )}
+                </div>
+                  <div className="flex justify-start lg:justify-end md:justify-end  py-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}

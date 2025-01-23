@@ -232,8 +232,13 @@ const styles = StyleSheet.create({
 interface ReportPDFProps {
   data: Report[];
   title : string;
+  subtitle : string;
 }
-const ReportPDF = ({ data, title  }: ReportPDFProps) => {
+const ReportPDF = ({ data, 
+  title, 
+  subtitle
+
+  }: ReportPDFProps) => {
 //  const reportTitle = userRole === "Admin" || userRole === "Principal" ? "TERMINAL REPORT FORM" : "UNOFFICIAL TERMINAL REPORT FORM";
   console.log("data", data);
   if (!data || data.length === 0) {
@@ -257,6 +262,7 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                 <Text style={styles.header1}>P.O Box 180-90119</Text>
                 
                   <Text style={styles.subHeader}>{title}</Text>
+                  <Text style={styles.subHeader}>{subtitle}</Text>
                
               </View>
             </View>
@@ -315,9 +321,9 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                 <Text style={[styles.tableCell, styles.subjectTableText]}>
                   Subject
                 </Text>
-                <Text style={styles.tableCell}>Cat</Text>
-                <Text style={styles.tableCell}>End Term</Text>
-                <Text style={styles.tableCell}>Total</Text>
+                {/* <Text style={styles.tableCell}>Cat</Text>
+                <Text style={styles.tableCell}>End Term</Text> */}
+                <Text style={styles.tableCell}>Exam</Text>
                 <Text style={styles.tableCell}>Grade</Text>
                 <Text style={[styles.tableCell, styles.subjectTitle]}>
                   Points
@@ -336,8 +342,8 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                    <Text style={styles.subjectTableCell}>
                      {mark.student_subject.subject.subject_name}
                    </Text>
-                   <Text style={styles.tableCell}>{mark.cat_mark}</Text>
-                   <Text style={styles.tableCell}>{mark.exam_mark}</Text>
+                   {/* <Text style={styles.tableCell}>{mark.cat_mark}</Text> */}
+                   {/* <Text style={styles.tableCell}>{mark.exam_mark}</Text> */}
                    <Text style={styles.tableCell}>{mark.total_score}</Text>
                    <Text style={styles.tableCell}>{mark.grade}</Text>
                    <Text style={styles.tableCell}>{mark.points}</Text>
@@ -492,7 +498,7 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                     </View>
                   </View>
                 </View>
-                <View>
+                {/* <View>
                   <Text style={styles.principalHeader}>
                     Principal&apos;s Comments:
                   </Text>
@@ -519,7 +525,7 @@ const ReportPDF = ({ data, title  }: ReportPDFProps) => {
                       </View>
                     </View>
                   </View>
-                </View>
+                </View> */}
               </View>
             </View>
             <View style={{ flexDirection: "column", gap: 5, marginTop: 5 }}>

@@ -23,7 +23,7 @@ interface Addmarkprops {
   term:TermInterface;
 }
 
-export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
+export const AddMark = ({ studentSubject, terms, term }: Addmarkprops) => {
   // console.log("studentSubject", studentSubject);
   const [isOpen, setIsOpen] = useState(false);
   const [recorMark, { data, error, isSuccess }] = useRecorMarkMutation();
@@ -35,14 +35,17 @@ export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
     refetch: refetchTerms,
   } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
-    cat_mark: z.coerce
-      .number()
-      .min(0, "Cat mark must be a positive number")
-      .max(30, "Cat mark must be less than or equal to 30"),
-    exam_mark: z.coerce
-      .number()
-      .min(0, "Exam mark must be a positive number")
-      .max(70, "Exam mark must be less than or equal to 70"),
+    total_score: z
+    .number()
+    .min(0, "Exam marks must be a positive number")
+    .max(100, "Exam mark must be less than or equal to 100"),
+    exam_type: z.enum(["Midterm", "Endterm"], {
+      errorMap: () => ({ message: "Exam type is required" }),
+    }),
+    // exam_mark: z.coerce
+    //   .number()
+    //   .min(0, "Exam mark must be a positive number")
+    //   .max(70, "Exam mark must be less than or equal to 70"),
     // term: z.coerce.number().min(1, "Term is required"),
   });
 
@@ -56,15 +59,15 @@ export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  const catMark = watch("cat_mark", 0);
-  const examMark = watch("exam_mark", 0);
+  // const catMark = watch("cat_mark", 0);
+  // const examMark = watch("exam_mark", 0);
 
   const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("term", e.target.value);
   };
-  const totalMark = Number(catMark) + Number(examMark);
+  // const totalMark = Number(catMark) + Number(examMark);
   const onSubmit = async (data: FieldValues) => {
-    const { cat_mark, exam_mark } = data;
+    const {total_score, exam_type } = data;
     const studentId = studentSubject.student.id;
     const subjectId = studentSubject.id;
     const term_id = term?.id;
@@ -73,8 +76,8 @@ export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
       const payload = {
         student: studentId,
         student_subject: subjectId,
-        cat_mark: parseFloat(cat_mark),
-        exam_mark: parseFloat(exam_mark),
+        total_score: parseFloat(total_score),
+        exam_type: exam_type,
         term:term_id
       };
       console.log(payload);
@@ -178,22 +181,36 @@ export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
                         htmlFor="cat"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
                       >
-                        Cat Mark
+                        Exam marks
                       </label>
                       <input
                         type="number"
-                        id="cat"
-                        placeholder="Enter cart mark"
-                        {...register("cat_mark")}
+                        id="total_score"
+                        placeholder="Enter exam_marks"
+                        {...register("total_score")}
                         className="w-full py-2 px-4 rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       />
-                      {errors.cat_mark && (
+                      {errors.total_score && (
                         <p className="text-red-500 text-sm">
-                          {String(errors.cat_mark.message)}
+                          {String(errors.total_score.message)}
                         </p>
                       )}
                     </div>
                     <div>
+                    <label
+                      htmlFor="subject"
+                      className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2"
+                    >
+                      Term
+                    </label>
+                    <div
+                      id="subject"
+                      className="w-full py-2 px-4 rounded-md font-semibold border border-gray-400  shadow-sm bg-gray-100"
+                    >
+                      {term?.term}
+                    </div>
+                  </div>
+                    {/* <div>
                       <label
                         htmlFor="exam"
                         className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
@@ -212,75 +229,31 @@ export const AddMark = ({ studentSubject, terms,term }: Addmarkprops) => {
                           {String(errors.exam_mark.message)}
                         </p>
                       )}
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 lg:gap-3">
-                    {/* <div>
-                      <div className="relative">
-                        <label
-                          htmlFor="term"
-                          className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                        >
-                          Term
-                        </label>
-                        <select
-                          id="term"
-                          {...register("term")}
-                          onChange={handleTermChange}
-                          className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
-                        >
-                          <>
-                            <option value="">Select Term</option>
-                            {terms?.map((term: any) => (
-                              <option key={term.id} value={term.id}>
-                                {term.term}
-                              </option>
-                            ))}
-                          </>
-                        </select>
-                        <BsChevronDown
-                          color="gray"
-                          size={16}
-                          className="absolute top-[74%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
-                        />
-                      </div>
-                      {errors.term && (
-                        <p className="text-red-500 text-sm">
-                          {String(errors.term.message)}
-                        </p>
-                      )}
                     </div> */}
-                    <div>
-                    <label
-                      htmlFor="subject"
-                      className="block text-gray-900 md:text-lg text-sm lg:text-lg font-normal mb-2"
-                    >
-                      Term
-                    </label>
-                    <div
-                      id="subject"
-                      className="w-full py-2 px-4 rounded-md font-semibold border border-gray-400  shadow-sm bg-gray-100"
-                    >
-                      {term.term}
-                    </div>
                   </div>
-                    <div>
-                      <label
-                        htmlFor="total"
-                        className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
-                      >
-                        Total Marks
-                      </label>
-                      <input
-                        type="number"
-                        id="total"
-                        value={totalMark}
-                        readOnly
-                        className="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none bg-gray-200"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
+                  <div className="relative">
+                  <label
+                    htmlFor="exam_type"
+                    className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
+                  >
+                   Exam type
+                  </label>
+                  <select
+                    id="exam_type"
+                    {...register("exam_type")}
+                    className="w-full appearance-none py-2 px-4 text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                  >
+                    <option value="">--- Exam Type ---</option>
+                    <option value="Midterm">Midterm</option>
+                    <option value="Endterm">Endterm</option>
+                  </select>
+                  <BsChevronDown 
+                      color="gray" 
+                      size={20}
+                    className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                  />
+                </div>
+                  <div className="flex justify-start lg:justify-end md:justify-end  py-4">
                     <button
                       type="submit"
                       disabled={isSubmitting}
