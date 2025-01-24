@@ -101,6 +101,7 @@ export interface Marks{
     cat_mark: number;
     exam_mark: number;
     total_score: number;
+    exam_type:string;
   }
 export interface TermData{
   term:string;

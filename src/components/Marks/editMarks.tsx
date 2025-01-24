@@ -221,11 +221,7 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
                       </p>
                     )}
                   </div>
-               
-                </div>
-             
-                 
-                <div className="relative">
+                  <div className="relative">
                   <label
                     htmlFor="exam_type"
                     className="block text-gray-900 md:text-lg text-sm lg:text-lg  font-normal  mb-2"
@@ -247,6 +243,10 @@ const EditMarks = ({ marksId, refetchMarks, terms }: Props) => {
                     className="absolute top-[70%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                   />
                 </div>
+                </div>
+             
+                 
+              
                
                 <div className="flex justify-start lg:justify-end md:justify-end mt-7 py-6">
                     <button

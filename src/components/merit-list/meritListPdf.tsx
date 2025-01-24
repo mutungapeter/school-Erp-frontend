@@ -79,8 +79,12 @@ const styles = StyleSheet.create({
     height: 90,
   },
 });
-
-export const MeritListPDF = ({ reports }: { reports: Report[] }) => {
+interface MeritProps{
+  reports: Report[];
+  title : string;
+  subtitle : string;
+}
+export const MeritListPDF = ({ reports, title, subtitle }: MeritProps) => {
   const firstReport = reports.length > 0 ? reports[0] : undefined;
   return (
     <Document>
@@ -90,10 +94,13 @@ export const MeritListPDF = ({ reports }: { reports: Report[] }) => {
           <View style={{ alignItems: "center" }}>
             <Text style={styles.header}>KWAMWATU SECONDARY SCHOOL </Text>
             <View style={styles.subHeaderSection}>
-              <Text style={styles.header1}>
+              <Text style={styles.subHeader}>{title}</Text>
+              <Text style={styles.subHeader}>{subtitle} - {firstReport?.student.class_level.name}{" "}
+              {firstReport?.student.class_level?.stream?.name}</Text>
+              {/* <Text style={styles.header1}>
                 MERIT LIST - {firstReport?.student.class_level.name}{" "}
                 {firstReport?.student.class_level?.stream?.name}
-              </Text>
+              </Text> */}
 
               <Text style={styles.subHeader}>
                 {firstReport?.marks[0]?.term.term || "-"} -

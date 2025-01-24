@@ -54,6 +54,11 @@ const Reports = () => {
 
     router.replace(`?${params.toString()}`);
   }, [filters]);
+  useEffect(() => {
+    const initialClassLevel = initialFilters.class_level ? parseInt(initialFilters.class_level, 10) : null;
+    setSelectedClassLevel(initialClassLevel);
+  }, [initialFilters.class_level]);
+  
   const title = useMemo(() => {
     if (user?.role === "Teacher") {
       return "Unofficial Terminal Report Form";
@@ -105,7 +110,11 @@ const Reports = () => {
     data: termsData,
     refetch: refetchTerms,
   } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
-
+  const filteredTerms = useMemo(() => {
+    return termsData?.filter(
+      (term: any) => term.class_level.id === selectedClassLevel
+    );
+  }, [selectedClassLevel, termsData]);
   const handleSearch = useDebouncedCallback((value: string) => {
     // console.log(`Debounced Search Term: ${value}`);
     setFilters((prev) => ({ ...prev, admission_number: value }));
@@ -136,9 +145,9 @@ const Reports = () => {
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
   };
-  const filteredTerms = termsData?.filter(
-    (term: any) => term.class_level.id === selectedClassLevel
-  );
+  // const filteredTerms = termsData?.filter(
+  //   (term: any) => term.class_level.id === selectedClassLevel
+  // );
   const handleResetFilters = () => {
     setFilters({
       class_level: "",

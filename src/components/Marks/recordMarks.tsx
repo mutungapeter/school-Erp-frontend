@@ -36,6 +36,7 @@ export const AddMark = ({ studentSubject, terms, term }: Addmarkprops) => {
   } = useGetActiveTermsQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
     total_score: z
+    .coerce
     .number()
     .min(0, "Exam marks must be a positive number")
     .max(100, "Exam mark must be less than or equal to 100"),

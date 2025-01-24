@@ -56,7 +56,10 @@ const Marks = () => {
 
     router.push(`?${params.toString()}`);
   }, [filters]);
-
+  useEffect(() => {
+    const initialClassLevel = initialFilters.class_level_id ? parseInt(initialFilters.class_level_id, 10) : null;
+    setSelectedClassLevel(initialClassLevel);
+  }, [initialFilters.class_level_id]);
   const {
     isLoading: loading,
     data,
@@ -92,7 +95,11 @@ const Marks = () => {
     data: termsData,
     refetch: refetchTerms,
   } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
-
+  const filteredTerms = useMemo(() => {
+    return termsData?.filter(
+      (term: any) => term.class_level.id === selectedClassLevel
+    );
+  }, [selectedClassLevel, termsData]);
   const studentsData = data && data.length > 0 ? data : null;
   const handleSearch = useDebouncedCallback((value: string) => {
     console.log(`Debounced Search Term: ${value}`);
@@ -117,9 +124,9 @@ const Marks = () => {
       setFilters((prev) => ({ ...prev, [name]: value }));
     }
   };
-  const filteredTerms = termsData?.filter(
-    (term: any) => term.class_level.id === selectedClassLevel
-  );
+  // const filteredTerms = termsData?.filter(
+  //   (term: any) => term.class_level.id === selectedClassLevel
+  // );
   const handleResetFilters = () => {
     setFilters({
       class_level_id: "",
@@ -231,13 +238,13 @@ const Marks = () => {
                 className="w-full lg:w-56 md:w-56 xl:w-56  p-2 transition-all ease-in-out duration-300 pl-10 pr-4 rounded-full border border-1 border-[#1E9FF2] focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-ld"
               />
             </div>
-            <div
+            {/* <div
               onClick={handleResetFilters}
               className=" p-2 cursor-pointer max-w-max   inline-flex space-x-2 items-center text-[13px]  lg:text-lg md:text-xs  rounded-lg border text-white bg-primary"
             >
               <VscRefresh className="text-white" />
               <span className="text-sm">Reset Filters</span>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className=" relative overflow-x-auto p-2  ">

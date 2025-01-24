@@ -23,7 +23,7 @@ interface GetPromotionRecords {
 interface GetStudentPerformance {
   id: number;
   term_id?:any;
-  
+  exam_type?: string;
 }
 interface GetStudentSubjects {
   student_id: any;
@@ -56,13 +56,23 @@ export const studentsApi = apiSlice.injectEndpoints({
     getStudentPerformance: builder.query({
       query: ({
         id,
-        term_id
+        term_id,
+        exam_type
       }: GetStudentPerformance) => {
-       
+        const params: any = {};
+
+        if (term_id) {
+          params.term_id = term_id;
+        }
+    
+        if (exam_type) {
+          params.exam_type = exam_type;
+        }
         return {
           url: `students/${id}/performance/`,
           method: "GET",
-          params: term_id ? { term_id } : {},
+          // params: term_id ? { term_id } ? {exam_type} : {},
+          params: params,
         };
       },
     }),
