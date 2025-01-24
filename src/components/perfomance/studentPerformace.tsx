@@ -95,7 +95,7 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
       }}
       className="w-full lg:px-4 md:px-4 px-2 py-3  overflow-x-auto"
     >
-      <div className=" py-5 flex items-center justify-between">
+      <div className=" py-5 flex lg:flex-row md:flex-row gap-3 md:gap-0 lg:gap-0  flex-col md:items-center md:justify-between lg:items-center lg:justify-between">
         <h2 className="font-semibold text-black text-sm md:text-sm lg:tex-sm">
           Student Performance Termly
         </h2>
