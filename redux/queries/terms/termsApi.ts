@@ -53,7 +53,7 @@ export const termsApi = apiSlice.injectEndpoints({
         if (page_size) queryParams.page_size = page_size;
 
         return {
-          url: `upcoming-terms/`,
+          url: `active-terms/`,
           method: "GET",
           params: queryParams,
         };

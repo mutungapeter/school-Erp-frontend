@@ -10,10 +10,10 @@ import { TbDatabaseOff } from "react-icons/tb";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../style.css";
+import { PiCalendarDotsLight } from "react-icons/pi";
 
 import PageLoadingSpinner from "../../layouts/PageLoadingSpinner";
 import { PAGE_SIZE } from "@/src/constants/constants";
-import { PiCalendarDotsLight } from "react-icons/pi";
 
 const AlumniRecords = () => {
   const pageSize = PAGE_SIZE;

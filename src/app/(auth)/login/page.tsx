@@ -47,11 +47,11 @@ const LoginPage = () => {
     }
   };
   const { user, loading } = useAppSelector((state: RootState) => state.auth);
-  
+
   useEffect(() => {
     if (isSuccess) {
       setRedirecting(true);
-     
+
       if (!user.role) {
         router.push("/");
       } else if (user.role === "Admin" || user.role === "Principal") {
@@ -61,20 +61,19 @@ const LoginPage = () => {
       }
     }
   }, [isSuccess, router, user?.role]);
-const redirectToResetPassword=()=>{
-  router.push("/reset-password-request")
-}
+  const redirectToResetPassword = () => {
+    router.push("/reset-password-request");
+  };
   return (
     <>
       {redirecting ? (
         <div className="text-center  h-screen flex flex-col justify-center bg-white items-center">
           <InlineSpinner />
-        
         </div>
-    ) : (
-        <div className="bg-[#D6DBDC] h-screen flex items-center justify-center p-4 ">
+      ) : (
+        <div className="bg-[#F4F7FA] h-screen flex items-center justify-center p-4 ">
           <div className=" flex justify-center items-center py-10 mx-auto min-h-screen">
-            <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md shadow-md  ">
+            <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md   ">
               <div className="flex items-center justify-center ">
                 <div className="w-[100px] h-[100px]  ">
                   <Image
@@ -148,26 +147,37 @@ const redirectToResetPassword=()=>{
                       Show Password
                     </span>
                   </div>
-                  
-                    <div
+
+                  <div
                     onClick={redirectToResetPassword}
-                     className="text-primary cursor-pointer text-xs lg:text-sm md:text-sm">
-                      <span>Forgot password?</span>
-                    </div>
-                 
+                    className="text-primary cursor-pointer text-xs lg:text-sm md:text-sm"
+                  >
+                    <span>Forgot password?</span>
+                  </div>
                 </div>
 
                 <div>
                   <button
                     type="submit"
-                    className="bg-[#28d196ff] text-xl text-white font-medium lg:py-4 md:py-4 py-2 rounded-lg w-full opacity-90 hover:opacity-100 flex items-center justify-center"
+                    className="bg-[#28d196ff] text-xl text-white font-medium lg:py-4 md:py-4 py-3 rounded-lg w-full opacity-90 hover:opacity-100 flex items-center justify-center"
                   >
-                    <IoLockClosedOutline
+                    
+                    <span className="lg:text-xl md:text-xl text-lg font-light">
+                      {isSubmitting ? (
+                        <div className="flex space-x-2 animate-pulse">
+                          <div className="w-3 h-3 bg-white rounded-full"></div>
+                          <div className="w-3 h-3 bg-white rounded-full"></div>
+                          <div className="w-3 h-3 bg-white rounded-full"></div>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <IoLockClosedOutline
                       size={23}
                       className="text-white mr-2"
                     />
-                    <span className="lg:text-xl md:text-xl text-sm font-light">
-                      {isSubmitting ? "Processing" : "Login"}
+                    <span>Login</span>
+                        </div>
+                      )}
                     </span>
                   </button>
                 </div>
@@ -192,7 +202,7 @@ const redirectToResetPassword=()=>{
             </div>
           </div>
         </div>
-       )}
+      )}
     </>
   );
 };

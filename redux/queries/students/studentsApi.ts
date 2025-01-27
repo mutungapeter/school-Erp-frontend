@@ -24,6 +24,7 @@ interface GetStudentPerformance {
   id: number;
   term_id?:any;
   exam_type?: string;
+  calendar_year?:string;
 }
 interface GetStudentSubjects {
   student_id: any;
@@ -57,7 +58,8 @@ export const studentsApi = apiSlice.injectEndpoints({
       query: ({
         id,
         term_id,
-        exam_type
+        exam_type,
+        calendar_year
       }: GetStudentPerformance) => {
         const params: any = {};
 
@@ -67,6 +69,9 @@ export const studentsApi = apiSlice.injectEndpoints({
     
         if (exam_type) {
           params.exam_type = exam_type;
+        }
+        if (calendar_year) {
+          params.calendar_year = calendar_year;
         }
         return {
           url: `students/${id}/performance/`,

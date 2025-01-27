@@ -32,6 +32,7 @@ const ClassPerformance: React.FC = () => {
     () => ({
       class_level_id: searchParams.get("class_level_id") || "",
       term_id: searchParams.get("term_id") || "",
+      exam_type: searchParams.get("exam_type") || "",
     }),
     [searchParams]
   );
@@ -41,13 +42,22 @@ const ClassPerformance: React.FC = () => {
   useEffect(() => {
     const params = new URLSearchParams();
 
-    if (filters.class_level_id)
+    if (filters.class_level_id){
       params.set("class_level_id", filters.class_level_id);
-    if (filters.term_id) params.set("term_id", filters.term_id);
+    }
+    if (filters.term_id){
+      params.set("term_id", filters.term_id);
+    }
+    if (filters.exam_type){
+      params.set("exam_type", filters.exam_type);
+    }
 
     router.push(`?${params.toString()}`);
   }, [filters]);
-
+  useEffect(() => {
+    const initialClassLevel = initialFilters.class_level_id ? parseInt(initialFilters.class_level_id, 10) : null;
+    setSelectedClassLevel(initialClassLevel);
+  }, [initialFilters.class_level_id]);
   const queryParams = useMemo(
     () => ({
       ...filters,
@@ -115,17 +125,17 @@ const ClassPerformance: React.FC = () => {
     dataWithPercentages[dataWithPercentages.length - 1].percentage +=
       parseFloat((100 - totalPercentage).toFixed(1));
   }
+  const Title = classPerformanceData?.find((item:any) => item.class_level)?.class_level || null;
 
   return (
     <div className="space-y-1 bg-white shadow-md p-3 ">
       <div
-        className="flex flex-col    space-y-3 md:space-y-0 lg:space-y-0
-      md:justify-between lg:justisy-between mt-2 lg:p-0 lg:flex-row md:flex-row
-      md:items-center lg:items-center md:space-x-2 space-x-0  md:px-3
-       px-1 lg:px-3  lg:space-x-5"
+        className="py-4  mt-2   md:px-3
+       px-1 lg:px-3  "
       >
          <h2 className="   font-semibold text-lg lg:text-xl md:text-xl">Class Performance Analysis</h2>
-       <div className="flex flex-col lg:p-0 lg:flex-row md:flex-row
+      </div>
+       <div className="lg:justify-end md:justify-end  flex flex-col lg:p-0 lg:flex-row md:flex-row
       md:items-center lg:items-center  md:space-x-2 space-x-0 lg:space-x-5 space-y-3 md:space-y-0 lg:space-y-0">
 
         <div className="relative w-full lg:w-56 md:w-56 xl:w-56 ">
@@ -179,8 +189,32 @@ const ClassPerformance: React.FC = () => {
             className="absolute top-[50%] right-4  transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
           />
         </div>
+         <div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
+                            <select
+                              name="exam_type"
+                              id="exam_type"
+                              value={filters.exam_type || ""}
+                              onChange={handleFilterChange}
+                              className="w-full lg:w-55 md:w-55 xl:w-55 
+                              text-sm md:text-lg lg:text-lg appearance-none py-2 px-4 font-normal rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
+                            >
+                              <option value="">--- Exam Type ---</option>
+                              <option value="Midterm">Midterm</option>
+                              <option value="Endterm">Endterm</option>
+                            </select>
+                            <BsChevronDown
+                              color="gray"
+                              size={20}
+                              className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
+                            />
+                          </div>
        </div>
-      </div>
+       <h3 className="text-center font-semibold text-lg text-gray-700 mb-4 py-3">
+       {Title
+          ? `${Title} Performance`
+          : ""}
+       </h3>
+      
       {loadingClassPerformance ? (
         <ContentSpinner />
       ) : error ? (

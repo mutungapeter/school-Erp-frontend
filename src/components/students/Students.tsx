@@ -32,6 +32,7 @@ import ContentSpinner from "../perfomance/contentSpinner";
 import DeleteConfirmationModal from "./DeleteModal";
 import AdmitStudents from "./UploadStudents";
 import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
+import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
 
 const Students = () => {
   const pageSize = PAGE_SIZE;
@@ -183,6 +184,11 @@ console.log("classesData",classesData)
                 <>
                   <div>
                     <PromoteStudentsToAlumni
+                      refetchStudents={refetchStudents}
+                    />
+                  </div>
+                  <div>
+                    <PromoteStudentsToNextTerm
                       refetchStudents={refetchStudents}
                     />
                   </div>

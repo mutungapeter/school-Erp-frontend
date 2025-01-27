@@ -1,10 +1,10 @@
 "use client";
 import { useGetClassesQuery } from "@/redux/queries/classes/classesApi";
 import { usePromoteStudentsMutation, usePromoteStudentsToNextTermMutation } from "@/redux/queries/students/studentsApi";
-import { useGetActiveTermsQuery, useGetUpcomingTermsQuery } from "@/redux/queries/terms/termsApi";
+import { useGetActiveTermsQuery, useGetTermsQuery, useGetUpcomingTermsQuery } from "@/redux/queries/terms/termsApi";
 import { formatYear } from "@/src/utils/dates";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FieldValues, useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import { LuRefreshCcw } from "react-icons/lu";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import Spinner from "../../layouts/spinner";
+import { TiArrowForwardOutline } from "react-icons/ti";
 import "../../style.css";
 interface Props {
   refetchStudents: () => void;
@@ -21,15 +22,17 @@ interface Props {
 const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
-
+  const [selectedClassLevel, setSelectedClassLevel] = useState<number | null>(
+    null
+  );
   const {
     isLoading: loadingClassLevels,
     data: ClassLevelsData,
     refetch,
   } = useGetClassesQuery({}, { refetchOnMountOrArgChange: true });
   const schema = z.object({
-    class_level: z.number().min(1, "Select  class"),
-    term: z.number().min(1, "Select Term"),
+    class_level: z.coerce.number().min(1, "Select  class"),
+    term: z.coerce.number().min(1, "Select Term"),
   });
   const [promoteStudentsToNextTerm, { data, error, isSuccess }] =
   usePromoteStudentsToNextTermMutation();
@@ -37,8 +40,14 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
     isLoading: loadingTerms,
     data: termsData,
     refetch: refetchTerms,
-  } = useGetUpcomingTermsQuery({}, { refetchOnMountOrArgChange: true });
-
+  } = useGetTermsQuery({}, { refetchOnMountOrArgChange: true });
+const filteredTerms = useMemo(() => {
+    return termsData?.filter(
+      (term: any) => term.class_level.id === selectedClassLevel
+    );
+  }, [selectedClassLevel, termsData]);
+  console.log("termsData",termsData)
+  console.log("filteredTerms",filteredTerms)
   const {
     register,
     handleSubmit,
@@ -56,6 +65,15 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
 
   const handleTermChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue("term", e.target.value);
+  };
+  const handleFilterChange = (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    if (name === "class_level") {
+      const parsedValue = value ? parseInt(value, 10) : null;
+      setSelectedClassLevel(parsedValue);  // Update the selectedClassLevel state
+    }
   };
   const onSubmit = async (data: FieldValues) => {
     const { class_level, term } = data;
@@ -84,12 +102,12 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
 
   return (
     <>
-      <button
-        className="lg:py-2 lg:px-3 md:py-2 md:px-3 py-2 px-2 lg:text-sm md:text-sm text-xs  rounded-md border bg-[#1566FF]  text-white"
-        onClick={handleOpenModal}
-      >
-        Termly Promotion
-      </button>
+     <button
+             className="inline-flex items-center space-x-2 p-2  rounded-md border bg-[#1566FF]  text-white"
+             onClick={handleOpenModal}
+           >
+            <TiArrowForwardOutline size={20} />
+           </button>
       {isOpen && (
         <div
           className="relative z-9999 animate-fadeIn"
@@ -132,10 +150,9 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                       </label>
                       <select
                         id="class_level"
-                        {...register("class_level", {
-                          valueAsNumber: true,
-                        })}
-                        onChange={handleCurrentClassChange}
+                        {...register("class_level")}
+                        name="class_level"
+                        onChange={handleFilterChange}
                         className="w-full appearance-none py-2 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
                         {loadingClassLevels ? (
@@ -145,7 +162,7 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                             <option value="">Select  class</option>
                             {ClassLevelsData?.map((cl: any) => (
                               <option key={cl.id} value={cl.id}>
-                                {cl.name} {cl?.stream?.name || ""}
+                                {cl.name} {cl?.stream?.name || ""} - {cl.calendar_year}
                               </option>
                             ))}
                           </>
@@ -172,8 +189,9 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                       </label>
                       <select
                         id="term"
-                        {...register("term", { valueAsNumber: true })}
-                        onChange={handleTermChange}
+                        {...register("term")}
+                        name="term"
+                        onChange={handleFilterChange}
                         className="w-full appearance-none py-2 px-4 text-sm md:text-md lg:text-md rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-sm lg:placeholder:text-sm"
                       >
                         {loadingTerms ? (
@@ -181,9 +199,9 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                         ) : (
                           <>
                             <option value="">Term</option>
-                            {termsData?.map((term: any) => (
+                            {filteredTerms?.map((term: any) => (
                               <option key={term.id} value={term.id}>
-                                {term.term} {term?.calendar_year}
+                                {term.term}
                               </option>
                             ))}
                           </>
@@ -206,9 +224,9 @@ const PromoteStudentsToNextTerm = ({ refetchStudents }: Props) => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="text-white flex inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
-                       focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm space-x-4
-                       text-white rounded-md  px-5 py-2"
+                      className="text-white  inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4
+                       focus:outline-none focus:ring-blue-300 font-medium  text-sm space-x-4
+                       t rounded-md  px-5 py-2"
                     >
                       <LuRefreshCcw className="text-white " size={18} />
                       <span>{isSubmitting ? "Submitting..." : "Promote Students"}</span>

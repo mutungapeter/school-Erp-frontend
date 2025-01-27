@@ -2,6 +2,10 @@ import { useGetStudentPerformanceQuery } from "@/redux/queries/students/students
 import React, { PureComponent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../style.css";
+import { PiCalendarDotsLight } from "react-icons/pi";
 
 import {
   LineChart,
@@ -17,6 +21,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { BsChevronDown } from "react-icons/bs";
+import ContentSpinner from "../layouts/contentSpinner";
 
 interface TermData {
   term: string;
@@ -37,6 +42,7 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
   const initialFilters = useMemo(
     () => ({
       exam_type: searchParams.get("exam_type") || "",
+      calendar_year: searchParams.get("calendar_year") || "",
     }),
     [searchParams]
   );
@@ -45,7 +51,10 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
     const params = new URLSearchParams();
     if (filters.exam_type) {
       params.set("exam_type", filters.exam_type);
-    }
+    };
+    if (filters.calendar_year) {
+      params.set("calendar_year", filters.calendar_year);
+    };
 
     router.push(`?${params.toString()}`);
   }, [filters]);
@@ -54,12 +63,15 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
     data: performanceData,
     isLoading: isLoadingPerformance,
     error: errorLoadingPerformance,
+    error,
   } = useGetStudentPerformanceQuery({
     id: studentId,
     term_id: termId, 
-    exam_type: filters.exam_type
+    exam_type: filters.exam_type,
+    calendar_year: filters.calendar_year
     
   });
+  console.log({"studentId":studentId, "termId":termId, "exam_type":filters.exam_type})
   console.log("performanceData",performanceData )
   const handleFilterChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -69,14 +81,7 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
       setFilters((prev) => ({ ...prev, [name]: value }));
     
   };
-  // const chartData =
-  //   performanceData && performanceData[0]?.length > 0
-  //     ? performanceData[0].map((item: TermData) => ({
-  //         term: item.term,
-  //         average_marks: parseFloat(item.mean_marks) || 0,
-  //         exam_type: item.exam_type,
-  //       }))
-  //     : [];
+ 
   const chartData = performanceData && performanceData[0]?.length > 0
   ? performanceData[0].filter((item: TermData) => 
       filters.exam_type ? item.exam_type === filters.exam_type : true
@@ -86,19 +91,52 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
         exam_type: item.exam_type,
   }))
   : [];
+   
+  const handleYearChange = (date: Date | null) => {
+    const year = date ? date.getFullYear().toString() : "";
+    setFilters((prev) => ({ ...prev, calendar_year: year }));
+  };
+  const chartExamType = chartData.length > 0 ? chartData[0].exam_type : null;
+  // const chartTerm = chartData.length > 0 ? chartData[0].term.calendar_year : null;
+
+  // const chartTitle =
+  //   chartExamType && chartTerm ? `${chartExamType} Performance - ${chartTerm} `
+  //     : "";
+  //     console.log("chartTerm",chartTerm)
   console.log("chartData", chartData);
   return (
     <div
       style={{
         // width: '100%',
-        height: "300px",
+        height: "500px",
       }}
       className="w-full lg:px-4 md:px-4 px-2 py-3  overflow-x-auto"
     >
-      <div className=" py-5 flex lg:flex-row md:flex-row gap-3 md:gap-0 lg:gap-0  flex-col md:items-center md:justify-between lg:items-center lg:justify-between">
+      <div className=" py-5 flex  gap-3   flex-col ">
         <h2 className="font-semibold text-black text-sm md:text-sm lg:tex-sm">
           Student Performance Termly
         </h2>
+        <div className="flex lg:justify-end md:justify-end ">
+
+        </div>
+        <div className="flex md:items-center md:justify-end lg:items-center lg:justify-end  md:flex-row lg:flex-row flex-col gap-3">
+          <div className="relative ">
+                         
+                          <DatePicker
+                          name="graduation_year"
+                          selected={filters.calendar_year ? new Date(parseInt(filters.calendar_year), 0) : null}
+                          onChange={handleYearChange}
+                          showYearPicker
+                          dateFormat="yyyy"
+                          showIcon
+                          icon={<PiCalendarDotsLight className="text-gray-currentColor" />}
+                          yearDropdownItemNumber={5}
+                          placeholderText="YYYY"
+                          isClearable
+                          className="w-full appearance-none py-3 px-4 text-lg rounded-md border border-1 border-gray-400 focus:outline-none focus:border-[#1E9FF2] focus:bg-white placeholder:text-sm md:placeholder:text-lg lg:placeholder:text-lg"
+                       />
+                         
+                          </div>
         <div className="relative w-full lg:w-55 md:w-55 xl:w-55  ">
                     <select
                       name="exam_type"
@@ -118,7 +156,21 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
                       className="absolute top-[50%] right-4 transform -translate-y-1/2 text-[#1F4772] pointer-events-none"
                     />
                   </div>
+        </div>
       </div>
+      <h3 className="text-center font-semibold text-lg text-gray-700 mb-4">
+        {chartExamType
+          ? `${chartExamType} Performance`
+          : ""}
+      </h3>
+      {isLoadingPerformance ? (
+        <ContentSpinner />
+      ) : error ? (
+        <div className="min-h-[20vh] flex items-center justify-center border border-red-600 rounded-md p-2 shadow-md bg-red-50 ">
+          <span className="text-red-600">{(error as any)?.data?.error || "Internal Server Error"}</span>
+        </div>
+      ):(
+        
       <ResponsiveContainer width="100%" height={200}>
         <LineChart
           width={500}
@@ -161,6 +213,7 @@ const StudentPerformanceChart = ({ studentId, termId }: StudentPerformanceChartP
           />
         </LineChart>
       </ResponsiveContainer>
+      )}
     </div>
   );
 };
