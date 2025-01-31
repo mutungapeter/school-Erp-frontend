@@ -39,12 +39,24 @@ const TeacherSubjectsAndClasses = () => {
     data?.subjects,
     (s) => s.subject.subject_name
   );
+  const classSubjectsMap = new Map();
+
+  // Process the data to group subjects by class
+  data?.[0]?.subjects.forEach((subject: any) => {
+    const className = subject.class_level.name;
+    const subjectName = subject.subject.subject_name;
+    
+    if (!classSubjectsMap.has(className)) {
+      classSubjectsMap.set(className, new Set());
+    }
+    classSubjectsMap.get(className).add(subjectName);
+  });
 
   return (
     <div className=" space-y-5 py-5 bg-white shadow-md rounded-md ">
       <div className=" p-3  flex justify-between">
         <h2 className="font-semibold text-black md:text-xl text-md lg:text-xl">
-           Subjects and  Classes
+          My  Subjects 
         </h2>
     
       </div>
@@ -53,33 +65,26 @@ const TeacherSubjectsAndClasses = () => {
           <thead className="text-sm text-gray-700 uppercase border-b bg-gray-50 rounded-t-md">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Subject
+                Class
               </th>
               <th scope="col" className="px-6 py-3">
-                Classes
+                Subjects
               </th>
             </tr>
           </thead>
           <tbody>
-            {Object.keys(groupedSubjects).map((subject, index) => (
-              <tr key={index} className="bg-white border-b">
+            
+            {Array.from(classSubjectsMap).map(([className, subjects]) => (
+              <tr key={className} className="bg-white border-b">
                 <td className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap">
-                  {subject}
+                  {className}
                 </td>
                 <td className="px-6 py-2 font-medium text-gray-500 whitespace-nowrap">
-                  {groupedSubjects[subject]
-                    .map(
-                      (s) =>
-                        `${s.class_level.name}${
-                          s.class_level.stream
-                            ? ` ${s.class_level.stream.name}`
-                            : ""
-                        }`
-                    )
-                    .join(", ")}
+                  {Array.from(subjects).join(", ")}
                 </td>
               </tr>
             ))}
+
           </tbody>
         </table>
       </div>

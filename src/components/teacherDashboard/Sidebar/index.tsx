@@ -103,27 +103,27 @@ const menuGroups: MenuGroup[] = [
         label: "Subjects",
         route: "/teacher-subjects",
       },
-      {
-        icon: "/icons/assignment.png",
-        label: "Assignments",
-        route: "/assignments",
-      },
-      {
-        // icon: <LiaSchoolSolid size={20}  />,
-        icon: "/icons/attendance.png",
-        label: "Attendance",
-        route: "/attendance",
-      },
-      {
-        icon: "/icons/lesson.png",
-        label: "Lessons",
-        route: "/lessons",
-      },
-      {
-        icon: "/icons/exam.png",
-        label: "Exams",
-        route: "/exams",
-      },
+      // {
+      //   icon: "/icons/assignment.png",
+      //   label: "Assignments",
+      //   route: "/assignments",
+      // },
+      // {
+      //   // icon: <LiaSchoolSolid size={20}  />,
+      //   icon: "/icons/attendance.png",
+      //   label: "Attendance",
+      //   route: "/attendance",
+      // },
+      // {
+      //   icon: "/icons/lesson.png",
+      //   label: "Lessons",
+      //   route: "/lessons",
+      // },
+      // {
+      //   icon: "/icons/exam.png",
+      //   label: "Exams",
+      //   route: "/exams",
+      // },
     
     
                 

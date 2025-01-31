@@ -299,7 +299,7 @@ const Teachers = () => {
                   </td>
 
                   <td className="px-3 py-2  flex items-center space-x-5">
-                    <div>{/* <AssignTeacher teacher_id={teacher.id} /> */}</div>
+                   
                     <div
                       className="p-2 rounded-full text-center cursor-pointer bg-purple-600"
                       onClick={() => handleViewDetails(teacher.id)}
