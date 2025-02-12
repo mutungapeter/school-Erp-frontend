@@ -75,13 +75,14 @@ const LoginPage = () => {
           <div className=" flex justify-center items-center py-10 mx-auto min-h-screen">
             <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md   ">
               <div className="flex items-center justify-center ">
-                <div className="w-[100px] h-[100px]  ">
+                <div className="w-[100px] h-[150px]  ">
                   <Image
-                    src="/images/logo.jpg"
+                    // src="/images/logo.jpg"
+                    src="/ShuleHub.png"
                     alt="logo"
-                    width={100}
-                    height={100}
-                    className="object-cover"
+                    width={200}
+                    height={150}
+                    className="object-contain w-full h-full "
                   />
                 </div>
               </div>
