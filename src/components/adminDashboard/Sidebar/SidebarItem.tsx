@@ -4,6 +4,7 @@ import SidebarDropdown from "./SidebarDropdown";
 import { usePathname } from "next/navigation";
 import { GoChevronRight } from "react-icons/go";
 import Image from "next/image";
+import { GoChevronDown } from "react-icons/go";
 const SidebarItem = ({ item, pageName, setPageName }: any) => {
   const handleClick = () => {
     const updatedPageName =
@@ -33,7 +34,7 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
           className={`${isItemActive ? "  text-white  bg-[#0270BD]" : ""} 
           group relative flex items-center gap-4
            rounded-lg p-2  
-           text-[#585882ff] md:text-md text-md lg:text-md  hover:text-[#0270BD] hover:bg-[#F3F7FF]
+           text-[#585882ff] md:text-md text-md lg:text-md  hover:text-[#0270BD] hover:bg-[#F2F4F7]
            transform transition-transform 
                     hover:translate-x-3  `}
         >
@@ -67,9 +68,10 @@ const SidebarItem = ({ item, pageName, setPageName }: any) => {
           {item.label}
           {item.children && (
            
-            <GoChevronRight 
+            <GoChevronDown 
+            size={25}
             className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-              pageName === item.label.toLowerCase() && "rotate-90"
+              pageName === item.label.toLowerCase() && "rotate-180"
             }`}
             />
           )}

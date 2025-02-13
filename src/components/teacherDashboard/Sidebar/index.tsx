@@ -222,7 +222,7 @@ const Sidebar = ({
       </div>
 
       <div className=" flex flex-col overflow-y-auto duration-300 ease-linear">
-        <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-4">
+        <nav className="mt-5 px-4   lg:px-4">
           {menuGroups.map((group, groupIndex) => (
             <div key={groupIndex}>
               {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-[#585882ff]">

@@ -15,6 +15,7 @@ import { LiaClipboardListSolid } from "react-icons/lia";
 import {
   HiOutlineClipboardDocument
 } from "react-icons/hi2";
+import { IoCloseOutline } from "react-icons/io5";
 import {
   PiChalkboardThin,
   PiStudentDuotone,
@@ -210,19 +211,19 @@ const Sidebar = ({
             aria-controls="sidebar"
             className="block lg:hidden"
           >
-            <TfiAlignLeft size={30} />
+            <IoCloseOutline  size={35} className="text-primary" />
           </button>
         </div>
 
         <div className=" flex flex-col overflow-y-auto duration-300 ease-linear">
-          <nav className="mt-5 px-4 py-4 lg:mt-9 lg:px-4">
+          <nav className=" px-4 py-4  lg:px-4">
             {menuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
                 {/* <h3 className="mb-4 ml-4 text-sm font-semibold text-[#585882ff]">
                   {group.name}
                 </h3> */}
 
-                <ul className="mb-6 flex flex-col gap-4">
+                <ul className="mb-6 flex flex-col gap-5">
                   {group.menuItems.map((menuItem, menuIndex) => {
                    
                     return (

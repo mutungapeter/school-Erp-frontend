@@ -1,6 +1,6 @@
 "use client";
 import { useAppSelector } from "@/redux/hooks";
-import { useGetAllActiveClassesQuery, useGetClassesQuery } from "@/redux/queries/classes/classesApi";
+import { useGetAllActiveClassesQuery } from "@/redux/queries/classes/classesApi";
 import {
   useDeleteStudentsMutation,
   useGetStudentsQuery,
@@ -18,21 +18,20 @@ import { BsChevronDown } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 import { IoEyeSharp } from "react-icons/io5";
 import { TbDatabaseOff } from "react-icons/tb";
-import { VscRefresh } from "react-icons/vsc";
 import { useDebouncedCallback } from "use-debounce";
 import PromoteStudentsToAlumni from "./alumni/Alumni";
 import EditStudent from "./editStudent";
 import { CreateStudent } from "./NewStudent";
 import PromoteStudentsToNextClass from "./promoteStudents/PromoteStudents";
-
+import { SlSocialDropbox } from "react-icons/sl";
 import { FiDelete } from "react-icons/fi";
 import { IoIosClose } from "react-icons/io";
 import { toast } from "react-toastify";
+import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import ContentSpinner from "../perfomance/contentSpinner";
 import DeleteConfirmationModal from "./DeleteModal";
-import AdmitStudents from "./UploadStudents";
-import PageLoadingSpinner from "../layouts/PageLoadingSpinner";
 import PromoteStudentsToNextTerm from "./promoteStudents/promoteStudentsToNextTerm";
+import AdmitStudents from "./UploadStudents";
 
 const Students = () => {
   const pageSize = PAGE_SIZE;
@@ -173,6 +172,7 @@ console.log("classesData",classesData)
   return (
     <>
       <div className=" space-y-5 bg-white shadow-md p-3  ">
+        
         <div className=" p-3  flex flex-col md:flex-row md:items-center lg:items-center md:gap-0 lg:gap-0 gap-4 lg:justify-between md:justify-between">
           <h2 className="font-semibold text-black text-xl md:text-2xl lg:text-2xl">
             All Students
@@ -250,7 +250,7 @@ console.log("classesData",classesData)
         </div>
 
         <div className=" rounded-sm  p-2">
-          {selectedStudents.length > 0 && (
+          {selectedStudents?.length > 0 && (
             <div className="flex items-center space-x-3 py-3">
               <button
                 onClick={cancelSelection}
@@ -287,7 +287,7 @@ console.log("classesData",classesData)
                       id="checkbox-all"
                       type="checkbox"
                       checked={
-                        selectedStudents.length === studentsData?.results.length
+                        selectedStudents?.length === studentsData?.results.length
                       }
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -348,9 +348,9 @@ console.log("classesData",classesData)
                   </tr>
                 ) : error ? (
                   <tr className="">
-                    <td colSpan={8} className=" py-4">
-                      <div className="flex items-center justify-center space-x-6 text-#1F4772">
-                        <TbDatabaseOff size={25} />
+                    <td colSpan={10} className=" py-4">
+                      <div className="flex flex-col gap-4 items-center min-h-[40vh] justify-center space-x-6 text-#1F4772">
+                       <SlSocialDropbox className="text-gray-500" size={50} />
                         <span>
                           {(error as any)?.data?.error ||
                             "Internal Server Error"}
@@ -440,6 +440,7 @@ console.log("classesData",classesData)
               </tbody>
             </table>
           </div>
+          {studentsData?.results?.length > 0 && (
           <div className="flex lg:justify-end md:justify-end justify-center mt-4 mb-4 px-6 py-4">
             <nav className="flex items-center space-x-2">
               <button
@@ -479,6 +480,7 @@ console.log("classesData",classesData)
               </button>
             </nav>
           </div>
+          )}
         </div>
       </div>
     </>

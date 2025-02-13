@@ -1,15 +1,9 @@
-import Link from "next/link";
-import DarkModeSwitcher from "./DarkModeSwitcher";
-import DropdownMessage from "./DropdownMessage";
-import DropdownNotification from "./DropdownNotification";
-import DropdownUser from "./DropdownUser";
 import Image from "next/image";
-import { BiMenuAltLeft, BiMenuAltRight } from "react-icons/bi";
-import { RiMenuFill } from "react-icons/ri";
+import Link from "next/link";
+import { TfiAlignLeft, TfiAlignRight } from "react-icons/tfi";
 import { useMediaQuery } from "react-responsive";
-import dynamic from "next/dynamic";
-import { TfiAlignJustify, TfiAlignLeft, TfiAlignRight } from "react-icons/tfi";
-import { CiMenuBurger } from "react-icons/ci";
+import DropdownUser from "./DropdownUser";
+
 interface Props {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;

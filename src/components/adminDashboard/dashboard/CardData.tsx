@@ -18,8 +18,8 @@ const CardDataStats = ({
 }: CardDataStatsProps) => {
   return (
     <div
-      className={`rounded-2xl border-stroke cursor-pointer  p-3 shadow-md flex-1 min-w-[130px] 
-                     transition-all duration-300 ease-in-out hover:scale-105  bg-white border border-1 `}
+      className={`rounded-2xl border-gray-300 cursor-pointer   p-3  flex-1 min-w-[130px] 
+                     transition-all duration-300 ease-in-out hover:scale-105  bg-white border  `}
     >
       <div className="flex items-center justify-between">
         <span className="text-md md:text-lg lg:text-lg font-medium text-gray-500">{title}</span>

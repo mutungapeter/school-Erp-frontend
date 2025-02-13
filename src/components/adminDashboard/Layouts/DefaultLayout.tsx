@@ -35,7 +35,7 @@ export default function DefaultLayout({
           />
 
           {/* <main> */}
-            <main className="mx-auto bg-[#F3F7FF] w-full md:max-w-screen-2xl lg:max-w-screen-2xl min-h-screen p-2 lg:p-3 md:p-3 2xl:p-3">
+            <main className="mx-auto bg-[#F9FAFB] w-full md:max-w-screen-2xl lg:max-w-screen-2xl min-h-screen p-2 lg:p-3 md:p-3 2xl:p-3">
               {children}
             </main>
           {/* </main> */}
