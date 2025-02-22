@@ -95,30 +95,6 @@ const DashboardData = () => {
   }
   return (
     <>
-      {/* <div className="space-y-5">
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-4 lg:gap-4 lg:grid-cols-4  xl:grid-cols-4 2xl:gap-7.5">
-        {cardData.map((card) => (
-          <CardDataStats
-            key={card.title}
-            title={card.title}
-            bgColor={card.bgColor}
-            total={card.total}
-          >
-            {card.icon}
-          </CardDataStats>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 lg:gap-5 md:gap-5">
-        <div className=" space-y-4 px-2 md:py-4 lg:px-4 py-3 bg-white shadow-md">
-          <div className="  md:px-3 py-2 px-2 lg:px-3">
-            <h2 className="   font-semibold text-lg lg:text-xl md:text-xl">
-              Class Performance Analysis
-            </h2>
-          </div>
-          <ClassPerformance />
-        </div>
-      </div>
-    </div> */}
       <div className=" flex gap-4 flex-col p-4 md:flex-row">
         <div className="w-full lg:w-2/3 flex flex-col gap-8">
           <div className="flex gap-4 justify-between flex-wrap">

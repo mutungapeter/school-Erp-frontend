@@ -393,6 +393,7 @@ const config: Config = {
         },
         });
     }),
+    require('tailwind-scrollbar'),
 ],
 };
 export default config;
