@@ -29,6 +29,13 @@ export const subjectsApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createSubjectCategory: builder.mutation({
+      query: (data) => ({
+        url: `subject-categories/`,
+        method: "POST",
+        body: data,
+      }),
+    }),
 
     getSubjectCategories: builder.query({
       query: ({ page, page_size }: GetSubjectsQueryArgs = {}) => {
@@ -44,6 +51,19 @@ export const subjectsApi = apiSlice.injectEndpoints({
       }
 
     }),
+    updateSubjectCategory: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `subject-categories/${id}/`,
+        method: "PUT",
+        body: data,
+      }),
+    }),  
+    getSubjectCategory: builder.query({
+      query: (id) => ({
+        url: `subject-categories/${id}/`,
+        method: "GET",
+      }),
+    }), 
     updateSubject: builder.mutation({
       query: ({ id, ...data }) => ({
         url: `subjects/${id}/`,
@@ -71,11 +91,24 @@ export const subjectsApi = apiSlice.injectEndpoints({
         body: data
       }),
     }),   
+    deleteSubjectCategories: builder.mutation({
+      query: (data) => ({
+      
+        url: `subject-categories/`,
+        method: "DELETE",
+        body: data
+      }),
+    }),   
   }),
 });
 
-export const {useGetSubjectsQuery,
+export const {
+  useGetSubjectsQuery,
    useGetSubjectCategoriesQuery, 
+   useUpdateSubjectCategoryMutation,
+   useGetSubjectCategoryQuery,
+   useCreateSubjectCategoryMutation,
+   useDeleteSubjectCategoriesMutation,
    useUpdateSubjectMutation,
    useGetSubjectQuery,
    useDeleteSubjectMutation,

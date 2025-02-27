@@ -7,7 +7,7 @@ import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
 import dynamic from "next/dynamic";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import Cookies from "@/node_modules/@types/js-cookie";
 const ClassesPage = () => {
   return (
     <DefaultLayout>

@@ -8,14 +8,9 @@ import { Suspense } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 import TeacherLayout from "@/src/components/teacherDashboard/TeacherLayout";
-const SubjectsPage = () => {
-  const ProtectedRoute = dynamic(
-    () => import("@/src/app/authorization/authentication"),
-    {
-      ssr: false,
-      loading: () => <PageLoadingSpinner />,
-    }
-  );
+import Categories from "@/src/components/subjects/Categories/SubjectCatgeories";
+const SubjectCatgeoriesPage = () => {
+ 
   const{ user, loading } = useAppSelector((state: RootState) => state.auth);
   const Layout = user?.role === "Teacher" ? TeacherLayout : DefaultLayout;
   return (
@@ -24,11 +19,11 @@ const SubjectsPage = () => {
 
     <Suspense fallback={<PageLoadingSpinner />}>
 
-    <Subjects />
+    <Categories />
     </Suspense>
     </DefaultLayout>
-    // </ProtectedRoute>
+   
 
   );
 };
-export default SubjectsPage;
+export default SubjectCatgeoriesPage;

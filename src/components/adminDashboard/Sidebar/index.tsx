@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AiOutlineBarChart } from "react-icons/ai";
-import { LiaClipboardListSolid } from "react-icons/lia";
+import { LiaClipboardListSolid, LiaSchoolSolid } from "react-icons/lia";
 import {
   HiOutlineClipboardDocument
 } from "react-icons/hi2";
@@ -86,34 +86,18 @@ const menuGroups: MenuGroup[] = [
         label: "Streams",
         route: "/streams",
       },
+      
+  
       {
-        // icon: <LiaSchoolSolid size={20}  />,
-        icon: "/icons/subject.png",
+        icon: <LiaSchoolSolid size={25} className="text-gray-500"  />,
         label: "Subjects",
-        route: "/subjects",
-      },
-      // {
-      //   icon: "/icons/assignment.png",
-      //   label: "Assignments",
-      //   route: "/assignments",
-      // },
-      // {
-      //   // icon: <LiaSchoolSolid size={20}  />,
-      //   icon: "/icons/attendance.png",
-      //   label: "Attendance",
-      //   route: "/attendance",
-      // },
-      // {
-      //   icon: "/icons/lesson.png",
-      //   label: "Lessons",
-      //   route: "/lessons",
-      // },
-      // {
-      //   icon: "/icons/exam.png",
-      //   label: "Exams",
-      //   route: "/exams",
-      // },
+        route: "#",
+        children: [
+          { label: "Subjects", route: "/subjects" },
+          { label: "Categories", route: "/subjects/categories" },
           
+        ],
+      },   
     ],
   },
   {
