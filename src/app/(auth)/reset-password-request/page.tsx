@@ -64,7 +64,7 @@ const ResetPasswordRequestPage = () => {
     <>
       <div className="bg-[#D6DBDC] h-screen flex items-center justify-center p-4 ">
         <div className=" flex justify-center items-center py-10 mx-auto min-h-screen">
-          <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md shadow-md  ">
+          <div className="bg-white lg:p-8 md:p-8 p-5 shadow-lg rounded-md w-full max-w-md  ">
             <div className="flex items-center justify-center ">
               <div className="w-[100px] h-[100px]  ">
                 <Image
@@ -146,35 +146,42 @@ const ResetPasswordRequestPage = () => {
               aria-hidden="true"
             ></div>
 
-            <div className="fixed inset-0 z-9999 w-screen overflow-y-auto">
-              <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
-                <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 md:p-6 lg:p-6 md:max-w-2xl">
-                  <h2 className="text-lg font-semibold">Reset Token</h2>
-                  <p className="mt-2">Below is Your password reset token, copy it and keep paste it somewhere to use it in the next step to complete resetting password.</p>
-                  <div className="flex items-center mt-2">
-                    <code className="block p-2 bg-gray-200 rounded flex-grow">
-                      {token}
-                    </code>
-                    <button
-                      onClick={copyToClipboard}
-                      className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                  <div className="flex justify-end mt-6">
-                  <button
-                    type="button"
-                    onClick={handleCloseModal}
-                    className="bg-[#36A000] text-white rounded-md px-6 py-3 hover:bg-[#36A000] focus:outline-none"
-                  >
-                    Next
-                  </button>
-                  
-                </div>
-                </div>
-              </div>
-            </div>
+<div className="fixed inset-0 z-9999 w-screen overflow-y-auto max-w-full">
+  <div className="flex min-h-full items-start justify-center p-4 text-center sm:items-start sm:p-0">
+    <div className="relative transform animate-fadeIn overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-full sm:max-w-2xl p-4 sm:p-2 md:p-4 lg:p-6 md:max-w-2xl max-w-full">
+      <h2 className="text-lg font-semibold">Reset Token</h2>
+      <p className="mt-2">Below is Your password reset token, copy it and keep it somewhere to use it in the next step to complete resetting password.</p>
+      
+      
+      <div className="flex items-center flex-wrap gap-5 mt-2 mx-3">
+        
+        <div className="block p-2 bg-gray-200 rounded w-full break-words">
+          {token}
+        </div>
+        
+        
+        <button
+          onClick={copyToClipboard}
+          className="ml-4 bg-blue-500 text-white px-4 py-2 rounded text-sm sm:text-base"
+        >
+          Copy
+        </button>
+      </div>
+
+      <div className="flex justify-end mt-6">
+        
+        <button
+          type="button"
+          onClick={handleCloseModal}
+          className="bg-[#36A000] text-white rounded-md px-6 py-3 hover:bg-[#36A000] focus:outline-none text-sm sm:text-base"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
           </div>
         )}
       </div>

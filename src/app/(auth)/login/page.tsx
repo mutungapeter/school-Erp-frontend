@@ -1,20 +1,17 @@
 "use client";
-import { FaLock, FaUser } from "react-icons/fa";
-import { IoIosLock } from "react-icons/io";
-import { FieldValues, useForm } from "react-hook-form";
-import { z } from "zod";
 import { useAppSelector } from "@/redux/hooks";
-import { RootState } from "@/redux/store";
-import { redirect, useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { useLoginMutation } from "@/redux/queries/auth/authApi";
-import PageLoadingSpinner from "@/src/components/layouts/PageLoadingSpinner";
+import { RootState } from "@/redux/store";
 import InlineSpinner from "@/src/components/layouts/inlineSpinner";
-import { IoLockClosedOutline } from "react-icons/io5";
-import { BiUser } from "react-icons/bi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { BiUser } from "react-icons/bi";
+import { IoLockClosedOutline } from "react-icons/io5";
+import { toast } from "react-toastify";
+import { z } from "zod";
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [redirecting, setRedirecting] = useState(false);
@@ -77,8 +74,8 @@ const LoginPage = () => {
               <div className="flex items-center justify-center ">
                 <div className="w-[100px] h-[150px]  ">
                   <Image
-                    // src="/images/logo.jpg"
-                    src="/ShuleHub.png"
+                    src="/images/logo.jpg"
+                    // src="/ShuleHub.png"
                     alt="logo"
                     width={200}
                     height={150}
@@ -160,46 +157,27 @@ const LoginPage = () => {
                 <div>
                   <button
                     type="submit"
-                    className="bg-[#28d196ff] text-xl text-white font-medium lg:py-4 md:py-4 py-3 rounded-lg w-full opacity-90 hover:opacity-100 flex items-center justify-center"
+                    className={`${
+                      isSubmitting ? "bg-gray-100 text-gray-400" : "bg-[#28d196ff]"
+                    } text-lg font-medium py-2 rounded-lg w-full flex items-center justify-center opacity-90 hover:opacity-100 border border-gray-300`}
                   >
-                    
-                    <span className="lg:text-xl md:text-xl text-lg font-light">
-                      {isSubmitting ? (
-                        <div className="flex space-x-2 animate-pulse">
-                          <div className="w-3 h-3 bg-white rounded-full"></div>
-                          <div className="w-3 h-3 bg-white rounded-full"></div>
-                          <div className="w-3 h-3 bg-white rounded-full"></div>
-                        </div>
-                      ) : (
-                        <div className="flex items-center">
-                          <IoLockClosedOutline
-                      size={23}
-                      className="text-white mr-2"
-                    />
-                    <span>Login</span>
-                        </div>
-                      )}
-                    </span>
+                    {isSubmitting ? (
+                      <div className="w-6 h-6 border-2 border-gray-300 border-t-primary rounded-full animate-spin"></div>
+                    ) : (
+                      <div className="flex items-center">
+                        <IoLockClosedOutline
+                          size={20}
+                          className="text-white mr-2"
+                        />
+                        <span className="text-lg text-white font-medium">
+                          Login
+                        </span>
+                      </div>
+                    )}
                   </button>
+                 
                 </div>
               </form>
-              {/* <div className="flex items-center my-6">
-                <hr className="flex-grow border-gray-300" />
-                <span className="px-4 text-gray-600">
-                  Need an Admin Account?
-                </span>
-                <hr className="flex-grow border-gray-300" />
-              </div> */}
-
-              {/* <button
-                type="button"
-                className="bg-[#33AAF3] lg:text-xl md:text-xl text-sm text-white font-medium lg:py-4 md:py-4 py-2 rounded-lg w-full opacity-90 hover:opacity-100 flex items-center justify-center"
-              >
-                <BiUser size={23} className="text-white mr-2" />
-                <span className="lg:text-xl md:text-xl text-sm font-light">
-                  Register
-                </span>
-              </button> */}
             </div>
           </div>
         </div>
